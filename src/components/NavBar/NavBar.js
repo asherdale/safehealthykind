@@ -1,12 +1,14 @@
 import React from 'react';
-import './NavBar.css';
+import './NavBar.scss';
 
 function NavBar() {
-    return (
-      <div className="NavBar">
-        Nav
-      </div>
-    );
-  }
+  return (
+    <div className="NavBar">
+        <div className="logo">
+          <p>SafeHealthyKind</p>
+        </div>
+    </div>
+  );
+}
   
-  export default NavBar;  
+export default NavBar;  
