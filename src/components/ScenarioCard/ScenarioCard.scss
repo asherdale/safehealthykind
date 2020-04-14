@@ -1,0 +1,27 @@
+.ScenarioCard {
+  font-size: 18px;
+  max-width: 300px;
+  border-radius: 10px;
+  padding: 5px;
+  // border: 1px solid rgba(0,0,0,.125);
+
+  .scenario {
+    margin-top: 0;
+  }
+
+  .response {
+    font-size: 14px;
+    margin-left: 20px;
+    margin-bottom: 5px;
+  }
+
+  .signature {
+    margin: 0;
+    font-size: 14px;
+    text-align: right;
+  }
+
+  .actions {
+    float: right;
+  }
+}

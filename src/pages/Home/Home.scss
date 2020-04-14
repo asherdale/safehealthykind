@@ -1,3 +1,13 @@
 .Home {
-    font-size: 24;
+    .intro-text {
+        .intro-header {
+            font-size: 26px;
+            text-align: center;
+        }
+
+        .intro-paragraph {
+            font-size: 20px;
+            margin: 0 18%;
+        }
+    }
 }
