@@ -1,0 +1,17 @@
+.ResponseCard {
+  font-size: 14px;
+  margin-bottom: 10px;
+  
+  div.response-content {
+    padding: 0 16px;
+
+    .signature {
+      float: left;
+    }
+
+    .date {
+      float: right;
+      color: slategray;
+    }
+  }
+}

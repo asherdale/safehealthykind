@@ -4,9 +4,7 @@ import './NavBar.scss';
 function NavBar() {
   return (
     <div className="NavBar">
-      <div className="logo">
-        <p>SafeHealthyKind</p>
-      </div>
+      <p className="logo">SafeHealthyKind</p>
     </div>
   );
 }
