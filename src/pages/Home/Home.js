@@ -1,18 +1,26 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import './Home.scss';
-import { getScenarioData, analytics } from '../../api/firebase';
+import { analytics, getScenarioData } from '../../api/firebase';
 import CardDisplay from '../../components/CardDisplay';
 
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+  
   async componentDidMount() {
     analytics.logEvent('home_loaded');
 
     const scenarios = await getScenarioData();
-    this.setState({ scenarios })
+    this.setState({ scenarios });
   }
 
   render() {
+    const { scenarios } = this.state;
+
     return (
       <Container className="Home">
         <div className="intro-text">
@@ -25,7 +33,8 @@ class Home extends React.Component {
           </p>
         </div>
   
-        {this.state && <CardDisplay data={this.state.scenarios} />}
+        {/* TODO show loading circle while waiting for data  */}
+        {scenarios && <CardDisplay data={scenarios} />}
         
       </Container>
     );

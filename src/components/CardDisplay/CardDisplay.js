@@ -5,9 +5,7 @@ import './CardDisplay.scss';
 import ScenarioCard from '../ScenarioCard';
 
 function CardDisplay({ data }) {
-  const cards = data.map(scenario => {
-    return <ScenarioCard key={scenario.id} scenario={scenario} />
-  });
+  const cards = data.map(scenario => <ScenarioCard key={scenario.id} scenario={scenario} />);
 
   return (
     <Grid

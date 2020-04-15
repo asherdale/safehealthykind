@@ -31,8 +31,8 @@ export const timeSince = (date) => {
   }
 
   return formatDateString(secondsAgo, 'second');
-}
+};
 
 export const example = () => {
 
-}
+};

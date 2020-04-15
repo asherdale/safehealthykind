@@ -9,14 +9,12 @@ import './ScenarioCard.scss';
 import ResponseCard from '../ResponseCard';
 
 function ScenarioCard({ scenario }) {
-  const { scenarioText, responses } = scenario.data;
+  const { scenarioText, responses } = scenario;
 
-  if (responses) {
-    responses.sort((a, b) => b.dateCreated.seconds - a.dateCreated.seconds);
-  }
+  responses.sort((a, b) => b.dateCreated.seconds - a.dateCreated.seconds);
 
-  const responseCards = !responses ? [] : responses.map(response => {
-    return <ResponseCard key={response.dateCreated.seconds} response={response} />
+  const responseCards = responses.map(response => {
+    return <ResponseCard key={response.dateCreated.seconds} response={response} />;
   });
 
   return (
@@ -24,8 +22,8 @@ function ScenarioCard({ scenario }) {
       <CardContent className="scenario-content">
         <p className="scenario">&quot;{scenarioText}&quot;</p>
 
-        {responses
-          && <div className="responses">
+        {responses.length > 0 &&
+          <div className="responses">
             {responseCards}
           </div>
         }
@@ -42,10 +40,8 @@ function ScenarioCard({ scenario }) {
 
 ScenarioCard.propTypes = {
   scenario: PropTypes.shape({
-    data: PropTypes.shape({
-      scenarioText: PropTypes.string,
-      responses: PropTypes.arrayOf(PropTypes.object)
-    })
+    scenarioText: PropTypes.string.isRequired,
+    responses: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
 };
 
