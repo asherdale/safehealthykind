@@ -27,6 +27,7 @@ class ResponseCard extends React.Component {
       isLiked: false,
       menuAnchorEl: null,
       isDialogOpen: false,
+      isResponseVisible: true,
     };
   }
 
@@ -70,11 +71,17 @@ class ResponseCard extends React.Component {
     
     response.reports = (response.reports || 0) + 1;
     updateResponse(response, { reports: response.reports });
+
+    this.setState({ isResponseVisible: false });
   }
 
   render() {
-    const { isLiked, menuAnchorEl, isDialogOpen } = this.state;
+    const { isLiked, menuAnchorEl, isDialogOpen, isResponseVisible } = this.state;
     const { response } = this.props;
+
+    if (!isResponseVisible) {
+      return null;
+    }
 
     const dateText = timeSince(response.dateCreated.toDate());
 

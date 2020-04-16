@@ -7,6 +7,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Alert from '@material-ui/lab/Alert';
 import './ScenarioCard.scss';
 import ResponseCard from '../ResponseCard';
 import { addResponse } from '../../api/firebase';
@@ -17,6 +18,7 @@ class ScenarioCard extends React.Component {
 
     this.state = {
       isAddingResponse: false,
+      isErrorOnAdd: false,
       addFormName: '',
       addFormLocation: '',
       addFormText: '',
@@ -45,17 +47,36 @@ class ScenarioCard extends React.Component {
 
   handleAddFormSubmit = async (event) => {
     event.preventDefault();
-    this.setState({ isAddingResponse: false });
 
-    const { scenario } = this.props;
+    const { scenario, reloadFunc } = this.props;
     const { addFormName, addFormLocation, addFormText } = this.state;
     
-    await addResponse(scenario, addFormName, addFormLocation, addFormText);
+    const isAdded = await addResponse(scenario, addFormName, addFormLocation, addFormText);
+
+    if (isAdded) {
+      await reloadFunc();
+      
+      this.setState({
+        isAddingResponse: false,
+        isErrorOnAdd: false,
+        addFormName: '',
+        addFormLocation: '',
+        addFormText: '',
+      });
+
+      this.scrollToResponsesTop();
+    } else {
+      this.setState({ isErrorOnAdd: true });
+    }
+  }
+
+  scrollToResponsesTop = () => {
+    this.responsesRef.scrollTop = 0;
   }
 
   render() {
     const { scenario } = this.props;
-    const { isAddingResponse, addFormName, addFormLocation, addFormText } = this.state;
+    const { isAddingResponse, isErrorOnAdd, addFormName, addFormLocation, addFormText } = this.state;
 
     scenario.responses.sort((a, b) => b.dateCreated.seconds - a.dateCreated.seconds);
 
@@ -69,7 +90,7 @@ class ScenarioCard extends React.Component {
           <p className="scenario-text">&quot;{scenario.scenarioText}&quot;</p>
 
           {scenario.responses.length > 0 &&
-            <div className="responses">
+            <div className="responses" ref={ref => { this.responsesRef = ref; } }>
               {responseCards}
             </div>
           }
@@ -120,6 +141,8 @@ class ScenarioCard extends React.Component {
                     <strong>Post</strong>
                   </Button>
                 </div>
+
+                {isErrorOnAdd && <Alert severity="error">There was an error when trying to post. Please reload the page and try again.</Alert>}
               </form>
             )
             : (
@@ -142,6 +165,7 @@ ScenarioCard.propTypes = {
     scenarioText: PropTypes.string.isRequired,
     responses: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
+  reloadFunc: PropTypes.func.isRequired,
 };
 
 export default ScenarioCard;  

@@ -13,38 +13,47 @@ const db = firebase.firestore();;
 export const analytics = firebase.analytics();
 
 export const getScenarioData = async () => {
-  const scenarioSnapshot = await db.collection('scenarios').get();
+  try {
+    const scenarioSnapshot = await db.collection('scenarios').get();
 
-  const scenarioMap = {};
-  const scenarioData = scenarioSnapshot.docs.map(doc => {
-    const scenario = {
-      id: doc.id,
-      responses: [],
-      ...doc.data(),
-    };
+    const scenarioMap = {};
+    const scenarioData = scenarioSnapshot.docs.map(doc => {
+      const scenario = {
+        id: doc.id,
+        responses: [],
+        ...doc.data(),
+      };
 
-    scenarioMap[scenario.id] = scenario;
+      scenarioMap[scenario.id] = scenario;
 
-    return scenario;
-  });
+      return scenario;
+    });
 
-  const responseSnapshot = await db.collectionGroup('responses').where('reports', '<', 3).get();
-  responseSnapshot.docs.forEach(doc => {
-    const response = {
-      id: doc.id,
-      ...doc.data(),
-    };
+    const responseSnapshot = await db.collectionGroup('responses').where('reports', '<', 3).get();
+    responseSnapshot.docs.forEach(doc => {
+      const response = {
+        id: doc.id,
+        ...doc.data(),
+      };
 
-    if (response.scenarioRef.id in scenarioMap) {
-      scenarioMap[response.scenarioRef.id].responses.push(response);
-    }
-  });
+      if (response.scenarioRef.id in scenarioMap) {
+        scenarioMap[response.scenarioRef.id].responses.push(response);
+      }
+    });
 
-  return scenarioData;
+    return scenarioData;
+  } catch (error) {
+    return null;
+  }
 };
 
 export const updateResponse = async (response, update) => {
-  await db.collection('scenarios').doc(response.scenarioRef.id).collection('responses').doc(response.id).set(update, { merge: true });
+  try {
+    await db.collection('scenarios').doc(response.scenarioRef.id).collection('responses').doc(response.id).set(update, { merge: true });
+    return true;
+  } catch (error) {
+    return false;
+  }
 };
 
 export const addResponse = async (scenario, name, location, responseText) => {
@@ -58,5 +67,10 @@ export const addResponse = async (scenario, name, location, responseText) => {
     responseText,
   };
 
-  await db.collection('scenarios').doc(scenario.id).collection('responses').doc().set(response);
+  try {
+    await db.collection('scenarios').doc(scenario.id).collection('responses').doc().set(response);
+    return true;
+  } catch (error) {
+    return false;
+  }
 };

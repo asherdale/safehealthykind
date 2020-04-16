@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
+import Skeleton from '@material-ui/lab/Skeleton';
 import './CardDisplay.scss';
 import ScenarioCard from '../ScenarioCard';
 
-function CardDisplay({ data }) {
-  const cards = data.map(scenario => <ScenarioCard key={scenario.id} scenario={scenario} />);
+function CardDisplay({ data, reloadFunc }) {
+  const cards = data
+    ? data.map(scenario => <ScenarioCard key={scenario.id} scenario={scenario} reloadFunc={reloadFunc} />)
+    : Array(3).fill(<Skeleton className="skeleton" variant="rect" width={300} height={400} />);
 
   return (
     <Grid
@@ -22,6 +25,7 @@ function CardDisplay({ data }) {
 
 CardDisplay.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  reloadFunc: PropTypes.func.isRequired,
 };
 
 export default CardDisplay;  
