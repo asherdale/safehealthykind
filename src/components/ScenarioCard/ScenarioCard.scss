@@ -8,28 +8,44 @@
 
   .scenario-content {
     padding-bottom: 0;
-  }
 
-  .scenario {
-    margin-top: 0;
-  }
+    .scenario-text {
+      margin-top: 0;
+    }
 
-  .responses {
-    justify-content: center;
-    position: relative;
-    margin: 0 10px;
-    padding: 10px;
-    overflow-y: scroll;
-    max-height: 300px;
-    background-color: #e8e8e8;
-    border-radius: 5px;
-
-    :last-child {
-      margin-bottom: 0;
+    .responses {
+      justify-content: center;
+      position: relative;
+      margin: 0 10px;
+      padding: 10px;
+      overflow-y: scroll;
+      max-height: 300px;
+      background-color: #e8e8e8;
+      border-radius: 5px;
+  
+      :last-child {
+        margin-bottom: 0;
+      }
     }
   }
 
-  .actions {
+  .add-button-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .add-form-fields {
+    margin: 10px;
+
+    .add-form-field {
+      width: 100%;
+      margin: 5px;
+    }
+  }
+
+  .add-form-buttons {
+    display: flex;
     justify-content: flex-end;
   }
 }

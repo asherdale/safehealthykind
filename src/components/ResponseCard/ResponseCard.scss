@@ -6,14 +6,17 @@
   
   div.response-content {
     padding: 0 16px;
+    display: flex;
+    flex-direction: column;
 
-    .signature {
-      float: left;
-    }
+    .response-metadata {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
 
-    .date {
-      float: right;
-      color: slategray;
+      .date {
+        color: slategray;
+      }
     }
   }
 
@@ -21,10 +24,10 @@
     border-top: 1px solid lightgray;
     padding: 0;
     justify-content: space-between;
-  }
 
-  .likes-number {
-    font-size: 16px;
-    margin-left: 5px;
+    .likes-number {
+      font-size: 16px;
+      margin-left: 5px;
+    }
   }
 }

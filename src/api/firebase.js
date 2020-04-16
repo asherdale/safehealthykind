@@ -12,7 +12,6 @@ const db = firebase.firestore();;
 
 export const analytics = firebase.analytics();
 
-// TODO wrap in try-catch and show error on fail
 export const getScenarioData = async () => {
   const scenarioSnapshot = await db.collection('scenarios').get();
 
@@ -29,7 +28,7 @@ export const getScenarioData = async () => {
     return scenario;
   });
 
-  const responseSnapshot = await db.collectionGroup('responses').get(); //.where('reports', '<', '3')
+  const responseSnapshot = await db.collectionGroup('responses').where('reports', '<', 3).get();
   responseSnapshot.docs.forEach(doc => {
     const response = {
       id: doc.id,
@@ -46,4 +45,18 @@ export const getScenarioData = async () => {
 
 export const updateResponse = async (response, update) => {
   await db.collection('scenarios').doc(response.scenarioRef.id).collection('responses').doc(response.id).set(update, { merge: true });
+};
+
+export const addResponse = async (scenario, name, location, responseText) => {
+  const response = {
+    likes: 0,
+    reports: 0,
+    dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
+    scenarioRef: db.collection('scenarios').doc(scenario.id),
+    name,
+    location,
+    responseText,
+  };
+
+  await db.collection('scenarios').doc(scenario.id).collection('responses').doc().set(response);
 };

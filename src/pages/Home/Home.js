@@ -33,7 +33,6 @@ class Home extends React.Component {
           </p>
         </div>
   
-        {/* TODO show loading circle while waiting for data  */}
         {scenarios && <CardDisplay data={scenarios} />}
         
       </Container>

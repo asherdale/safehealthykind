@@ -83,8 +83,10 @@ class ResponseCard extends React.Component {
         <CardContent className="response-content">
           <p className="response">{response.responseText}</p>
 
-          <p className="signature">- {response.name}, {response.location}</p>
-          <p className="date">{dateText}</p>
+          <div className="response-metadata">
+            <p className="signature">- {response.name}, {response.location}</p>
+            <p className="date">{dateText}</p>
+          </div>
         </CardContent>
 
         <CardActions className="response-actions" disableSpacing>
