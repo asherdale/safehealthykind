@@ -7,9 +7,17 @@
     border-bottom: 1px solid rgba(var(--b6a,219,219,219),1);
     position: fixed;
     top: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 10.5%;
 
-    .logo {
-        margin: 10px 150px;
+    .logoImage {
+        height: 50px;
+    }
+
+    .logoText {
+        margin: 10px 10px;
         color: $primary-color;
         font-size: 22px;
         font-weight: 450;

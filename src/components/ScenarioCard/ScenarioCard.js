@@ -21,6 +21,7 @@ class ScenarioCard extends React.Component {
     this.state = {
       isAddingResponse: false,
       isErrorOnAdd: false,
+      isShowingAllResponses: false,
       addFormName: '',
       addFormLocation: '',
       addFormText: '',
@@ -80,9 +81,13 @@ class ScenarioCard extends React.Component {
     this.responsesRef.scrollTop = 0;
   }
 
+  handleSeeMore = () => {
+    this.setState({ isShowingAllResponses: true });
+  }
+
   render() {
     const { scenario } = this.props;
-    const { isAddingResponse, isErrorOnAdd, addFormName, addFormLocation, addFormText } = this.state;
+    const { isAddingResponse, isErrorOnAdd, isShowingAllResponses, addFormName, addFormLocation, addFormText } = this.state;
 
     scenario.responses.sort((a, b) => b.dateCreated.seconds - a.dateCreated.seconds);
 
@@ -97,12 +102,20 @@ class ScenarioCard extends React.Component {
 
           <Divider />
 
-          {scenario.responses.length > 0 &&
-            <Scrollbars className="scrollbar">
+          {scenario.responses.length > 0 && isShowingAllResponses
+            ? (
+              <Scrollbars className="scrollbar">
+                <div className="responses" ref={ref => { this.responsesRef = ref; } }>
+                  {responseCards}
+                </div>
+              </Scrollbars>
+            ) : (
               <div className="responses" ref={ref => { this.responsesRef = ref; } }>
-                {responseCards}
+                {responseCards[0]}
+                
+                <Button className="see-more-button" onClick={this.handleSeeMore}>See More</Button>
               </div>
-            </Scrollbars>
+            )
           }
         </CardContent>
 
@@ -156,8 +169,7 @@ class ScenarioCard extends React.Component {
 
                 {isErrorOnAdd && <Alert severity="error">There was an error when trying to post. Please reload the page and try again.</Alert>}
               </form>
-            )
-            : (
+            ) : (
               <div className="add-button-container">
                 <IconButton  aria-label="add" onClick={this.handleAddClick} >
                   <Add fontSize="default" />

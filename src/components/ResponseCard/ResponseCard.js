@@ -88,7 +88,7 @@ class ResponseCard extends React.Component {
     const dateText = timeSince(response.dateCreated.toDate());
 
     return (
-      <Card className="ResponseCard">
+      <Card className="ResponseCard MuiPaper-elevation5">
         <CardContent className="response-content">
           <p className="response">{response.responseText}</p>
 
