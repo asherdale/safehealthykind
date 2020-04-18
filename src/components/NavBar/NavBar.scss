@@ -1,11 +1,17 @@
+@import '../../assets/styles/base';
+
 .NavBar {
     width: 100%;
     padding: 5px;
+    background-color: white;
+    border-bottom: 1px solid rgba(var(--b6a,219,219,219),1);
+    position: fixed;
+    top: 0;
 
     .logo {
-        margin: 10px 20px;
-        color: darkslategray;
-        font-size: 28px;
+        margin: 10px 150px;
+        color: $primary-color;
+        font-size: 22px;
         font-weight: 450;
     }
 }

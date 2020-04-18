@@ -8,7 +8,7 @@ import "firebase/firestore";
 import { firebaseConfig } from '../config/keys';
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();;
+const db = firebase.firestore();
 
 export const analytics = firebase.analytics();
 

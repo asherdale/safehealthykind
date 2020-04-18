@@ -40,7 +40,7 @@ class ResponseCard extends React.Component {
     response.likes += isLiked ? -1 : 1;
     updateResponse(response, { likes: response.likes });
 
-    analytics.logEvent('like_click');
+    analytics.logEvent(isLiked ? 'unlike_response' : 'like_response');
   }
 
   handleMenuOpen = (event) => {
@@ -54,6 +54,7 @@ class ResponseCard extends React.Component {
   handleReportClick = () => {
     this.handleMenuClose();
     this.handleDialogOpen();
+    analytics.logEvent('open_report_dialog');
   }
 
   handleDialogOpen = () => {
@@ -73,6 +74,7 @@ class ResponseCard extends React.Component {
     updateResponse(response, { reports: response.reports });
 
     this.setState({ isResponseVisible: false });
+    analytics.logEvent('confirm_report_response');
   }
 
   render() {
@@ -99,7 +101,7 @@ class ResponseCard extends React.Component {
         <CardActions className="response-actions" disableSpacing>
           <IconButton aria-label="add" onClick={this.handleLikeClick} >
             { isLiked
-              ? <FavoriteIcon fontSize="default" color="secondary" />
+              ? <FavoriteIcon fontSize="default" className="liked-button" />
               : <FavoriteBorderIcon fontSize="default" />}
 
             <span className="likes-number">{response.likes}</span>
@@ -125,6 +127,7 @@ class ResponseCard extends React.Component {
         <Dialog
           open={isDialogOpen}
           onClose={this.handleDialogClose}
+          className="report-dialog"
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
@@ -135,10 +138,10 @@ class ResponseCard extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleDialogClose} color="primary">
+            <Button onClick={this.handleDialogClose} className="cancel-report-button">
               No
             </Button>
-            <Button onClick={this.handleReportConfirmed} color="secondary" autoFocus>
+            <Button onClick={this.handleReportConfirmed} className="confirm-report-button" autoFocus>
               Yes, I would like to report this comment.
             </Button>
           </DialogActions>

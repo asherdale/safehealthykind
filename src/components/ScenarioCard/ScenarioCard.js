@@ -8,9 +8,11 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Alert from '@material-ui/lab/Alert';
+import Divider from '@material-ui/core/Divider';
+import { Scrollbars } from 'react-custom-scrollbars';
 import './ScenarioCard.scss';
 import ResponseCard from '../ResponseCard';
-import { addResponse } from '../../api/firebase';
+import { analytics, addResponse } from '../../api/firebase';
 
 class ScenarioCard extends React.Component {
   constructor(props) {
@@ -27,6 +29,7 @@ class ScenarioCard extends React.Component {
 
   handleAddClick = () => {
     this.setState({ isAddingResponse: true });
+    analytics.logEvent('start_adding_response');
   }
 
   handleAddNameChange = (event) => {
@@ -43,6 +46,7 @@ class ScenarioCard extends React.Component {
 
   handleAddCancelClick = () => {
     this.setState({ isAddingResponse: false });
+    analytics.logEvent('cancel_adding_response');
   }
 
   handleAddFormSubmit = async (event) => {
@@ -51,6 +55,7 @@ class ScenarioCard extends React.Component {
     const { scenario, reloadFunc } = this.props;
     const { addFormName, addFormLocation, addFormText } = this.state;
     
+    analytics.logEvent('post_response');
     const isAdded = await addResponse(scenario, addFormName, addFormLocation, addFormText);
 
     if (isAdded) {
@@ -67,6 +72,7 @@ class ScenarioCard extends React.Component {
       this.scrollToResponsesTop();
     } else {
       this.setState({ isErrorOnAdd: true });
+      analytics.logEvent('post_response_error');
     }
   }
 
@@ -89,10 +95,14 @@ class ScenarioCard extends React.Component {
         <CardContent className="scenario-content">
           <p className="scenario-text">&quot;{scenario.scenarioText}&quot;</p>
 
+          <Divider />
+
           {scenario.responses.length > 0 &&
-            <div className="responses" ref={ref => { this.responsesRef = ref; } }>
-              {responseCards}
-            </div>
+            <Scrollbars className="scrollbar">
+              <div className="responses" ref={ref => { this.responsesRef = ref; } }>
+                {responseCards}
+              </div>
+            </Scrollbars>
           }
         </CardContent>
 
@@ -100,6 +110,8 @@ class ScenarioCard extends React.Component {
           {isAddingResponse
             ? (
               <form onSubmit={this.handleAddFormSubmit}>
+                <Divider className="add-form-divider"/>
+
                 <div className="add-form-fields">
                   <TextField
                     className="add-form-field"
@@ -134,10 +146,10 @@ class ScenarioCard extends React.Component {
                 </div>
                 
                 <div className="add-form-buttons">
-                  <Button onClick={this.handleAddCancelClick} color="primary">
+                  <Button onClick={this.handleAddCancelClick}>
                     Cancel
                   </Button>
-                  <Button type="submit" color="primary" autoFocus>
+                  <Button type="submit" autoFocus>
                     <strong>Post</strong>
                   </Button>
                 </div>
@@ -147,7 +159,7 @@ class ScenarioCard extends React.Component {
             )
             : (
               <div className="add-button-container">
-                <IconButton  aria-label="add" color="primary" onClick={this.handleAddClick} >
+                <IconButton  aria-label="add" onClick={this.handleAddClick} >
                   <Add fontSize="default" />
                 </IconButton>
               </div>

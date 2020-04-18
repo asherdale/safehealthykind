@@ -1,3 +1,5 @@
+@import '../../assets/styles/base';
+
 .ResponseCard {
   font-size: 14px;
   margin-bottom: 10px;
@@ -25,9 +27,23 @@
     padding: 0;
     justify-content: space-between;
 
+    .liked-button {
+      color: $secondary-color;
+    }
+
     .likes-number {
       font-size: 16px;
       margin-left: 5px;
     }
+  }
+}
+
+.report-dialog {
+  .confirm-report-button {
+    color: $primary-color;
+  }
+
+  .cancel-report-button {
+    color: $secondary-color;
   }
 }

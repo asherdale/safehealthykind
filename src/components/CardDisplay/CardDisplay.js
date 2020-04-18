@@ -16,7 +16,7 @@ function CardDisplay({ data, reloadFunc }) {
       className="CardDisplay"
       direction="row"
       justify="space-evenly"
-      alignItems="center"
+      alignItems="flex-start"
     >
       {cards}
     </Grid>
@@ -24,8 +24,12 @@ function CardDisplay({ data, reloadFunc }) {
 }
 
 CardDisplay.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object),
   reloadFunc: PropTypes.func.isRequired,
+};
+
+CardDisplay.defaultProps = {
+  data: undefined,
 };
 
 export default CardDisplay;  
