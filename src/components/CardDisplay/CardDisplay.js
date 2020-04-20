@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Grid from '@material-ui/core/Grid';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { Grid } from '@material-ui/core';
+import { Skeleton } from '@material-ui/lab';
 import './CardDisplay.scss';
 import ScenarioCard from '../ScenarioCard';
 

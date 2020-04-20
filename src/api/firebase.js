@@ -29,7 +29,7 @@ export const getScenarioData = async () => {
       return scenario;
     });
 
-    const responseSnapshot = await db.collectionGroup('responses').where('reports', '<', 3).get();
+    const responseSnapshot = await db.collectionGroup('responses').where('reports', '<', 2).get();
     responseSnapshot.docs.forEach(doc => {
       const response = {
         id: doc.id,

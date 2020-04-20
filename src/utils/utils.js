@@ -1,3 +1,27 @@
+import heartbeat from '../assets/images/heartbeat.png';
+import cardiothoracic from '../assets/images/cardiothoracic.png';
+import femaleDoctor from '../assets/images/female-doctor.png';
+import maleDoctor from '../assets/images/male-doctor.png';
+import femaleNurse from '../assets/images/female-nurse.png';
+import maleNurse from '../assets/images/male-nurse.png';
+import heartPlus from '../assets/images/heart-plus.png';
+import stethoscope from '../assets/images/stethoscope.png';
+import femaleHospital from '../assets/images/female-hospital.png';
+import maleHospital from '../assets/images/male-hospital.png';
+
+const avatarMap = {
+  'heartbeat': heartbeat,
+  'cardiothoracic': cardiothoracic,
+  'femaleDoctor': femaleDoctor,
+  'maleDoctor': maleDoctor,
+  'femaleNurse': femaleNurse,
+  'maleNurse': maleNurse,
+  'heartPlus': heartPlus,
+  'stethoscope': stethoscope,
+  'femaleHospital': femaleHospital,
+  'maleHospital': maleHospital,
+};
+
 function formatDateString(num, unit) {
   return `${num} ${unit}${num > 1 ? 's' : ''} ago`;
 }
@@ -33,6 +57,6 @@ export const timeSince = (date) => {
   return formatDateString(secondsAgo, 'second');
 };
 
-export const example = () => {
-
+export const getAvatar = (iconString) => {
+  return avatarMap[iconString];
 };

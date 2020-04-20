@@ -10,13 +10,34 @@
 
   .scenario-content {
     padding-bottom: 0;
+    font-size: 18px;
 
     .scenario-text {
       margin-top: 0;
       padding: 5px;
     }
 
-    .scrollbar {
+    .scenario-metadata {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      
+      .avatar {
+        height: 50px;
+        filter: invert(43%) sepia(32%) saturate(5988%) hue-rotate(181deg) brightness(101%) contrast(101%);
+      }
+
+      .scenario-date {
+        color: slategray;
+        margin: 0 0 5px;
+      }
+
+      .scenario-signature {
+        margin: 0;
+      }
+    }
+
+    .scrollbars {
       height: 300px !important;
     }
 

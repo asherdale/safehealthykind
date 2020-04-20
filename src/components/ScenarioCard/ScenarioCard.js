@@ -1,17 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import IconButton from '@material-ui/core/IconButton';
-import Add from '@material-ui/icons/Add';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Alert from '@material-ui/lab/Alert';
-import Divider from '@material-ui/core/Divider';
+import {
+  IconButton,
+  Card,
+  CardActions,
+  CardContent,
+  TextField,
+  Button,
+  Divider,
+} from '@material-ui/core';
+import { Add } from '@material-ui/icons';
+import { Alert } from '@material-ui/lab';
 import { Scrollbars } from 'react-custom-scrollbars';
 import './ScenarioCard.scss';
 import ResponseCard from '../ResponseCard';
+import { timeSince, getAvatar } from '../../utils/utils';
 import { analytics, addResponse } from '../../api/firebase';
 
 class ScenarioCard extends React.Component {
@@ -78,7 +81,12 @@ class ScenarioCard extends React.Component {
   }
 
   scrollToResponsesTop = () => {
-    this.responsesRef.scrollTop = 0;
+    const { scenario } = this.props;
+    const { isShowingAllResponses } = this.state;
+
+    if (scenario.responses.length > 0 && isShowingAllResponses) {
+      this.scrollbars.scrollTop();
+    }
   }
 
   handleSeeMore = () => {
@@ -89,6 +97,8 @@ class ScenarioCard extends React.Component {
     const { scenario } = this.props;
     const { isAddingResponse, isErrorOnAdd, isShowingAllResponses, addFormName, addFormLocation, addFormText } = this.state;
 
+    const dateText = timeSince(scenario.dateCreated.toDate());
+
     scenario.responses.sort((a, b) => b.dateCreated.seconds - a.dateCreated.seconds);
 
     const responseCards = scenario.responses.map(response => {
@@ -98,22 +108,35 @@ class ScenarioCard extends React.Component {
     return (
       <Card variant="outlined" className="ScenarioCard">
         <CardContent className="scenario-content">
-          <p className="scenario-text">&quot;{scenario.scenarioText}&quot;</p>
+          <div className="scenario-metadata">
+            <img  src={getAvatar(scenario.icon)} className="avatar" alt="" />
+
+            <div>
+              <p className="scenario-signature">{scenario.name}, {scenario.title}</p>
+              <p className="scenario-date">{dateText}</p>
+            </div>
+          </div>
+
+          <p className="scenario-text">{scenario.scenarioText}</p>
 
           <Divider />
 
           {scenario.responses.length > 0 && isShowingAllResponses
             ? (
-              <Scrollbars className="scrollbar">
-                <div className="responses" ref={ref => { this.responsesRef = ref; } }>
+              <Scrollbars className="scrollbars" ref={ref => { this.scrollbars = ref; } }>
+                <div className="responses">
                   {responseCards}
                 </div>
               </Scrollbars>
             ) : (
-              <div className="responses" ref={ref => { this.responsesRef = ref; } }>
+              <div className="responses">
                 {responseCards[0]}
                 
-                <Button className="see-more-button" onClick={this.handleSeeMore}>See More</Button>
+                {scenario.responses.length > 1 &&
+                  <Button className="see-more-button" onClick={this.handleSeeMore}>
+                    See More
+                  </Button>
+                }
               </div>
             )
           }
@@ -188,8 +211,12 @@ ScenarioCard.propTypes = {
   scenario: PropTypes.shape({
     scenarioText: PropTypes.string.isRequired,
     responses: PropTypes.arrayOf(PropTypes.object).isRequired,
+    name: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    dateCreated: PropTypes.object.isRequired,
+    icon: PropTypes.string.isRequired,
   }).isRequired,
   reloadFunc: PropTypes.func.isRequired,
 };
 
-export default ScenarioCard;  
+export default ScenarioCard;

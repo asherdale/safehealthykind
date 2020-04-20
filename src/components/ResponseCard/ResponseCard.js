@@ -1,20 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
+import {
+  IconButton,
+  Card,
+  CardActions,
+  CardContent,
+  Menu,
+  MenuItem,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from '@material-ui/core';
+import { FavoriteBorder, Favorite, MoreHoriz } from '@material-ui/icons';
 import './ResponseCard.scss';
 import { timeSince } from '../../utils/utils';
 import { analytics, updateResponse } from '../../api/firebase';
@@ -93,23 +93,23 @@ class ResponseCard extends React.Component {
           <p className="response">{response.responseText}</p>
 
           <div className="response-metadata">
-            <p className="signature">- {response.name}, {response.location}</p>
-            <p className="date">{dateText}</p>
+            <p className="response-signature">- {response.name}, {response.location}</p>
+            <p className="response-date">{dateText}</p>
           </div>
         </CardContent>
 
         <CardActions className="response-actions" disableSpacing>
           <IconButton aria-label="add" onClick={this.handleLikeClick} >
             { isLiked
-              ? <FavoriteIcon fontSize="default" className="liked-button" />
-              : <FavoriteBorderIcon fontSize="default" />}
+              ? <Favorite fontSize="default" className="liked-button" />
+              : <FavoriteBorder fontSize="default" />}
 
             <span className="likes-number">{response.likes}</span>
           </IconButton>
 
           <div className="response-menu">
             <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleMenuOpen}>
-              <MoreHorizIcon fontSize="default" />
+              <MoreHoriz fontSize="default" />
             </IconButton>
 
             <Menu
