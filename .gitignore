@@ -2,17 +2,21 @@
 
 # dependencies
 /node_modules
+client/node_modules
 /.pnp
 .pnp.js
+client/.pnp
+client/.pnp.js
 
 # testing
-/coverage
+client/coverage
 
 # production
-/build
+client/build
 
 # secrets
-src/config/keys.js
+client/src/config/keys.js
+config/keys.js
 
 # misc
 .DS_Store
@@ -20,7 +24,15 @@ src/config/keys.js
 .env.development.local
 .env.test.local
 .env.production.local
+client/.DS_Store
+client/.env.local
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
