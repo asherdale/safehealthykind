@@ -121,23 +121,25 @@ class ScenarioCard extends React.Component {
 
           <Divider />
 
-          {scenario.responses.length > 0 && isShowingAllResponses
-            ? (
-              <Scrollbars className="scrollbars" ref={ref => { this.scrollbars = ref; } }>
+          {scenario.responses.length > 0 &&
+            (isShowingAllResponses
+              ? (
+                <Scrollbars className="scrollbars" ref={ref => { this.scrollbars = ref; } }>
+                  <div className="responses">
+                    {responseCards}
+                  </div>
+                </Scrollbars>
+              ) : (
                 <div className="responses">
-                  {responseCards}
+                  {responseCards[0]}
+                  
+                  {scenario.responses.length > 1 &&
+                    <Button className="see-more-button" onClick={this.handleSeeMore}>
+                      See More
+                    </Button>
+                  }
                 </div>
-              </Scrollbars>
-            ) : (
-              <div className="responses">
-                {responseCards[0]}
-                
-                {scenario.responses.length > 1 &&
-                  <Button className="see-more-button" onClick={this.handleSeeMore}>
-                    See More
-                  </Button>
-                }
-              </div>
+              )
             )
           }
         </CardContent>
