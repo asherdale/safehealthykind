@@ -15,7 +15,6 @@ client/coverage
 client/build
 
 # secrets
-client/src/config/keys.js
 config/keys.js
 
 # misc

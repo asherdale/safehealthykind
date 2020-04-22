@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import {
   IconButton,
   Card,
@@ -15,7 +16,6 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import './ScenarioCard.scss';
 import ResponseCard from '../ResponseCard';
 import { timeSince, getAvatar } from '../../utils/utils';
-import { analytics, addResponse } from '../../api/firebase';
 
 class ScenarioCard extends React.Component {
   constructor(props) {
@@ -33,7 +33,6 @@ class ScenarioCard extends React.Component {
 
   handleAddClick = () => {
     this.setState({ isAddingResponse: true });
-    analytics.logEvent('start_adding_response');
   }
 
   handleAddNameChange = (event) => {
@@ -50,7 +49,6 @@ class ScenarioCard extends React.Component {
 
   handleAddCancelClick = () => {
     this.setState({ isAddingResponse: false });
-    analytics.logEvent('cancel_adding_response');
   }
 
   handleAddFormSubmit = async (event) => {
@@ -58,11 +56,15 @@ class ScenarioCard extends React.Component {
 
     const { scenario, reloadFunc } = this.props;
     const { addFormName, addFormLocation, addFormText } = this.state;
-    
-    analytics.logEvent('post_response');
-    const isAdded = await addResponse(scenario, addFormName, addFormLocation, addFormText);
 
-    if (isAdded) {
+    const apiResponse = await axios.post('/api/response', {
+      scenarioId: scenario.id,
+      name: addFormName,
+      location: addFormLocation,
+      responseText: addFormText,
+    });
+
+    if (apiResponse.data.isAdded) {
       await reloadFunc();
       
       this.setState({
@@ -76,7 +78,6 @@ class ScenarioCard extends React.Component {
       this.scrollToResponsesTop();
     } else {
       this.setState({ isErrorOnAdd: true });
-      analytics.logEvent('post_response_error');
     }
   }
 
@@ -97,7 +98,7 @@ class ScenarioCard extends React.Component {
     const { scenario } = this.props;
     const { isAddingResponse, isErrorOnAdd, isShowingAllResponses, addFormName, addFormLocation, addFormText } = this.state;
 
-    const dateText = timeSince(scenario.dateCreated.toDate());
+    const dateText = timeSince(scenario.dateCreated);
 
     scenario.responses.sort((a, b) => b.dateCreated.seconds - a.dateCreated.seconds);
 
@@ -211,11 +212,12 @@ class ScenarioCard extends React.Component {
 
 ScenarioCard.propTypes = {
   scenario: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     scenarioText: PropTypes.string.isRequired,
     responses: PropTypes.arrayOf(PropTypes.object).isRequired,
     name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    dateCreated: PropTypes.object.isRequired,
+    dateCreated: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
   }).isRequired,
   reloadFunc: PropTypes.func.isRequired,

@@ -1,7 +1,7 @@
 import React from 'react';
+import axios from 'axios';
 import { Container } from '@material-ui/core';
 import './Home.scss';
-import { analytics, getScenarioData } from '../../api/firebase';
 import CardDisplay from '../../components/CardDisplay';
 
 class Home extends React.Component {
@@ -12,19 +12,16 @@ class Home extends React.Component {
   }
   
   componentDidMount() {
-    analytics.logEvent('home_loaded');
     this.fetchScenarioData();
   }
 
   fetchScenarioData = async () => {
-    const scenarios = await getScenarioData();
-
-    if (!scenarios) {
-      analytics.logEvent('error_fetching_scenarios');
-      return;
+    try {
+      const response = await axios.get('/api/scenario');
+      this.setState({ scenarios: response.data.scenarios });
+    } catch {
+      // TODO
     }
-
-    this.setState({ scenarios });
   }
 
   render() {

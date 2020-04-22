@@ -26,7 +26,8 @@ function formatDateString(num, unit) {
   return `${num} ${unit}${num > 1 ? 's' : ''} ago`;
 }
 
-export const timeSince = (date) => {
+export const timeSince = (dateString) => {
+  const date = new Date(dateString);
   const secondsAgo = Math.floor((new Date() - date) / 1000);
 
   const numYears = Math.floor(secondsAgo / 31536000);

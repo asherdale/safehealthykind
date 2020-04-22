@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import {
   IconButton,
   Card,
@@ -17,7 +18,6 @@ import {
 import { FavoriteBorder, Favorite, MoreHoriz } from '@material-ui/icons';
 import './ResponseCard.scss';
 import { timeSince } from '../../utils/utils';
-import { analytics, updateResponse } from '../../api/firebase';
 
 class ResponseCard extends React.Component {
   constructor(props) {
@@ -38,9 +38,12 @@ class ResponseCard extends React.Component {
     const { response } = this.props;
 
     response.likes += isLiked ? -1 : 1;
-    updateResponse(response, { likes: response.likes });
 
-    analytics.logEvent(isLiked ? 'unlike_response' : 'like_response');
+    axios.put('/api/response', {
+      scenarioId: response.scenarioId,
+      responseId: response.id,
+      update: { likes: response.likes },
+    });
   }
 
   handleMenuOpen = (event) => {
@@ -54,7 +57,6 @@ class ResponseCard extends React.Component {
   handleReportClick = () => {
     this.handleMenuClose();
     this.handleDialogOpen();
-    analytics.logEvent('open_report_dialog');
   }
 
   handleDialogOpen = () => {
@@ -71,10 +73,14 @@ class ResponseCard extends React.Component {
     const { response } = this.props;
     
     response.reports = (response.reports || 0) + 1;
-    updateResponse(response, { reports: response.reports });
+    
+    axios.put('/api/response', {
+      scenarioId: response.scenarioId,
+      responseId: response.id,
+      update: { reports: response.reports },
+    });
 
     this.setState({ isResponseVisible: false });
-    analytics.logEvent('confirm_report_response');
   }
 
   render() {
@@ -85,7 +91,7 @@ class ResponseCard extends React.Component {
       return null;
     }
 
-    const dateText = timeSince(response.dateCreated.toDate());
+    const dateText = timeSince(response.dateCreated);
 
     return (
       <Card className="ResponseCard MuiPaper-elevation5">
@@ -158,8 +164,9 @@ ResponseCard.propTypes = {
     likes: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     responseText: PropTypes.string.isRequired,
-    dateCreated: PropTypes.object.isRequired,
+    dateCreated: PropTypes.string.isRequired,
     scenarioRef: PropTypes.object.isRequired,
+    scenarioId: PropTypes.string.isRequired,
     reports: PropTypes.number.isRequired,
   }).isRequired,
 };

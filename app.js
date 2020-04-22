@@ -1,6 +1,8 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const express = require("express");
+const bodyParser = require("body-parser");
 const path = require("path");
+const scenarioRoutes = require('./routes/scenarioRoutes');
+const responseRoutes = require('./routes/responseRoutes');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -10,16 +12,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "/client/build")));
 
-app.get('/api/hello', (req, res) => {
-  res.send({ express: 'Hello From Express' });
-});
-
-app.post('/api/world', (req, res) => {
-  console.log(req.body);
-  res.send(
-    `I received your POST request. This is what you sent me: ${req.body.post}`,
-  );
-});
+app.use("/api/scenario", scenarioRoutes);
+app.use("/api/response", responseRoutes);
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "/client/build/index.html"));

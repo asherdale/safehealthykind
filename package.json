@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "author": "Asher Dale",
   "scripts": {
-    "start": "nodemon server.js",
-    "client": "cd client && npm start",
-    "server": "nodemon server.js",
+    "start": "nodemon app.js",
+    "client": "npm start --prefix client",
+    "build": "npm run build --prefix client",
+    "server": "nodemon app.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "lint": "eslint ."
   },
@@ -14,7 +15,9 @@
   },
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "firebase-admin": "^8.10.0",
+    "nodemon": "^2.0.3"
   },
   "devDependencies": {
     "concurrently": "^4.0.1"
