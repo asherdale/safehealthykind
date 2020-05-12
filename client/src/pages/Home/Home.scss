@@ -3,18 +3,34 @@
 .Home {
     margin-top: 80px;
 
-    .intro-text {
-        .intro-header {
-            font-size: 24px;
-            text-align: center;
+    .intro {
+        height: 75vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
 
-            strong {
-                color: $primary-color;
-            }
+        .intro-header {
+            font-size: 4.5vh;
+            font-weight: bold;
         }
 
         .intro-paragraph {
-            font-size: 18px;
+            font-size: 6vh;
+            text-align: center;
+            margin: 0;
+        }
+
+        .share-cta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 3vh;
+
+            .MuiButton-root {
+                border-color: $primary-color;
+                color: $primary-color;
+            }
         }
     }
 }

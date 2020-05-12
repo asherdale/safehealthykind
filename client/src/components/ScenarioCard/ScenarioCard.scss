@@ -2,52 +2,56 @@
 
 .ScenarioCard {
   font-size: 18px;
-  max-width: 350px;
+  width: 100%;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 5%;
 
   .scenario-content {
-    padding-bottom: 0;
-    font-size: 18px;
+    .scenario-post {
+      font-size: 30px;
+      text-align: justify;
+      margin: 3vh 0;
 
-    .scenario-text {
-      margin-top: 0;
-      padding: 5px;
+      .scenario-text {
+        margin: 0 20% 0 5%;
+        margin-bottom: 2vh;
+      }
+
+      .scenario-metadata {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 5%;
+  
+        .scenario-signature {
+          margin: 0;
+        }
+
+        .scenario-date {
+          font-size: 20px;
+          color: slategray;
+        }
+      }
     }
 
-    .scenario-metadata {
-      font-size: 14px;
+    .response-section {
       display: flex;
       align-items: center;
-      
-      .avatar {
-        height: 50px;
-        filter: invert(43%) sepia(32%) saturate(5988%) hue-rotate(181deg) brightness(101%) contrast(101%);
+      margin: 0 3%;
+
+      .arrow-button {
+        color: $primary-color;
+        min-width: 50px;
       }
 
-      .scenario-date {
-        color: slategray;
-        margin: 0 0 5px;
-      }
-
-      .scenario-signature {
-        margin: 0;
-      }
-    }
-
-    .scrollbars {
-      height: 300px !important;
-    }
-
-    .responses {
-      justify-content: center;
-      margin: 8px 0;
-      padding: 10px 18px 5px;
-  
-      :last-child {
-        margin-bottom: 0;
+      .responses {
+        display: flex;
+        align-items: center;
+        overflow: scroll;
+        width: 100%;
       }
     }
 

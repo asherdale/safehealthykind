@@ -12,7 +12,7 @@ const db = firebase.firestore();
 
 const getScenarioData = async () => {
   try {
-    const scenarioSnapshot = await db.collection('scenarios').get();
+    const scenarioSnapshot = await db.collection('scenarios').orderBy('dateCreated', 'desc').get();
 
     const scenarioMap = {};
     const scenarioData = scenarioSnapshot.docs.map(doc => {

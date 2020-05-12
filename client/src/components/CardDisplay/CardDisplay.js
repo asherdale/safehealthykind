@@ -8,7 +8,7 @@ import ScenarioCard from '../ScenarioCard';
 function CardDisplay({ data, reloadFunc }) {
   const cards = data
     ? data.map(scenario => <ScenarioCard key={scenario.id} scenario={scenario} reloadFunc={reloadFunc} />)
-    : Array(3).fill(<Skeleton className="skeleton" variant="rect" width={300} height={400} />);
+    : [<Skeleton className="skeleton" key={0} variant="rect" width="100%" height={400} />];
 
   return (
     <Grid

@@ -4,7 +4,7 @@
   "author": "Asher Dale",
   "scripts": {
     "start": "nodemon app.js",
-    "client": "npm start --prefix client",
+    "client": "cd client && npm start",
     "build": "npm run build --prefix client",
     "server": "nodemon app.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",

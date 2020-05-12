@@ -10,12 +10,11 @@ import {
   Button,
   Divider,
 } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Add, ArrowBackIos, ArrowForwardIos } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
-import { Scrollbars } from 'react-custom-scrollbars';
 import './ScenarioCard.scss';
 import ResponseCard from '../ResponseCard';
-import { timeSince, getAvatar } from '../../utils/utils';
+import { timeSince } from '../../utils/utils';
 
 class ScenarioCard extends React.Component {
   constructor(props) {
@@ -24,11 +23,14 @@ class ScenarioCard extends React.Component {
     this.state = {
       isAddingResponse: false,
       isErrorOnAdd: false,
-      isShowingAllResponses: false,
       addFormName: '',
       addFormLocation: '',
       addFormText: '',
+      shouldShowForwardArrow: props.scenario.responses.length > 2,
+      shouldShowBackwardArrow: false,
     };
+
+    this.responsesContainer = null;
   }
 
   handleAddClick = () => {
@@ -74,75 +76,88 @@ class ScenarioCard extends React.Component {
         addFormLocation: '',
         addFormText: '',
       });
-
-      this.scrollToResponsesTop();
     } else {
       this.setState({ isErrorOnAdd: true });
     }
   }
 
-  scrollToResponsesTop = () => {
-    const { scenario } = this.props;
-    const { isShowingAllResponses } = this.state;
+  handleResponsesScroll = () => {
+    const { shouldShowBackwardArrow, shouldShowForwardArrow } =  this.state;
+    const { scrollLeft, offsetWidth, scrollWidth} = this.responsesContainer;
 
-    if (scenario.responses.length > 0 && isShowingAllResponses) {
-      this.scrollbars.scrollTop();
+    if (!shouldShowBackwardArrow && scrollLeft > 0) {
+      this.setState({ shouldShowBackwardArrow: true });
+    } else if (shouldShowBackwardArrow && scrollLeft === 0) {
+      this.setState({ shouldShowBackwardArrow: false });
+    }
+
+    const isAtEnd = scrollLeft + offsetWidth === scrollWidth;
+
+    if (!shouldShowForwardArrow && !isAtEnd) {
+      this.setState({ shouldShowForwardArrow: true });
+    } else if (shouldShowForwardArrow && isAtEnd) {
+      this.setState({ shouldShowForwardArrow: false });
     }
   }
 
-  handleSeeMore = () => {
-    this.setState({ isShowingAllResponses: true });
+  handleResponsesScrollForward = () => {
+    const distance = this.responsesContainer.offsetWidth / 2;
+    this.responsesContainer.scrollBy({ left: distance, behavior: 'smooth' });
+  }
+
+  handleResponsesScrollBackward = () => {
+    const distance = this.responsesContainer.offsetWidth / -2;
+    this.responsesContainer.scrollBy({ left: distance, behavior: 'smooth' });
   }
 
   render() {
     const { scenario } = this.props;
-    const { isAddingResponse, isErrorOnAdd, isShowingAllResponses, addFormName, addFormLocation, addFormText } = this.state;
+
+    const {
+      shouldShowForwardArrow,
+      shouldShowBackwardArrow,
+      isAddingResponse,
+      isErrorOnAdd,
+      addFormName,
+      addFormLocation,
+      addFormText,
+    } = this.state;
 
     const dateText = timeSince(scenario.dateCreated);
 
-    scenario.responses.sort((a, b) => b.dateCreated.seconds - a.dateCreated.seconds);
+    scenario.responses.sort((a, b) => b.dateCreated - a.dateCreated);
 
     const responseCards = scenario.responses.map(response => {
-      return <ResponseCard key={response.dateCreated.seconds} response={response} />;
+      return <ResponseCard key={response.dateCreated} response={response} />;
     });
 
     return (
       <Card variant="outlined" className="ScenarioCard">
         <CardContent className="scenario-content">
-          <div className="scenario-metadata">
-            <img  src={getAvatar(scenario.icon)} className="avatar" alt="" />
+          <div className="scenario-post">
+            <p className="scenario-text">&quot;{scenario.scenarioText}&quot;</p>
 
-            <div>
-              <p className="scenario-signature">{scenario.name}, {scenario.title}</p>
+            <div className="scenario-metadata">
+              <p className="scenario-signature">- {scenario.name}, {scenario.title}</p>
               <p className="scenario-date">{dateText}</p>
             </div>
           </div>
 
-          <p className="scenario-text">{scenario.scenarioText}</p>
+          <div className="response-section">
+            <IconButton disabled={!shouldShowBackwardArrow} className="arrow-button" onClick={this.handleResponsesScrollBackward}>
+              {shouldShowBackwardArrow && <ArrowBackIos fontSize="default" />}
+            </IconButton>
 
-          <Divider />
+            <div className="responses" ref={node => { this.responsesContainer = node; }} onScroll={this.handleResponsesScroll}>
+              {responseCards}
+              <span>&nbsp;&nbsp;</span>
+            </div>
 
-          {scenario.responses.length > 0 &&
-            (isShowingAllResponses
-              ? (
-                <Scrollbars className="scrollbars" ref={ref => { this.scrollbars = ref; } }>
-                  <div className="responses">
-                    {responseCards}
-                  </div>
-                </Scrollbars>
-              ) : (
-                <div className="responses">
-                  {responseCards[0]}
-                  
-                  {scenario.responses.length > 1 &&
-                    <Button className="see-more-button" onClick={this.handleSeeMore}>
-                      See More
-                    </Button>
-                  }
-                </div>
-              )
-            )
-          }
+            <IconButton disabled={!shouldShowForwardArrow} className="arrow-button" onClick={this.handleResponsesScrollForward}>
+              {shouldShowForwardArrow && <ArrowForwardIos fontSize="default" />}
+            </IconButton>
+          </div>
+
         </CardContent>
 
         <CardActions className="actions" disableSpacing>
@@ -218,7 +233,6 @@ ScenarioCard.propTypes = {
     name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     dateCreated: PropTypes.string.isRequired,
-    icon: PropTypes.string.isRequired,
   }).isRequired,
   reloadFunc: PropTypes.func.isRequired,
 };
