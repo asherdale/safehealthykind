@@ -7,6 +7,16 @@ const responseRoutes = require('./routes/responseRoutes');
 const app = express();
 const port = process.env.PORT || 8080;
 
+function requireHTTPS(req, res, next) {
+  if (!req.url.startsWith('/api') && !req.secure && process.env.NODE_ENV !== "development") {
+    return res.redirect('https://' + req.get('host') + req.url);
+  }
+
+  next();
+}
+
+app.use(requireHTTPS);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
