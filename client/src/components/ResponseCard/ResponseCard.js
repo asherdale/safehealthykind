@@ -134,25 +134,22 @@ class ResponseCard extends React.Component {
         <Dialog
           open={isDialogOpen}
           onClose={this.handleDialogClose}
-          className="report-dialog"
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">Report Confirmation</DialogTitle>
+          <DialogTitle>Report Confirmation</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
+            <DialogContentText>
               Are you sure that you would like to report this comment for inappropriate content?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleDialogClose} className="cancel-report-button">
+            <Button color="secondary" onClick={this.handleDialogClose}>
               No
             </Button>
-            <Button onClick={this.handleReportConfirmed} className="confirm-report-button" autoFocus>
+            <Button color="primary" onClick={this.handleReportConfirmed} autoFocus>
               Yes, I would like to report this comment.
             </Button>
           </DialogActions>
-        </Dialog> 
+        </Dialog>
       </Card>
     );
   }

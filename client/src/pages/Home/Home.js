@@ -3,12 +3,15 @@ import axios from 'axios';
 import { Container, Button, Typography } from '@material-ui/core';
 import './Home.scss';
 import CardDisplay from '../../components/CardDisplay';
+import AddScenarioDialog from '../../components/AddScenarioDialog';
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      isAddingScenario: false,
+    };
   }
   
   componentDidMount() {
@@ -24,8 +27,16 @@ class Home extends React.Component {
     }
   }
 
+  handleDialogOpen = () => {
+    this.setState({ isAddingScenario: true });
+  }
+
+  handleDialogClose = () => {
+    this.setState({ isAddingScenario: false });
+  }
+
   render() {
-    const { scenarios } = this.state;
+    const { scenarios, isAddingScenario } = this.state;
 
     return (
       <Container className="Home">
@@ -42,11 +53,16 @@ class Home extends React.Component {
 
           <div className="share-cta">
             <Typography variant="h5">Healthcare worker?</Typography>
-            <Button variant="outlined" size="large">Share your story</Button>
+            <Button color="primary" variant="outlined" size="large" onClick={this.handleDialogOpen}>
+              Share your story
+            </Button>
           </div>
         </div>
 
         <CardDisplay data={scenarios} reloadFunc={this.fetchScenarioData} />
+
+        <AddScenarioDialog isOpen={isAddingScenario} handleClose={this.handleDialogClose} reloadFunc={this.fetchScenarioData} />
+        
       </Container>
     );
   }

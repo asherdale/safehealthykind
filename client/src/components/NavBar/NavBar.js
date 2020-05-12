@@ -8,7 +8,7 @@ function NavBar() {
   return (
     <div className="NavBar">
       <img  src={mainLogo} className="logoImage" alt="" />
-      <Typography variant="h5" className="logoText">SafeHealthyKind</Typography>
+      <Typography variant="h5" color="primary" className="logoText">SafeHealthyKind</Typography>
     </div>
   );
 }

@@ -50,6 +50,23 @@ const getScenarioData = async () => {
   }
 };
 
+const addScenario = async (name, title, scenarioText) => {
+  const scenario = {
+    reports: 0,
+    dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
+    name,
+    title,
+    scenarioText,
+  };
+
+  try {
+    await db.collection('scenarios').doc().set(scenario);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
 const updateResponse = async (scenarioId, responseId, update) => {
   try {
     await db.collection('scenarios').doc(scenarioId).collection('responses').doc(responseId).set(update, { merge: true });
@@ -81,5 +98,6 @@ const addResponse = async (scenarioId, name, location, responseText) => {
 module.exports = {
   getScenarioData,
   updateResponse,
-  addResponse
+  addResponse,
+  addScenario
 };

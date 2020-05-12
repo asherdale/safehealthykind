@@ -5,7 +5,12 @@ import { createMuiTheme, ThemeProvider, responsiveFontSizes } from '@material-ui
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const theme = responsiveFontSizes(createMuiTheme());
+const theme = responsiveFontSizes(createMuiTheme({
+  palette: {
+    primary: { main: '#0095f6' },
+    secondary: { main: '#dc004e' },
+  },
+}));
 
 ReactDOM.render(
   <React.StrictMode>

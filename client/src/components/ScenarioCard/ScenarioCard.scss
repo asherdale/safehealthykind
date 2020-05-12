@@ -53,7 +53,6 @@
       }
 
       .arrow-button {
-        color: $primary-color;
         min-width: 24px;
         padding: 0;
       }
@@ -73,11 +72,6 @@
     @include lg {
       margin-top: 0;
     }
-
-    .MuiButton-root {
-      border-color: $primary-color;
-      color: $primary-color;
-    }
   }
 
   .add-affirmation-form {
@@ -88,16 +82,15 @@
 
     .add-form-fields {
       margin: 10px;
-      width: 50%;
+
+      @include lg {
+        width: 50%;
+      }
   
       .add-form-field {
         width: 100%;
         margin: 5px;
       }
-    }
-  
-    .MuiButton-root {
-      color: $primary-color;
     }
   }
 }

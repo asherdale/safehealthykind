@@ -66,7 +66,7 @@ class ScenarioCard extends React.Component {
       responseText: addFormText,
     });
 
-    if (apiResponse.data.isAdded) {
+    if (apiResponse && apiResponse.data && apiResponse.data.isAdded) {
       await reloadFunc();
       
       this.setState({
@@ -144,7 +144,7 @@ class ScenarioCard extends React.Component {
           </div>
 
           <div className="response-section">
-            <IconButton disabled={!shouldShowBackwardArrow} className="arrow-button" onClick={this.handleResponsesScrollBackward}>
+            <IconButton color="primary" disabled={!shouldShowBackwardArrow} className="arrow-button" onClick={this.handleResponsesScrollBackward}>
               {shouldShowBackwardArrow && <ArrowBackIos fontSize="default" />}
             </IconButton>
 
@@ -153,7 +153,7 @@ class ScenarioCard extends React.Component {
               <span>&nbsp;</span>
             </div>
 
-            <IconButton disabled={!shouldShowForwardArrow} className="arrow-button" onClick={this.handleResponsesScrollForward}>
+            <IconButton color="primary" disabled={!shouldShowForwardArrow} className="arrow-button" onClick={this.handleResponsesScrollForward}>
               {shouldShowForwardArrow && <ArrowForwardIos fontSize="default" />}
             </IconButton>
           </div>
@@ -166,7 +166,6 @@ class ScenarioCard extends React.Component {
                     className="add-form-field"
                     label="Name"
                     variant="outlined"
-                    size="small"
                     required
                     value={addFormName}
                     onChange={this.handleAddNameChange}
@@ -176,7 +175,6 @@ class ScenarioCard extends React.Component {
                     className="add-form-field"
                     label="Location"
                     variant="outlined"
-                    size="small"
                     required
                     value={addFormLocation}
                     onChange={this.handleAddLocationChange}
@@ -195,10 +193,10 @@ class ScenarioCard extends React.Component {
                 </div>
                 
                 <div className="add-form-buttons">
-                  <Button size="large" onClick={this.handleAddCancelClick}>
+                  <Button color="primary" size="large" onClick={this.handleAddCancelClick}>
                     Cancel
                   </Button>
-                  <Button size="large" type="submit" autoFocus>
+                  <Button color="primary" size="large" type="submit" autoFocus>
                     <strong>Post</strong>
                   </Button>
                 </div>
@@ -207,7 +205,9 @@ class ScenarioCard extends React.Component {
               </form>
             ) : (
               <div className="add-button-container">
-                <Button variant="outlined" size="large" onClick={this.handleAddClick}>Post an Affirmation for {scenario.name}</Button>
+                <Button color="primary" variant="outlined" size="large" onClick={this.handleAddClick}>
+                  Post an Affirmation for {scenario.name}
+                </Button>
               </div>
             )
           }
