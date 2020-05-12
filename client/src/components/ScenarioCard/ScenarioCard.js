@@ -4,13 +4,12 @@ import axios from 'axios';
 import {
   IconButton,
   Card,
-  CardActions,
   CardContent,
   TextField,
   Button,
-  Divider,
+  Typography,
 } from '@material-ui/core';
-import { Add, ArrowBackIos, ArrowForwardIos } from '@material-ui/icons';
+import { ArrowBackIos, ArrowForwardIos } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import './ScenarioCard.scss';
 import ResponseCard from '../ResponseCard';
@@ -31,6 +30,7 @@ class ScenarioCard extends React.Component {
     };
 
     this.responsesContainer = null;
+    this.scenarioRef = null;
   }
 
   handleAddClick = () => {
@@ -83,7 +83,7 @@ class ScenarioCard extends React.Component {
 
   handleResponsesScroll = () => {
     const { shouldShowBackwardArrow, shouldShowForwardArrow } =  this.state;
-    const { scrollLeft, offsetWidth, scrollWidth} = this.responsesContainer;
+    const { scrollLeft, offsetWidth, scrollWidth } = this.responsesContainer;
 
     if (!shouldShowBackwardArrow && scrollLeft > 0) {
       this.setState({ shouldShowBackwardArrow: true });
@@ -101,12 +101,12 @@ class ScenarioCard extends React.Component {
   }
 
   handleResponsesScrollForward = () => {
-    const distance = this.responsesContainer.offsetWidth / 2;
+    const distance = this.responsesContainer.offsetWidth;
     this.responsesContainer.scrollBy({ left: distance, behavior: 'smooth' });
   }
 
   handleResponsesScrollBackward = () => {
-    const distance = this.responsesContainer.offsetWidth / -2;
+    const distance = -1 * this.responsesContainer.offsetWidth;
     this.responsesContainer.scrollBy({ left: distance, behavior: 'smooth' });
   }
 
@@ -132,14 +132,14 @@ class ScenarioCard extends React.Component {
     });
 
     return (
-      <Card variant="outlined" className="ScenarioCard">
+      <Card variant="outlined" className="ScenarioCard" ref={node => { this.scenarioRef = node; }} >
         <CardContent className="scenario-content">
           <div className="scenario-post">
-            <p className="scenario-text">&quot;{scenario.scenarioText}&quot;</p>
+            <Typography variant="h5" className="scenario-text">&quot;{scenario.scenarioText}&quot;</Typography>
 
             <div className="scenario-metadata">
-              <p className="scenario-signature">- {scenario.name}, {scenario.title}</p>
-              <p className="scenario-date">{dateText}</p>
+              <Typography variant="h5" className="scenario-signature">- {scenario.name}, {scenario.title}</Typography>
+              <Typography variant="h5" className="scenario-date">{dateText}</Typography>
             </div>
           </div>
 
@@ -150,7 +150,7 @@ class ScenarioCard extends React.Component {
 
             <div className="responses" ref={node => { this.responsesContainer = node; }} onScroll={this.handleResponsesScroll}>
               {responseCards}
-              <span>&nbsp;&nbsp;</span>
+              <span>&nbsp;</span>
             </div>
 
             <IconButton disabled={!shouldShowForwardArrow} className="arrow-button" onClick={this.handleResponsesScrollForward}>
@@ -158,14 +158,9 @@ class ScenarioCard extends React.Component {
             </IconButton>
           </div>
 
-        </CardContent>
-
-        <CardActions className="actions" disableSpacing>
           {isAddingResponse
             ? (
-              <form onSubmit={this.handleAddFormSubmit}>
-                <Divider className="add-form-divider"/>
-
+              <form className="add-affirmation-form" onSubmit={this.handleAddFormSubmit}>
                 <div className="add-form-fields">
                   <TextField
                     className="add-form-field"
@@ -200,10 +195,10 @@ class ScenarioCard extends React.Component {
                 </div>
                 
                 <div className="add-form-buttons">
-                  <Button onClick={this.handleAddCancelClick}>
+                  <Button size="large" onClick={this.handleAddCancelClick}>
                     Cancel
                   </Button>
-                  <Button type="submit" autoFocus>
+                  <Button size="large" type="submit" autoFocus>
                     <strong>Post</strong>
                   </Button>
                 </div>
@@ -212,14 +207,11 @@ class ScenarioCard extends React.Component {
               </form>
             ) : (
               <div className="add-button-container">
-                <IconButton  aria-label="add" onClick={this.handleAddClick} >
-                  <Add fontSize="default" />
-                </IconButton>
+                <Button variant="outlined" size="large" onClick={this.handleAddClick}>Post an Affirmation for {scenario.name}</Button>
               </div>
             )
           }
-          
-        </CardActions>
+        </CardContent>
       </Card>
     );
   }

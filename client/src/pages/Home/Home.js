@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Container, Button } from '@material-ui/core';
+import { Container, Button, Typography } from '@material-ui/core';
 import './Home.scss';
 import CardDisplay from '../../components/CardDisplay';
 
@@ -30,18 +30,18 @@ class Home extends React.Component {
     return (
       <Container className="Home">
         <div className="intro">
-          <p className="intro-header">
+          <Typography variant="h4" className="intro-header">
             Real stories from real health care workers
-          </p>
+          </Typography>
   
           <Container maxWidth="md">
-            <p className="intro-paragraph">
+            <Typography variant="h3" className="intro-paragraph">
               Remember why we health care workers do what we do, and why we should keep at it, even in these challenging times.
-            </p>
+            </Typography>
           </Container>
 
           <div className="share-cta">
-            <p>Healthcare worker?</p>
+            <Typography variant="h5">Healthcare worker?</Typography>
             <Button variant="outlined" size="large">Share your story</Button>
           </div>
         </div>

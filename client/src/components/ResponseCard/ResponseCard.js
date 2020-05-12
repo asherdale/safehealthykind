@@ -14,6 +14,7 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
+  Typography,
 } from '@material-ui/core';
 import { FavoriteBorder, Favorite, MoreHoriz } from '@material-ui/icons';
 import './ResponseCard.scss';
@@ -96,11 +97,11 @@ class ResponseCard extends React.Component {
     return (
       <Card className="ResponseCard MuiPaper-elevation5">
         <CardContent className="response-content">
-          <p className="response">{response.responseText}</p>
+          <Typography variant="body1" className="response">{response.responseText}</Typography>
 
           <div className="response-metadata">
-            <p className="response-signature">- {response.name}, {response.location}</p>
-            <p className="response-date">{dateText}</p>
+            <Typography variant="body1" className="response-signature">- {response.name}, {response.location}</Typography>
+            <Typography variant="body1" className="response-date">{dateText}</Typography>
           </div>
         </CardContent>
 

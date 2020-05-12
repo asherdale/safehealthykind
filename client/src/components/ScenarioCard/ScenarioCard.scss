@@ -1,7 +1,6 @@
 @import '../../assets/styles/base';
 
 .ScenarioCard {
-  font-size: 18px;
   width: 100%;
   border-radius: 10px;
   display: flex;
@@ -9,14 +8,23 @@
   margin-bottom: 5%;
 
   .scenario-content {
+    padding: 12px;
+
     .scenario-post {
-      font-size: 30px;
-      text-align: justify;
-      margin: 3vh 0;
+      margin: 2% 0;
+
+      @include lg {
+        margin-bottom: 0;
+        text-align: justify;
+      }
 
       .scenario-text {
-        margin: 0 20% 0 5%;
+        margin: 0 5%;
         margin-bottom: 2vh;
+
+        @include lg {
+          margin-right: 20%;
+        }
       }
 
       .scenario-metadata {
@@ -31,7 +39,6 @@
         }
 
         .scenario-date {
-          font-size: 20px;
           color: slategray;
         }
       }
@@ -40,11 +47,15 @@
     .response-section {
       display: flex;
       align-items: center;
-      margin: 0 3%;
+
+      @include lg {
+        margin: 0 4%;
+      }
 
       .arrow-button {
         color: $primary-color;
-        min-width: 50px;
+        min-width: 24px;
+        padding: 0;
       }
 
       .responses {
@@ -54,40 +65,37 @@
         width: 100%;
       }
     }
-
-    .see-more-button {
-      color: $primary-color;
-      float: right;
-    }
   }
 
   .add-button-container {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
+    margin: 7% 5% 0 5%;
 
-    .MuiIconButton-label {
+    @include lg {
+      margin-top: 0;
+    }
+
+    .MuiButton-root {
+      border-color: $primary-color;
       color: $primary-color;
     }
   }
 
-  .add-form-divider {
-    margin: 10px 0;
-  }
-
-  .add-form-fields {
-    margin: 10px;
-
-    .add-form-field {
-      width: 100%;
-      margin: 5px;
-    }
-  }
-
-  .add-form-buttons {
+  .add-affirmation-form {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2%;
 
+    .add-form-fields {
+      margin: 10px;
+      width: 50%;
+  
+      .add-form-field {
+        width: 100%;
+        margin: 5px;
+      }
+    }
+  
     .MuiButton-root {
       color: $primary-color;
     }

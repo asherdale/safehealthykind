@@ -1,4 +1,5 @@
 import React from 'react';
+import { Typography } from '@material-ui/core';
 import './NavBar.scss';
 import mainLogo from '../../assets/images/logo-512.png';
 
@@ -7,7 +8,7 @@ function NavBar() {
   return (
     <div className="NavBar">
       <img  src={mainLogo} className="logoImage" alt="" />
-      <p className="logoText">SafeHealthyKind</p>
+      <Typography variant="h5" className="logoText">SafeHealthyKind</Typography>
     </div>
   );
 }
