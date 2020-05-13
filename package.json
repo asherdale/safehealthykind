@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nodemon app.js",
     "client": "cd client && npm start",
-    "build": "npm run build --prefix client",
+    "build": "cd client && npm run build",
     "server": "nodemon app.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "lint": "eslint ."

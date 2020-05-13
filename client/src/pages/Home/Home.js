@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Container, Button, Typography } from '@material-ui/core';
 import './Home.scss';
+import NavBar from '../../components/NavBar';
 import CardDisplay from '../../components/CardDisplay';
 import AddScenarioDialog from '../../components/AddScenarioDialog';
 
@@ -11,6 +12,7 @@ class Home extends React.Component {
 
     this.state = {
       isAddingScenario: false,
+      searchValue: '',
     };
   }
   
@@ -35,35 +37,59 @@ class Home extends React.Component {
     this.setState({ isAddingScenario: false });
   }
 
+  handleSearchChange = (event) => {
+    this.setState({ searchValue: event.target.value });
+  }
+
+  handleSearchClear = () => {
+    this.setState({ searchValue: '' });
+  }
+  
+  filterScenarios = (scenarios, searchValue) => {
+    const lowerSearch = searchValue.toLowerCase();
+    
+    return scenarios.filter(scenario => {
+      return scenario.scenarioText.toLowerCase().includes(lowerSearch)
+        || scenario.name.toLowerCase().includes(lowerSearch)
+        || scenario.title.toLowerCase().includes(lowerSearch);
+    });
+  }
+
   render() {
-    const { scenarios, isAddingScenario } = this.state;
+    const { scenarios, isAddingScenario, searchValue } = this.state;
+
+    const filteredScenarios = searchValue ? this.filterScenarios(scenarios, searchValue) : scenarios;
 
     return (
-      <Container className="Home">
-        <div className="intro">
-          <Typography variant="h4" className="intro-header">
-            Real stories from real health care workers
-          </Typography>
-  
-          <Container maxWidth="md">
-            <Typography variant="h3" className="intro-paragraph">
-              Remember why we health care workers do what we do, and why we should keep at it, even in these challenging times.
+      <>
+        <NavBar value={searchValue} onChange={this.handleSearchChange} onClear={this.handleSearchClear} />
+
+        <Container className="Home">
+          <div className="intro">
+            <Typography variant="h4" className="intro-header">
+              Real stories from real health care workers
             </Typography>
-          </Container>
+    
+            <Container maxWidth="md">
+              <Typography variant="h3" className="intro-paragraph">
+                Remember why we health care workers do what we do, and why we should keep at it, even in these challenging times.
+              </Typography>
+            </Container>
 
-          <div className="share-cta">
-            <Typography variant="h5">Healthcare worker?</Typography>
-            <Button color="primary" variant="outlined" size="large" onClick={this.handleDialogOpen}>
-              Share your story
-            </Button>
+            <div className="share-cta">
+              <Typography variant="h5">Healthcare worker?</Typography>
+              <Button color="primary" variant="outlined" size="large" onClick={this.handleDialogOpen}>
+                Share your story
+              </Button>
+            </div>
           </div>
-        </div>
 
-        <CardDisplay data={scenarios} reloadFunc={this.fetchScenarioData} />
+          <CardDisplay scenarios={filteredScenarios} reloadFunc={this.fetchScenarioData} />
 
-        <AddScenarioDialog isOpen={isAddingScenario} handleClose={this.handleDialogClose} reloadFunc={this.fetchScenarioData} />
-        
-      </Container>
+          <AddScenarioDialog isOpen={isAddingScenario} handleClose={this.handleDialogClose} reloadFunc={this.fetchScenarioData} />
+          
+        </Container>
+      </>
     );
   }
 }
