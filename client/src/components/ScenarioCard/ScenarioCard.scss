@@ -18,12 +18,17 @@
         text-align: justify;
       }
 
-      .scenario-text {
+      .scenario-main {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
         margin: 0 5%;
         margin-bottom: 2vh;
 
         @include lg {
-          margin-right: 20%;
+          .scenario-text {
+            margin-right: 20%;
+          }
         }
       }
 
@@ -66,7 +71,7 @@
     }
   }
 
-  .add-button-container {
+  .scenario-actions {
     margin: 7% 5% 0 5%;
 
     @include lg {

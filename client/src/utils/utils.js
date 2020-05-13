@@ -3,9 +3,9 @@ function formatDateString(num, unit) {
   return `${num} ${unit}${num > 1 ? 's' : ''} ago`;
 }
 
-export const timeSince = (dateString) => {
-  const date = new Date(dateString);
-  const secondsAgo = Math.floor((new Date() - date) / 1000);
+export const timeSince = (dateObj) => {
+  const curSeconds = new Date().getTime() / 1000;
+  const secondsAgo = Math.floor(curSeconds - dateObj._seconds);
 
   const numYears = Math.floor(secondsAgo / 31536000);
   if (numYears >= 1) {

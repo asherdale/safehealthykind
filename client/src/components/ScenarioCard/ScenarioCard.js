@@ -8,11 +8,14 @@ import {
   TextField,
   Button,
   Typography,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
-import { ArrowBackIos, ArrowForwardIos } from '@material-ui/icons';
+import { ArrowBackIos, ArrowForwardIos, MoreHoriz } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import './ScenarioCard.scss';
 import ResponseCard from '../ResponseCard';
+import ReportDialog from '../ReportDialog';
 import { timeSince } from '../../utils/utils';
 
 class ScenarioCard extends React.Component {
@@ -27,6 +30,9 @@ class ScenarioCard extends React.Component {
       addFormText: '',
       shouldShowForwardArrow: props.scenario.responses.length > 2,
       shouldShowBackwardArrow: false,
+      menuAnchorEl: null,
+      isReportDialogOpen: false,
+      isScenarioVisible: props.scenario.reports < 2,
     };
 
     this.responsesContainer = null;
@@ -110,6 +116,39 @@ class ScenarioCard extends React.Component {
     this.responsesContainer.scrollBy({ left: distance, behavior: 'smooth' });
   }
 
+
+  handleMenuOpen = (event) => {
+    this.setState({ menuAnchorEl: event.currentTarget });
+  };
+
+  handleMenuClose = () => {
+    this.setState({ menuAnchorEl: null });
+  };
+
+  handleReportClick = () => {
+    this.handleMenuClose();
+    this.setState({ isReportDialogOpen: true });
+  }
+
+  handleReportDialogClose = () => {
+    this.setState({ isReportDialogOpen: false });
+  }
+
+  handleReportConfirmed = () => {
+    this.handleReportDialogClose();
+
+    const { scenario } = this.props;
+    
+    scenario.reports = (scenario.reports || 0) + 1;
+    
+    axios.put('/api/scenario', {
+      scenarioId: scenario.id,
+      update: { reports: scenario.reports },
+    });
+
+    this.setState({ isScenarioVisible: false });
+  }
+
   render() {
     const { scenario } = this.props;
 
@@ -121,21 +160,45 @@ class ScenarioCard extends React.Component {
       addFormName,
       addFormLocation,
       addFormText,
+      menuAnchorEl,
+      isReportDialogOpen,
+      isScenarioVisible,
     } = this.state;
+
+    if (!isScenarioVisible) {
+      return null;
+    }
 
     const dateText = timeSince(scenario.dateCreated);
 
     scenario.responses.sort((a, b) => b.dateCreated - a.dateCreated);
 
     const responseCards = scenario.responses.map(response => {
-      return <ResponseCard key={response.dateCreated} response={response} />;
+      return <ResponseCard key={response.dateCreated._seconds} response={response} />;
     });
 
     return (
       <Card variant="outlined" className="ScenarioCard" ref={node => { this.scenarioRef = node; }} >
         <CardContent className="scenario-content">
           <div className="scenario-post">
-            <Typography variant="h5" className="scenario-text">&quot;{scenario.scenarioText}&quot;</Typography>
+            <div className="scenario-main">
+              <Typography variant="h5" className="scenario-text">&quot;{scenario.scenarioText}&quot;</Typography>
+
+              <div className="scenario-menu">
+                <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleMenuOpen}>
+                  <MoreHoriz fontSize="default" />
+                </IconButton>
+
+                <Menu
+                  anchorEl={menuAnchorEl}
+                  keepMounted
+                  open={Boolean(menuAnchorEl)}
+                  onClose={this.handleMenuClose}
+                >
+                  <MenuItem onClick={this.handleReportClick}>Report</MenuItem>
+                </Menu>
+              </div>
+            </div>
 
             <div className="scenario-metadata">
               <Typography variant="h5" className="scenario-signature">- {scenario.name}, {scenario.title}</Typography>
@@ -204,7 +267,7 @@ class ScenarioCard extends React.Component {
                 {isErrorOnAdd && <Alert severity="error">There was an error when trying to post. Please reload the page and try again.</Alert>}
               </form>
             ) : (
-              <div className="add-button-container">
+              <div className="scenario-actions">
                 <Button color="primary" variant="outlined" size="large" onClick={this.handleAddClick}>
                   Post an Affirmation for {scenario.name}
                 </Button>
@@ -212,6 +275,12 @@ class ScenarioCard extends React.Component {
             )
           }
         </CardContent>
+
+        <ReportDialog
+          isOpen={isReportDialogOpen}
+          handleCancel={this.handleReportDialogClose}
+          handleConfirm={this.handleReportConfirmed}
+        />
       </Card>
     );
   }
@@ -224,7 +293,8 @@ ScenarioCard.propTypes = {
     responses: PropTypes.arrayOf(PropTypes.object).isRequired,
     name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    dateCreated: PropTypes.string.isRequired,
+    reports: PropTypes.number.isRequired,
+    dateCreated: PropTypes.object.isRequired,
   }).isRequired,
   reloadFunc: PropTypes.func.isRequired,
 };

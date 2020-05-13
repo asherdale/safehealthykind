@@ -8,17 +8,12 @@ import {
   CardContent,
   Menu,
   MenuItem,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Button,
   Typography,
 } from '@material-ui/core';
 import { FavoriteBorder, Favorite, MoreHoriz } from '@material-ui/icons';
 import './ResponseCard.scss';
 import { timeSince } from '../../utils/utils';
+import ReportDialog from '../ReportDialog';
 
 class ResponseCard extends React.Component {
   constructor(props) {
@@ -27,8 +22,8 @@ class ResponseCard extends React.Component {
     this.state = {
       isLiked: false,
       menuAnchorEl: null,
-      isDialogOpen: false,
-      isResponseVisible: true,
+      isReportDialogOpen: false,
+      isResponseVisible: props.response.reports < 2,
     };
   }
 
@@ -57,19 +52,15 @@ class ResponseCard extends React.Component {
 
   handleReportClick = () => {
     this.handleMenuClose();
-    this.handleDialogOpen();
+    this.setState({ isReportDialogOpen: true });
   }
 
-  handleDialogOpen = () => {
-    this.setState({ isDialogOpen: true });
-  }
-
-  handleDialogClose = () => {
-    this.setState({ isDialogOpen: false });
+  handleReportDialogClose = () => {
+    this.setState({ isReportDialogOpen: false });
   }
 
   handleReportConfirmed = () => {
-    this.handleDialogClose();
+    this.handleReportDialogClose();
 
     const { response } = this.props;
     
@@ -85,7 +76,7 @@ class ResponseCard extends React.Component {
   }
 
   render() {
-    const { isLiked, menuAnchorEl, isDialogOpen, isResponseVisible } = this.state;
+    const { isLiked, menuAnchorEl, isReportDialogOpen, isResponseVisible } = this.state;
     const { response } = this.props;
 
     if (!isResponseVisible) {
@@ -120,7 +111,6 @@ class ResponseCard extends React.Component {
             </IconButton>
 
             <Menu
-              id="simple-menu"
               anchorEl={menuAnchorEl}
               keepMounted
               open={Boolean(menuAnchorEl)}
@@ -131,25 +121,11 @@ class ResponseCard extends React.Component {
           </div>
         </CardActions>
 
-        <Dialog
-          open={isDialogOpen}
-          onClose={this.handleDialogClose}
-        >
-          <DialogTitle>Report Confirmation</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure that you would like to report this comment for inappropriate content?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button color="secondary" onClick={this.handleDialogClose}>
-              No
-            </Button>
-            <Button color="primary" onClick={this.handleReportConfirmed} autoFocus>
-              Yes, I would like to report this comment.
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <ReportDialog
+          isOpen={isReportDialogOpen}
+          handleCancel={this.handleReportDialogClose}
+          handleConfirm={this.handleReportConfirmed}
+        />
       </Card>
     );
   }
@@ -162,8 +138,7 @@ ResponseCard.propTypes = {
     likes: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     responseText: PropTypes.string.isRequired,
-    dateCreated: PropTypes.string.isRequired,
-    scenarioRef: PropTypes.object.isRequired,
+    dateCreated: PropTypes.object.isRequired,
     scenarioId: PropTypes.string.isRequired,
     reports: PropTypes.number.isRequired,
   }).isRequired,

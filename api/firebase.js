@@ -12,9 +12,10 @@ const db = firebase.firestore();
 
 const getScenarioData = async () => {
   try {
+    const responseSnapshotCall = db.collectionGroup('responses').get();
     const scenarioSnapshot = await db.collection('scenarios').orderBy('dateCreated', 'desc').get();
-
-    const scenarioMap = {};
+    
+    const scenarioToResponses = {};
     const scenarioData = scenarioSnapshot.docs.map(doc => {
       const scenario = {
         id: doc.id,
@@ -22,31 +23,39 @@ const getScenarioData = async () => {
         ...doc.data(),
       };
 
-      scenario.dateCreated = scenario.dateCreated.toDate();
-
-      scenarioMap[scenario.id] = scenario;
+      scenarioToResponses[scenario.id] = scenario.responses;
 
       return scenario;
     });
 
-    const responseSnapshot = await db.collectionGroup('responses').where('reports', '<', 2).get();
+    const responseSnapshot = await responseSnapshotCall;
     responseSnapshot.docs.forEach(doc => {
       const response = {
         id: doc.id,
         ...doc.data(),
       };
 
-      response.dateCreated = response.dateCreated.toDate();
-      response.scenarioId = response.scenarioRef.id;
-
-      if (response.scenarioRef.id in scenarioMap) {
-        scenarioMap[response.scenarioRef.id].responses.push(response);
+      const responseArray = scenarioToResponses[response.scenarioId];
+      
+      if (responseArray) {
+        responseArray.push(response);
       }
     });
 
     return scenarioData;
   } catch (error) {
+    console.log(error);
     return null;
+  }
+};
+
+const updateScenario = async (scenarioId, update) => {
+  try {
+    await db.collection('scenarios').doc(scenarioId).set(update, { merge: true });
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
   }
 };
 
@@ -63,6 +72,7 @@ const addScenario = async (name, title, scenarioText) => {
     await db.collection('scenarios').doc().set(scenario);
     return true;
   } catch (error) {
+    console.log(error);
     return false;
   }
 };
@@ -72,6 +82,7 @@ const updateResponse = async (scenarioId, responseId, update) => {
     await db.collection('scenarios').doc(scenarioId).collection('responses').doc(responseId).set(update, { merge: true });
     return true;
   } catch (error) {
+    console.log(error);
     return false;
   }
 };
@@ -81,7 +92,7 @@ const addResponse = async (scenarioId, name, location, responseText) => {
     likes: 0,
     reports: 0,
     dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
-    scenarioRef: db.collection('scenarios').doc(scenarioId),
+    scenarioId,
     name,
     location,
     responseText,
@@ -91,6 +102,7 @@ const addResponse = async (scenarioId, name, location, responseText) => {
     await db.collection('scenarios').doc(scenarioId).collection('responses').doc().set(response);
     return true;
   } catch (error) {
+    console.log(error);
     return false;
   }
 };
@@ -99,5 +111,6 @@ module.exports = {
   getScenarioData,
   updateResponse,
   addResponse,
+  updateScenario,
   addScenario
 };
