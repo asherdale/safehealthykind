@@ -14,6 +14,8 @@ class Home extends React.Component {
       isAddingScenario: false,
       searchValue: '',
     };
+
+    this.shareStoryRef = null;
   }
   
   componentDidMount() {
@@ -39,6 +41,7 @@ class Home extends React.Component {
 
   handleSearchChange = (event) => {
     this.setState({ searchValue: event.target.value });
+    window.scrollTo(0, this.shareStoryRef.offsetTop + this.shareStoryRef.offsetHeight);
   }
 
   handleSearchClear = () => {
@@ -76,7 +79,7 @@ class Home extends React.Component {
               </Typography>
             </Container>
 
-            <div className="share-cta">
+            <div className="share-cta" ref={node => { this.shareStoryRef = node; }}>
               <Typography variant="h5">Healthcare worker?</Typography>
               <Button color="primary" variant="outlined" size="large" onClick={this.handleDialogOpen}>
                 Share your story
@@ -84,9 +87,16 @@ class Home extends React.Component {
             </div>
           </div>
 
-          <CardDisplay scenarios={filteredScenarios} reloadFunc={this.fetchScenarioData} />
+          <CardDisplay
+            scenarios={filteredScenarios}
+            reloadFunc={this.fetchScenarioData}
+          />
 
-          <AddScenarioDialog isOpen={isAddingScenario} handleClose={this.handleDialogClose} reloadFunc={this.fetchScenarioData} />
+          <AddScenarioDialog
+            isOpen={isAddingScenario}
+            handleClose={this.handleDialogClose}
+            reloadFunc={this.fetchScenarioData}
+          />
           
         </Container>
       </>
