@@ -7,7 +7,9 @@ handlers:
     secure: always
     script: auto
   - url: /
+    secure: always
     static_files: client/build/index.html
     upload: client/build/index.html
   - url: /
+    secure: always
     static_dir: client/build
