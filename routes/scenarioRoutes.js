@@ -8,6 +8,7 @@ router.get('/', async (req, res, next) => {
     const scenarios = await getScenarioData();
     res.status(200).send({ scenarios });
   } catch (error) {
+    console.log('ERROR: GET /api/scenario', error);
     res.status(500).json(error);
   }
 });
@@ -18,6 +19,7 @@ router.post('/', async (req, res, next) => {
     const isAdded = await addScenario(name, title, scenarioText);
     res.status(200).send({ isAdded });
   } catch (error) {
+    console.log('ERROR: POST /api/scenario', error);
     res.status(500).json(error);
   }
 });
@@ -28,6 +30,7 @@ router.put('/', async (req, res, next) => {
     const isAdded = await updateScenario(scenarioId, update);
     res.status(200).send({ isAdded });
   } catch (error) {
+    console.log('ERROR: PUT /api/scenario', error);
     res.status(500).json(error);
   }
 });

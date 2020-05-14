@@ -8,37 +8,50 @@
     position: fixed;
     top: 0;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    padding-left: 5vw;
     z-index: 99;
 
-    .logoImage {
-        height: 50px;
-        filter: invert(99%) sepia(0%) saturate(2%) hue-rotate(8deg) brightness(114%) contrast(100%);
-    }
+    .start {
+        display: flex;
+        align-items: center;
+        padding-left: 5vw;
 
-    .logoText {
-        margin: 10px 5px;
-        font-weight: 450;
-        color: white;
-    }
-
-    .search-box {
-        margin-left: 6vw;
-        background: white;
-        border-radius: 3px;
-        width: 35vw;
-        padding-left: 1vw;
-
-        .search-icon {
-            margin-right: 0.5vw;
-            color: #8e8e8e;
+        .logo-image {
+            height: 50px;
+            filter: invert(99%) sepia(0%) saturate(2%) hue-rotate(8deg) brightness(114%) contrast(100%);
         }
+    
+        .logo-text {
+            margin: 10px 5px;
+            font-weight: 450;
+            color: white;
+        }
+    
+        .search-box {
+            margin-left: 5vw;
+            background: white;
+            border-radius: 3px;
+            width: 35vw;
+            padding-left: 1vw;
+    
+            .search-icon {
+                margin-right: 0.5vw;
+                color: #8e8e8e;
+            }
+    
+            .clear-icon {
+                padding: 0;
+                margin-right: 1vw;
+            }
+        }
+    }
 
-        .clear-icon {
-            padding: 0;
-            margin-right: 1vw;
+    .end {
+        margin-right: 5vw;
+
+        .contact-us {
+            color: white;
         }
     }
 }

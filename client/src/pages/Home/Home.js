@@ -65,7 +65,11 @@ class Home extends React.Component {
 
     return (
       <>
-        <NavBar value={searchValue} onChange={this.handleSearchChange} onClear={this.handleSearchClear} />
+        <NavBar
+          searchValue={searchValue}
+          onSearchChange={this.handleSearchChange}
+          onSearchClear={this.handleSearchClear}
+        />
 
         <Container className="Home">
           <div className="intro">

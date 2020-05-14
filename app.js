@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const scenarioRoutes = require('./routes/scenarioRoutes');
 const responseRoutes = require('./routes/responseRoutes');
+const emailRoutes = require('./routes/emailRoutes');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -14,6 +15,7 @@ app.use(express.static(path.join(__dirname, "/client/build")));
 
 app.use("/api/scenario", scenarioRoutes);
 app.use("/api/response", responseRoutes);
+app.use("/api/email", emailRoutes);
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "/client/build/index.html"));

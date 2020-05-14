@@ -65,24 +65,28 @@ class ScenarioCard extends React.Component {
     const { scenario, reloadFunc } = this.props;
     const { addFormName, addFormLocation, addFormText } = this.state;
 
-    const apiResponse = await axios.post('/api/response', {
-      scenarioId: scenario.id,
-      name: addFormName,
-      location: addFormLocation,
-      responseText: addFormText,
-    });
-
-    if (apiResponse && apiResponse.data && apiResponse.data.isAdded) {
-      await reloadFunc();
-      
-      this.setState({
-        isAddingResponse: false,
-        isErrorOnAdd: false,
-        addFormName: '',
-        addFormLocation: '',
-        addFormText: '',
+    try {
+      const apiResponse = await axios.post('/api/response', {
+        scenarioId: scenario.id,
+        name: addFormName,
+        location: addFormLocation,
+        responseText: addFormText,
       });
-    } else {
+  
+      if (apiResponse && apiResponse.data && apiResponse.data.isAdded) {
+        await reloadFunc();
+        
+        this.setState({
+          isAddingResponse: false,
+          isErrorOnAdd: false,
+          addFormName: '',
+          addFormLocation: '',
+          addFormText: '',
+        });
+      } else {
+        this.setState({ isErrorOnAdd: true });
+      }
+    } catch (error) {
       this.setState({ isErrorOnAdd: true });
     }
   }

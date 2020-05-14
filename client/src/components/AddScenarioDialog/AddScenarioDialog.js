@@ -41,24 +41,28 @@ class AddScenarioDialog extends React.Component {
     const { handleClose, reloadFunc } = this.props;
     const { scenarioName, scenarioTitle, scenarioText } = this.state;
 
-    const apiResponse = await axios.post('/api/scenario', {
-      name: scenarioName,
-      title: scenarioTitle,
-      scenarioText,
-    });
-
-    if (apiResponse && apiResponse.data && apiResponse.data.isAdded) {
-      handleClose();
-
-      await reloadFunc();
-      
-      this.setState({
-        isErrorOnAdd: false,
-        scenarioName: '',
-        scenarioTitle: '',
-        scenarioText: '',
+    try {
+      const apiResponse = await axios.post('/api/scenario', {
+        name: scenarioName,
+        title: scenarioTitle,
+        scenarioText,
       });
-    } else {
+  
+      if (apiResponse && apiResponse.data && apiResponse.data.isAdded) {
+        handleClose();
+  
+        await reloadFunc();
+        
+        this.setState({
+          isErrorOnAdd: false,
+          scenarioName: '',
+          scenarioTitle: '',
+          scenarioText: '',
+        });
+      } else {
+        this.setState({ isErrorOnAdd: true });
+      }
+    } catch (error) {
       this.setState({ isErrorOnAdd: true });
     }
   }

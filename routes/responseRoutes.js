@@ -9,6 +9,7 @@ router.post('/', async (req, res, next) => {
     const isAdded = await addResponse(scenarioId, name, location, responseText);
     res.status(200).send({ isAdded });
   } catch (error) {
+    console.log('ERROR: POST /api/response', error);
     res.status(500).json(error);
   }
 });
@@ -19,6 +20,7 @@ router.put('/', async (req, res, next) => {
     const isAdded = await updateResponse(scenarioId, responseId, update);
     res.status(200).send({ isAdded });
   } catch (error) {
+    console.log('ERROR: PUT /api/response', error);
     res.status(500).json(error);
   }
 });
