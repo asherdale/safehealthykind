@@ -79,7 +79,8 @@ class Home extends React.Component {
     
             <Container maxWidth="md">
               <Typography variant="h3" className="intro-paragraph">
-                Remember why we health care workers do what we do, and why we should keep at it, even in these challenging times.
+                Remember why we health care workers do what we do, and why we should keep at it, even in these challenging times.<br /><br />
+                Be safe, be healthy, and be kind.
               </Typography>
             </Container>
 
