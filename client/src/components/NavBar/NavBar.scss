@@ -26,13 +26,18 @@
             margin: 10px 5px;
             font-weight: 450;
             color: white;
+            display: none;
+
+            @include lg {
+                display: initial;
+            }
         }
     
         .search-box {
             margin-left: 5vw;
             background: white;
             border-radius: 3px;
-            width: 35vw;
+            width: 40vw;
             padding-left: 1vw;
     
             .search-icon {
@@ -48,7 +53,7 @@
     }
 
     .end {
-        margin-right: 5vw;
+        margin-right: 1vw;
 
         .contact-us {
             color: white;

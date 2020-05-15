@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Container, Button, Typography } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import './Home.scss';
 import NavBar from '../../components/NavBar';
 import CardDisplay from '../../components/CardDisplay';
@@ -62,6 +63,7 @@ class Home extends React.Component {
     const { scenarios, isAddingScenario, searchValue } = this.state;
 
     const filteredScenarios = searchValue ? this.filterScenarios(scenarios, searchValue) : scenarios;
+    const isInternetExplorer = false || !!document.documentMode;
 
     return (
       <>
@@ -72,6 +74,8 @@ class Home extends React.Component {
         />
 
         <Container className="Home">
+          {isInternetExplorer && <Alert severity="error">Internet Explorer is not a supported browser. Please consider using a browser like Google Chrome, Firefox, or Microsoft Edge.</Alert>}
+
           <div className="intro">
             <Typography variant="h4" className="intro-header">
               Real stories from real health care workers
@@ -79,7 +83,7 @@ class Home extends React.Component {
     
             <Container maxWidth="md">
               <Typography variant="h3" className="intro-paragraph">
-                Remember why we health care workers do what we do, and why we should keep at it, even in these challenging times.<br /><br />
+                A place to remember why we health care workers do what we do, and why we should keep at it, even in these challenging times.<br /><br />
                 Be safe, be healthy, and be kind.
               </Typography>
             </Container>
