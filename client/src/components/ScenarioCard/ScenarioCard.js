@@ -3,16 +3,15 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import {
   IconButton,
-  Card,
-  CardContent,
-  TextField,
-  Button,
   Typography,
   Menu,
   MenuItem,
 } from '@material-ui/core';
-import { ArrowBackIos, ArrowForwardIos, MoreHoriz } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
+import {
+  MoreHoriz,
+  FavoriteBorder,
+  ChatBubbleOutline,
+} from '@material-ui/icons';
 import './ScenarioCard.scss';
 import ResponseCard from '../ResponseCard';
 import ReportDialog from '../ReportDialog';
@@ -23,13 +22,7 @@ class ScenarioCard extends React.Component {
     super(props);
 
     this.state = {
-      isAddingResponse: false,
-      isErrorOnAdd: false,
-      addFormName: '',
-      addFormLocation: '',
-      addFormText: '',
-      shouldShowForwardArrow: props.scenario.responses.length > 2,
-      shouldShowBackwardArrow: false,
+      isLiked: false,
       menuAnchorEl: null,
       isReportDialogOpen: false,
       isScenarioVisible: props.scenario.reports < 3,
@@ -39,87 +32,37 @@ class ScenarioCard extends React.Component {
     this.scenarioRef = null;
   }
 
-  handleAddClick = () => {
-    this.setState({ isAddingResponse: true });
-  }
+  // handleAddFormSubmit = async (event) => {
+  //   event.preventDefault();
 
-  handleAddNameChange = (event) => {
-    this.setState({ addFormName: event.target.value });
-  }
+  //   const { scenario, reloadFunc } = this.props;
+  //   const { addFormName, addFormLocation, addFormText } = this.state;
 
-  handleAddLocationChange = (event) => {
-    this.setState({ addFormLocation: event.target.value });
-  }
-
-  handleAddTextChange = (event) => {
-    this.setState({ addFormText: event.target.value });
-  }
-
-  handleAddCancelClick = () => {
-    this.setState({ isAddingResponse: false });
-  }
-
-  handleAddFormSubmit = async (event) => {
-    event.preventDefault();
-
-    const { scenario, reloadFunc } = this.props;
-    const { addFormName, addFormLocation, addFormText } = this.state;
-
-    try {
-      const apiResponse = await axios.post('/api/response', {
-        scenarioId: scenario.id,
-        name: addFormName,
-        location: addFormLocation,
-        responseText: addFormText,
-      });
+  //   try {
+  //     const apiResponse = await axios.post('/api/response', {
+  //       scenarioId: scenario.id,
+  //       name: addFormName,
+  //       location: addFormLocation,
+  //       responseText: addFormText,
+  //     });
   
-      if (apiResponse && apiResponse.data && apiResponse.data.isAdded) {
-        await reloadFunc();
+  //     if (apiResponse && apiResponse.data && apiResponse.data.isAdded) {
+  //       await reloadFunc();
         
-        this.setState({
-          isAddingResponse: false,
-          isErrorOnAdd: false,
-          addFormName: '',
-          addFormLocation: '',
-          addFormText: '',
-        });
-      } else {
-        this.setState({ isErrorOnAdd: true });
-      }
-    } catch (error) {
-      this.setState({ isErrorOnAdd: true });
-    }
-  }
-
-  handleResponsesScroll = () => {
-    const { shouldShowBackwardArrow, shouldShowForwardArrow } =  this.state;
-    const { scrollLeft, offsetWidth, scrollWidth } = this.responsesContainer;
-
-    if (!shouldShowBackwardArrow && scrollLeft > 0) {
-      this.setState({ shouldShowBackwardArrow: true });
-    } else if (shouldShowBackwardArrow && scrollLeft === 0) {
-      this.setState({ shouldShowBackwardArrow: false });
-    }
-
-    const isAtEnd = scrollLeft + offsetWidth === scrollWidth;
-
-    if (!shouldShowForwardArrow && !isAtEnd) {
-      this.setState({ shouldShowForwardArrow: true });
-    } else if (shouldShowForwardArrow && isAtEnd) {
-      this.setState({ shouldShowForwardArrow: false });
-    }
-  }
-
-  handleResponsesScrollForward = () => {
-    const distance = this.responsesContainer.offsetWidth;
-    this.responsesContainer.scrollBy({ left: distance, behavior: 'smooth' });
-  }
-
-  handleResponsesScrollBackward = () => {
-    const distance = -1 * this.responsesContainer.offsetWidth;
-    this.responsesContainer.scrollBy({ left: distance, behavior: 'smooth' });
-  }
-
+  //       this.setState({
+  //         isAddingResponse: false,
+  //         isErrorOnAdd: false,
+  //         addFormName: '',
+  //         addFormLocation: '',
+  //         addFormText: '',
+  //       });
+  //     } else {
+  //       this.setState({ isErrorOnAdd: true });
+  //     }
+  //   } catch (error) {
+  //     this.setState({ isErrorOnAdd: true });
+  //   }
+  // }
 
   handleMenuOpen = (event) => {
     this.setState({ menuAnchorEl: event.currentTarget });
@@ -153,17 +96,25 @@ class ScenarioCard extends React.Component {
     this.setState({ isScenarioVisible: false });
   }
 
+  handleLikeClick = () => {
+    this.setState(prevState => ({ isLiked: !prevState.isLiked }));
+
+    const { isLiked } = this.state;
+    const { scenario } = this.props;
+
+    scenario.likes += isLiked ? -1 : 1;
+
+    axios.put('/api/scenario', {
+      scenarioId: scenario.id,
+      update: { likes: scenario.likes },
+    });
+  }
+
   render() {
     const { scenario } = this.props;
 
     const {
-      shouldShowForwardArrow,
-      shouldShowBackwardArrow,
-      isAddingResponse,
-      isErrorOnAdd,
-      addFormName,
-      addFormLocation,
-      addFormText,
+      isLiked,
       menuAnchorEl,
       isReportDialogOpen,
       isScenarioVisible,
@@ -182,110 +133,64 @@ class ScenarioCard extends React.Component {
     });
 
     return (
-      <Card variant="outlined" className="ScenarioCard" ref={node => { this.scenarioRef = node; }} >
-        <CardContent className="scenario-content">
-          <div className="scenario-post">
-            <div className="scenario-main">
-              <Typography variant="h5" className="scenario-text">&quot;{scenario.scenarioText}&quot;</Typography>
+      <div className="ScenarioCard" >
+        <div className="scenario-content">
+          <div className="scenario-top">
+            <div className="scenario-menu">
+              <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleMenuOpen}>
+                <MoreHoriz fontSize="default" htmlColor="white" />
+              </IconButton>
 
-              <div className="scenario-menu">
-                <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleMenuOpen}>
-                  <MoreHoriz fontSize="default" />
-                </IconButton>
-
-                <Menu
-                  anchorEl={menuAnchorEl}
-                  keepMounted
-                  open={Boolean(menuAnchorEl)}
-                  onClose={this.handleMenuClose}
-                >
-                  <MenuItem onClick={this.handleReportClick}>Report</MenuItem>
-                </Menu>
-              </div>
-            </div>
-
-            <div className="scenario-metadata">
-              <Typography variant="h5" className="scenario-signature">- {scenario.name}, {scenario.title}</Typography>
-              <Typography variant="h5" className="scenario-date">{dateText}</Typography>
+              <Menu
+                anchorEl={menuAnchorEl}
+                keepMounted
+                open={Boolean(menuAnchorEl)}
+                onClose={this.handleMenuClose}
+              >
+                <MenuItem onClick={this.handleReportClick}>Report</MenuItem>
+              </Menu>
             </div>
           </div>
 
-          <div className="response-section">
-            <IconButton color="primary" disabled={!shouldShowBackwardArrow} className="arrow-button" onClick={this.handleResponsesScrollBackward}>
-              {shouldShowBackwardArrow && <ArrowBackIos fontSize="default" />}
-            </IconButton>
-
-            <div className="responses" ref={node => { this.responsesContainer = node; }} onScroll={this.handleResponsesScroll}>
-              {responseCards}
-              <span>&nbsp;</span>
-            </div>
-
-            <IconButton color="primary" disabled={!shouldShowForwardArrow} className="arrow-button" onClick={this.handleResponsesScrollForward}>
-              {shouldShowForwardArrow && <ArrowForwardIos fontSize="default" />}
-            </IconButton>
+          <div className="scenario-mid">
+            <Typography variant="h5">{scenario.scenarioText}</Typography>
           </div>
 
-          {isAddingResponse
-            ? (
-              <form className="add-affirmation-form" onSubmit={this.handleAddFormSubmit}>
-                <div className="add-form-fields">
-                  <TextField
-                    className="add-form-field"
-                    label="Name"
-                    variant="outlined"
-                    required
-                    value={addFormName}
-                    onChange={this.handleAddNameChange}
-                  />
+          <div className="scenario-bottom">
+            <div className="metadata">
+              <Typography variant="body1"><strong>{scenario.name}</strong>, {scenario.title}</Typography>
+              <Typography variant="body2">{dateText}</Typography>
+            </div>
 
-                  <TextField
-                    className="add-form-field"
-                    label="Location"
-                    variant="outlined"
-                    required
-                    value={addFormLocation}
-                    onChange={this.handleAddLocationChange}
-                  />
+            <div className="likes">
+              <FavoriteBorder fontSize="large" />
+              <Typography variant="h5" className="like-number">{scenario.likes}</Typography>
+            </div>
+          </div>
 
-                  <TextField
-                    className="add-form-field"
-                    label="Affirmation"
-                    rows={3}
-                    multiline
-                    variant="outlined"
-                    required
-                    value={addFormText}
-                    onChange={this.handleAddTextChange}
-                  />
-                </div>
-                
-                <div className="add-form-buttons">
-                  <Button color="primary" size="large" onClick={this.handleAddCancelClick}>
-                    Cancel
-                  </Button>
-                  <Button color="primary" size="large" type="submit" autoFocus>
-                    <strong>Post</strong>
-                  </Button>
-                </div>
+          <div className="actions">
+            <div onClick={this.handleLikeClick} aria-hidden="true" className={isLiked ? 'liked' : ''}>
+              <FavoriteBorder fontSize="default" />
+              <Typography variant="body1" className="action-text">{isLiked ? 'Liked' : 'Like'}</Typography>
+            </div>
 
-                {isErrorOnAdd && <Alert severity="error">There was an error when trying to post. Please reload the page and try again.</Alert>}
-              </form>
-            ) : (
-              <div className="scenario-actions">
-                <Button color="primary" variant="outlined" size="large" onClick={this.handleAddClick}>
-                  Post an Affirmation for {scenario.name}
-                </Button>
-              </div>
-            )
-          }
-        </CardContent>
+            <div>
+              <ChatBubbleOutline fontSize="default" />
+              <Typography variant="body1" className="action-text">Reply</Typography>
+            </div>
+          </div>
+        </div>
+
+        <div className="response-content">
+          {responseCards}
+        </div>
 
         <ReportDialog
           isOpen={isReportDialogOpen}
           handleCancel={this.handleReportDialogClose}
           handleConfirm={this.handleReportConfirmed}
         />
-      </Card>
+      </div>
     );
   }
 }
@@ -298,6 +203,7 @@ ScenarioCard.propTypes = {
     name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     reports: PropTypes.number.isRequired,
+    likes: PropTypes.number.isRequired,
     dateCreated: PropTypes.object.isRequired,
   }).isRequired,
   reloadFunc: PropTypes.func.isRequired,

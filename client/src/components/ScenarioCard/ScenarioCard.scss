@@ -2,100 +2,77 @@
 
 .ScenarioCard {
   width: 100%;
-  border-radius: 10px;
+  max-width: 792px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   margin-bottom: 5%;
+  overflow: hidden;
 
   .scenario-content {
-    padding: 12px;
+    background-color: #004D78;
+    color: white;
+    padding: 0 20px 40px 20px;
+    position: relative;
 
-    .scenario-post {
-      margin: 2% 0;
-
-      @include lg {
-        margin-bottom: 0;
-        text-align: justify;
-      }
-
-      .scenario-main {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin: 0 5%;
-        margin-bottom: 2vh;
-
-        @include lg {
-          .scenario-text {
-            margin-right: 20%;
-          }
-        }
-      }
-
-      .scenario-metadata {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        margin: 0 5%;
-  
-        .scenario-signature {
-          margin: 0;
-        }
-
-        .scenario-date {
-          color: slategray;
-        }
-      }
+    .scenario-top {
+      display: flex;
+      justify-content: flex-end;
     }
 
-    .response-section {
+    .scenario-mid {
+      margin-bottom: 12px;
+    }
+
+    .scenario-bottom {
       display: flex;
+      justify-content: space-between;
       align-items: center;
 
-      @include lg {
-        margin: 0 4%;
-      }
-
-      .arrow-button {
-        min-width: 24px;
-        padding: 0;
-      }
-
-      .responses {
+      .likes {
         display: flex;
         align-items: center;
-        overflow: scroll;
-        width: 100%;
+
+        .like-number {
+          margin-left: 5px;
+        }
       }
     }
-  }
 
-  .scenario-actions {
-    margin: 7% 5% 0 5%;
-
-    @include lg {
-      margin-top: 0;
-    }
-  }
-
-  .add-affirmation-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2%;
-
-    .add-form-fields {
-      margin: 10px;
-
-      @include lg {
-        width: 50%;
-      }
+    .actions {
+      position: absolute;
+      bottom: -30px;
+      left: 12px;
+      right: 12px;
+      height: 60px;
+      background-color: white;
+      color: #595959;
+      display: flex;
+      align-items: center;
+      border-radius: 100px;
+      border: 1px solid #DFE9ED;
+      box-sizing: border-box;
+      box-shadow: 0px 2px 4px rgba(44, 53, 65, 0.1);
+      display: flex;
+      justify-content: space-evenly;
   
-      .add-form-field {
-        width: 100%;
-        margin: 5px;
+      > div {
+        display: flex;
+        align-items: center;
+        
+        .action-text {
+          margin-left: 5px;
+        }
+      }
+
+      .liked {
+        color: #004D78;
       }
     }
+  }
+
+  .response-content {
+    padding-top: 30px;
+    background-color: white;
   }
 }

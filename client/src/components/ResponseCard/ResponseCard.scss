@@ -1,44 +1,30 @@
 @import '../../assets/styles/base';
 
 .ResponseCard {
-  margin: 3% 4.5%;
   display: flex;
   flex-direction: column;
-  min-width: 91%;
+  margin: 10px 20px 0 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid lightgray;
 
-  @include lg {
-    min-width: 40%;
-  }
-  
-  div.response-content {
-    padding: 16px;
+  .response-top {
     display: flex;
-    flex-direction: column;
-
-    .response-metadata {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      margin-top: 20px;
-
-      .response-date {
-        color: slategray;
-      }
-    }
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
   }
 
-  .response-actions {
-    border-top: 1px solid lightgray;
-    padding: 0;
+  .response-bottom {
+    display: flex;
     justify-content: space-between;
+    align-items: center;
 
-    .liked-button {
-      color: $secondary-color;
+    .response-date {
+      color: slategray;
     }
 
-    .likes-number {
-      font-size: 16px;
-      margin-left: 5px;
+    .flag-icon {
+      color: #595959;
     }
   }
 }
