@@ -39,9 +39,11 @@ class NavBar extends React.Component {
             <Link to="/about">About</Link>
           </Button>
 
-          <Button className="navbar-button" size="large" onClick={this.handleContactClick}>
-            Contact
-          </Button>
+          { window.location.pathname === '/about' &&
+            <Button className="navbar-button" size="large" onClick={this.handleContactClick}>
+              Contact
+            </Button>
+          }
         </div>
 
         <ContactUsDialog isOpen={isContactDialogOpen} handleClose={this.handleContactDialogClose} />

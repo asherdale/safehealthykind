@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { CssBaseline } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider, responsiveFontSizes } from '@material-ui/core/styles';
+import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
