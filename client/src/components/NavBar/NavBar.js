@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Typography, Button, Input, IconButton } from '@material-ui/core';
-import { Search, Clear } from '@material-ui/icons';
+import { Typography, Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import './NavBar.scss';
 import mainLogo from '../../assets/images/logo512a.png';
 import ContactUsDialog from '../ContactUsDialog';
@@ -24,38 +23,24 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const { searchValue, onSearchClear, onSearchChange } = this.props;
     const { isContactDialogOpen } = this.state;
 
     return (
       <div className="NavBar">
-        <div className="start">
-          <img src={mainLogo} className="logo-image" alt="" />
-          <Typography variant="h5" className="logo-text">SafeHealthyKind</Typography>
-
-          <div>
-            <Input
-              disableUnderline
-              className="search-box"
-              placeholder="Search"
-              startAdornment={
-                <Search className="search-icon" />
-              }
-              endAdornment={
-                searchValue &&
-                  (<IconButton className="clear-icon" onClick={onSearchClear}>
-                    <Clear />
-                  </IconButton>)
-              }
-              value={searchValue}
-              onChange={onSearchChange}
-            />
+        <a href="/">
+          <div className="logo">
+            <img src={mainLogo} className="logo-image" alt="" />
+            <Typography variant="h5" className="logo-text">SafeHealthyKind</Typography>
           </div>
-        </div>
+        </a>
 
         <div className="end">
-          <Button className="contact-us" size="large" onClick={this.handleContactClick}>
-            Contact Us
+          <Button className="navbar-button" size="large">
+            <Link to="/about">About</Link>
+          </Button>
+
+          <Button className="navbar-button" size="large" onClick={this.handleContactClick}>
+            Contact
           </Button>
         </div>
 
@@ -63,12 +48,6 @@ class NavBar extends React.Component {
       </div>
     );
   }
-};
-
-NavBar.propTypes = {
-  searchValue: PropTypes.string.isRequired,
-  onSearchChange: PropTypes.func.isRequired,
-  onSearchClear: PropTypes.func.isRequired,
 };
   
 export default NavBar;  

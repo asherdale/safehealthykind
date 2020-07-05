@@ -23,7 +23,7 @@ class ResponseCard extends React.Component {
       isLiked: false,
       menuAnchorEl: null,
       isReportDialogOpen: false,
-      isResponseVisible: props.response.reports < 2,
+      isResponseVisible: props.response.reports < 3,
     };
   }
 

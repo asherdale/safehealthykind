@@ -32,7 +32,7 @@ class ScenarioCard extends React.Component {
       shouldShowBackwardArrow: false,
       menuAnchorEl: null,
       isReportDialogOpen: false,
-      isScenarioVisible: props.scenario.reports < 2,
+      isScenarioVisible: props.scenario.reports < 3,
     };
 
     this.responsesContainer = null;
