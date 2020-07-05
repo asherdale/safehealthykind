@@ -4,9 +4,11 @@ import {
   Switch,
   Route,
 } from 'react-router-dom';
+import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import About from './pages/About';
-import NavBar from './components/NavBar';
+import Posts from './pages/Posts';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -14,12 +16,10 @@ function App() {
       <NavBar />
 
       <Switch>
-        <Route path="/about">
-          <About />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/about" component={About}/>
+        <Route exact path="/posts/:id" component={Posts}/>
+        <Route component={NotFound} />
       </Switch>
     </Router>
   );
