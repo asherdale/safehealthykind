@@ -1,19 +1,14 @@
 const firebase = require('firebase-admin');
 
-const isProd = process.env.NODE_ENV === 'production';
-const databaseURL = isProd ? 'https://safehealthykind.firebaseio.com' : 'https://safehealthykind-dev.firebaseio.com';
-
 firebase.initializeApp({
-  credential: firebase.credential.applicationDefault(),
-  databaseURL
+  credential: firebase.credential.applicationDefault()
 });
 
 const db = firebase.firestore();
 
 const getScenarioData = async () => {
   try {
-    const responseSnapshotCall = db.collectionGroup('responses').get();
-    const scenarioSnapshot = await db.collection('scenarios').orderBy('dateCreated', 'desc').get();
+    const scenarioSnapshot = await db.collection('scenarios').orderBy('dateCreated', 'desc').limit(5).get();
     
     const scenarioToResponses = {};
     const scenarioData = scenarioSnapshot.docs.map(doc => {
@@ -24,22 +19,15 @@ const getScenarioData = async () => {
       };
 
       scenarioToResponses[scenario.id] = scenario.responses;
-
       return scenario;
     });
 
-    const responseSnapshot = await responseSnapshotCall;
+    const scenarioIds = Object.keys(scenarioToResponses);
+    
+    const responseSnapshot = await db.collectionGroup('responses').where('scenarioId', 'in', scenarioIds).get();
     responseSnapshot.docs.forEach(doc => {
-      const response = {
-        id: doc.id,
-        ...doc.data(),
-      };
-
-      const responseArray = scenarioToResponses[response.scenarioId];
-      
-      if (responseArray) {
-        responseArray.push(response);
-      }
+      const response = { id: doc.id, ...doc.data() };
+      (scenarioToResponses[response.scenarioId] || []).push(response);
     });
 
     return scenarioData;
