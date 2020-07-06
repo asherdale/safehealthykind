@@ -1,5 +1,16 @@
 @import '../../assets/styles/base';
 
-// .Posts {
-    
-// }
+.Posts {
+  background-color: #EDF8FF;
+  top: 10px;
+
+  a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+  }
+
+  #back-arrow {
+    position: fixed;
+    top: 13vh;
+    left: 40px;
+  }
+}

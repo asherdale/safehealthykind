@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Typography, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import './NavBar.scss';
 import mainLogo from '../../assets/images/logo512a.png';
 import ContactUsDialog from '../ContactUsDialog';
@@ -24,22 +25,23 @@ class NavBar extends React.Component {
 
   render() {
     const { isContactDialogOpen } = this.state;
+    const { location } = this.props;
 
     return (
       <div className="NavBar">
-        <a href="/">
+        <Link to="/">
           <div className="logo">
             <img src={mainLogo} className="logo-image" alt="" />
             <Typography variant="h5" className="logo-text">SafeHealthyKind</Typography>
           </div>
-        </a>
+        </Link>
 
         <div className="end">
           <Button className="navbar-button" size="large">
             <Link to="/about">About</Link>
           </Button>
 
-          { window.location.pathname === '/about' &&
+          { location.pathname === '/about' &&
             <Button className="navbar-button" size="large" onClick={this.handleContactClick}>
               Contact
             </Button>
@@ -51,5 +53,11 @@ class NavBar extends React.Component {
     );
   }
 };
+
+NavBar.propTypes = {
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
+};
   
-export default NavBar;  
+export default withRouter(NavBar);

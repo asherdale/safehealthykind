@@ -59,6 +59,7 @@
       > div {
         display: flex;
         align-items: center;
+        cursor: pointer;
         
         .action-text {
           margin-left: 5px;
@@ -72,7 +73,20 @@
   }
 
   .response-content {
-    padding-top: 30px;
+    padding-top: 40px;
     background-color: white;
+  }
+
+  .detail-button {
+    text-align: center;
+    background-color: white;
+
+    a:link, a:visited, a:hover, a:active {
+      text-decoration: none;
+    }
+
+    .MuiButton-label {
+      color: #595959;
+    }
   }
 }

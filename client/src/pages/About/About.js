@@ -3,9 +3,11 @@ import { Typography } from '@material-ui/core';
 import './About.scss';
 
 const About = () => (
-  <Typography variant="h4" className="about">
-    About
-  </Typography>
+  <div className="About">
+    <Typography variant="h4">
+      About
+    </Typography>
+  </div>
 );
 
 

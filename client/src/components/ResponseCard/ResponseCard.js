@@ -16,7 +16,7 @@ class ResponseCard extends React.Component {
 
     this.state = {
       isReportDialogOpen: false,
-      isResponseVisible: props.response.reports < 3,
+      isResponseVisible: true,
     };
   }
 

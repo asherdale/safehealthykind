@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Link, withRouter } from 'react-router-dom';
 import {
   IconButton,
   Typography,
   Menu,
   MenuItem,
+  Button,
 } from '@material-ui/core';
 import {
   MoreHoriz,
+  Favorite,
   FavoriteBorder,
   ChatBubbleOutline,
 } from '@material-ui/icons';
@@ -25,11 +28,8 @@ class ScenarioCard extends React.Component {
       isLiked: false,
       menuAnchorEl: null,
       isReportDialogOpen: false,
-      isScenarioVisible: props.scenario.reports < 3,
+      isScenarioVisible: true,
     };
-
-    this.responsesContainer = null;
-    this.scenarioRef = null;
   }
 
   // handleAddFormSubmit = async (event) => {
@@ -111,7 +111,7 @@ class ScenarioCard extends React.Component {
   }
 
   render() {
-    const { scenario } = this.props;
+    const { scenario, location } = this.props;
 
     const {
       isLiked,
@@ -170,7 +170,7 @@ class ScenarioCard extends React.Component {
 
           <div className="actions">
             <div onClick={this.handleLikeClick} aria-hidden="true" className={isLiked ? 'liked' : ''}>
-              <FavoriteBorder fontSize="default" />
+              {isLiked ? <Favorite fontSize="default" /> : <FavoriteBorder fontSize="default" />}
               <Typography variant="body1" className="action-text">{isLiked ? 'Liked' : 'Like'}</Typography>
             </div>
 
@@ -184,6 +184,20 @@ class ScenarioCard extends React.Component {
         <div className="response-content">
           {responseCards}
         </div>
+
+        { !location.pathname.startsWith('/posts') &&
+            <div className="detail-button">
+              <Link to={`/posts/${scenario.id}`}>
+                <Button>
+                  {
+                    scenario.responses.length > 2
+                      ? `View all ${scenario.responses.length} affirmations`
+                      : 'View post'
+                  }
+                </Button>
+              </Link>
+            </div>
+        }
 
         <ReportDialog
           isOpen={isReportDialogOpen}
@@ -206,7 +220,10 @@ ScenarioCard.propTypes = {
     likes: PropTypes.number.isRequired,
     dateCreated: PropTypes.object.isRequired,
   }).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
   reloadFunc: PropTypes.func.isRequired,
 };
 
-export default ScenarioCard;
+export default withRouter(ScenarioCard);

@@ -6,7 +6,7 @@ firebase.initializeApp({
 
 const db = firebase.firestore();
 
-const getScenarioData = async () => {
+const getAllScenarios = async () => {
   try {
     const scenarioSnapshot = await db.collection('scenarios').orderBy('dateCreated', 'desc').limit(5).get();
     
@@ -18,24 +18,51 @@ const getScenarioData = async () => {
         ...doc.data(),
       };
 
+      if (scenario.reports >= 3) {
+        return null;
+      }
+
       scenarioToResponses[scenario.id] = scenario.responses;
+
       return scenario;
     });
 
     const scenarioIds = Object.keys(scenarioToResponses);
     
-    const responseSnapshot = await db.collectionGroup('responses').where('scenarioId', 'in', scenarioIds).get();
+    const responseSnapshot = await db.collectionGroup('responses').where('scenarioId', 'in', scenarioIds).where('reports', '<', 3).get();
     responseSnapshot.docs.forEach(doc => {
       const response = { id: doc.id, ...doc.data() };
       (scenarioToResponses[response.scenarioId] || []).push(response);
     });
 
-    return scenarioData;
+    return scenarioData.filter(s => s);
   } catch (error) {
     console.log(error);
     return null;
   }
 };
+
+const getScenario = async (scenarioId) => {
+  try {
+    const scenarioSnapshot = await db.collection('scenarios').doc(scenarioId).get();
+    const scenario = {
+      id: scenarioSnapshot.id,
+      responses: [],
+      ...scenarioSnapshot.data()
+    };
+    
+    const responseSnapshot = await db.collectionGroup('responses').where('scenarioId', '==', scenarioId).where('reports', '<', 3).get();
+    responseSnapshot.docs.forEach(doc => {
+      const response = { id: doc.id, ...doc.data() };
+      scenario.responses.push(response);
+    });
+
+    return [scenario];
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
 
 const updateScenario = async (scenarioId, update) => {
   try {
@@ -96,7 +123,8 @@ const addResponse = async (scenarioId, name, location, responseText) => {
 };
 
 module.exports = {
-  getScenarioData,
+  getAllScenarios,
+  getScenario,
   updateResponse,
   addResponse,
   updateScenario,

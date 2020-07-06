@@ -25,12 +25,20 @@
         }
 
         .share-cta {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background-color: #004D78;
+            padding: 16px;
+            border-radius: 100px;
 
-            .MuiButton-root {
-                margin-top: 3vh;
+            @include lg {
+                right: 50px;
+                bottom: 50px;
+            }
+
+            .MuiButton-label {
+                color: white;
             }
         }
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import './Home.scss';
 import CardDisplay from '../../components/CardDisplay';
@@ -13,8 +13,6 @@ class Home extends React.Component {
     this.state = {
       isAddingScenario: false,
     };
-
-    this.shareStoryRef = null;
   }
   
   componentDidMount() {
@@ -60,12 +58,9 @@ class Home extends React.Component {
             We&apos;re here to listen. SafeHealthyKind is a safe space for you to share your experiences, frustrations, and fears, and get support from your peers.
           </Typography>
 
-          {/* <div className="share-cta" ref={node => { this.shareStoryRef = node; }}>
-            <Typography variant="h5">Healthcare worker?</Typography>
-            <Button color="primary" variant="outlined" size="large" onClick={this.handleDialogOpen}>
-              Share your story
-            </Button>
-          </div> */}
+          <div className="share-cta">
+            <Button onClick={this.handleDialogOpen}>SHARE YOUR STORY</Button>
+          </div>
         </div>
 
         <CardDisplay
