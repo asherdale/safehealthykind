@@ -14,9 +14,9 @@ function CardDisplay({ scenarios, reloadFunc }) {
     <Grid
       container
       className="CardDisplay"
-      direction="row"
-      justify="space-evenly"
-      alignItems="flex-start"
+      direction="column"
+      justify="flex-start"
+      alignItems="center"
     >
       {cards}
     </Grid>
