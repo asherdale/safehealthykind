@@ -3,28 +3,19 @@
 .ResponseCard {
   display: flex;
   flex-direction: column;
-  margin: 10px 20px 0 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid lightgray;
+  margin: 30px 20px 0;
 
   .response-top {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 10px;
-  }
+    margin-bottom: 8px;
 
-  .response-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .response-date {
-      color: slategray;
+    .header {
+      font-weight: 500;
     }
 
-    .flag-icon {
-      color: #595959;
+    .MuiButtonBase-root {
+      padding: 0;
     }
   }
 }

@@ -136,6 +136,11 @@ class ScenarioCard extends React.Component {
       <div className="ScenarioCard" >
         <div className="scenario-content">
           <div className="scenario-top">
+            <div className="metadata">
+              <Typography className="header" variant="body2">{scenario.title} from {scenario.location}</Typography>
+              <Typography variant="body2">{scenario.name}&nbsp;&bull;&nbsp;{dateText}</Typography>
+            </div>
+
             <div className="scenario-menu">
               <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleMenuOpen}>
                 <MoreHoriz fontSize="default" htmlColor="white" />
@@ -157,26 +162,21 @@ class ScenarioCard extends React.Component {
           </div>
 
           <div className="scenario-bottom">
-            <div className="metadata">
-              <Typography variant="body1"><strong>{scenario.name}</strong>, {scenario.title}</Typography>
-              <Typography variant="body2">{dateText}</Typography>
-            </div>
-
             <div className="likes">
-              <FavoriteBorder fontSize="large" />
+              <FavoriteBorder />
               <Typography variant="h5" className="like-number">{scenario.likes}</Typography>
             </div>
           </div>
 
           <div className="actions">
             <div onClick={this.handleLikeClick} aria-hidden="true" className={isLiked ? 'liked' : ''}>
-              {isLiked ? <Favorite fontSize="default" /> : <FavoriteBorder fontSize="default" />}
-              <Typography variant="body1" className="action-text">{isLiked ? 'Liked' : 'Like'}</Typography>
+              {isLiked ? <Favorite fontSize="large" /> : <FavoriteBorder fontSize="large" />}
+              <Typography variant="h6" className="action-text">{isLiked ? 'Liked' : 'Like'}</Typography>
             </div>
 
             <div>
-              <ChatBubbleOutline fontSize="default" />
-              <Typography variant="body1" className="action-text">Reply</Typography>
+              <ChatBubbleOutline fontSize="large" />
+              <Typography variant="h6" className="action-text">Reply</Typography>
             </div>
           </div>
         </div>
@@ -216,6 +216,7 @@ ScenarioCard.propTypes = {
     responses: PropTypes.arrayOf(PropTypes.object).isRequired,
     name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
     reports: PropTypes.number.isRequired,
     likes: PropTypes.number.isRequired,
     dateCreated: PropTypes.object.isRequired,

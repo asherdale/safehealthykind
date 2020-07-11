@@ -47,14 +47,14 @@ class Home extends React.Component {
 
         <div className="intro">
           <Typography variant="h4" id="intro-1">
-            Healthcare workers
+            HEALTHCARE WORKERS
           </Typography>
   
           <Typography variant="h1" id="intro-2">
-            How&apos;s your day, really?
+            How&apos;s your day, <span className="purp">really?</span>
           </Typography>
 
-          <Typography variant="h5" id="intro-3">
+          <Typography variant="subtitle1" id="intro-3">
             We&apos;re here to listen. SafeHealthyKind is a safe space for you to share your experiences, frustrations, and fears, and get support from your peers.
           </Typography>
 

@@ -11,23 +11,28 @@
 
         #intro-1 {
             margin-top: 20vh;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         #intro-2 {
+            font-weight: 600;
             margin: 30px 20px;
         }
 
         #intro-3 {
-            margin: 0 20px;
+            margin: 10px 20px;
             max-width: 600px;
+        }
+
+        .purp {
+            color: #6772c8;
         }
 
         .share-cta {
             position: fixed;
             right: 20px;
             bottom: 20px;
-            background-color: #004D78;
+            background-color: #3845A8;
             padding: 16px;
             border-radius: 100px;
 
@@ -38,6 +43,7 @@
 
             .MuiButton-label {
                 color: white;
+                font-weight: 600;
             }
         }
     }

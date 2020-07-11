@@ -4,8 +4,10 @@ import axios from 'axios';
 import {
   IconButton,
   Typography,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
-import { EmojiFlags } from '@material-ui/icons';
+import { MoreHoriz } from '@material-ui/icons';
 import './ResponseCard.scss';
 import { timeSince } from '../../utils/utils';
 import ReportDialog from '../ReportDialog';
@@ -17,10 +19,20 @@ class ResponseCard extends React.Component {
     this.state = {
       isReportDialogOpen: false,
       isResponseVisible: true,
+      menuAnchorEl: null,
     };
   }
 
+  handleMenuOpen = (event) => {
+    this.setState({ menuAnchorEl: event.currentTarget });
+  };
+
+  handleMenuClose = () => {
+    this.setState({ menuAnchorEl: null });
+  };
+
   handleReportClick = () => {
+    this.handleMenuClose();
     this.setState({ isReportDialogOpen: true });
   }
 
@@ -45,7 +57,7 @@ class ResponseCard extends React.Component {
   }
 
   render() {
-    const { isReportDialogOpen, isResponseVisible } = this.state;
+    const { isReportDialogOpen, isResponseVisible, menuAnchorEl } = this.state;
     const { response } = this.props;
 
     if (!isResponseVisible) {
@@ -57,18 +69,29 @@ class ResponseCard extends React.Component {
     return (
       <div className="ResponseCard">
         <div className="response-top">
-          <Typography variant="body1" className="response">{response.responseText}</Typography>
+          <div>
+            <Typography className="header" variant="body1">{response.title} from {response.location}</Typography>
+            <Typography variant="body2">{response.name}&nbsp;&bull;&nbsp;{dateText}</Typography>
+          </div>
+
+          <div className="response-menu">
+            <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleMenuOpen}>
+              <MoreHoriz fontSize="default" htmlColor="black" />
+            </IconButton>
+
+            <Menu
+              anchorEl={menuAnchorEl}
+              keepMounted
+              open={Boolean(menuAnchorEl)}
+              onClose={this.handleMenuClose}
+            >
+              <MenuItem onClick={this.handleReportClick}>Report</MenuItem>
+            </Menu>
+          </div>
         </div>
 
         <div className="response-bottom">
-          <div>
-            <Typography variant="body1" className="response-signature"><strong>{response.name}</strong>, {response.location}</Typography>
-            <Typography variant="body2" className="response-date">{dateText}</Typography>
-          </div>
-
-          <IconButton aria-label="report" onClick={this.handleReportClick} >
-            <EmojiFlags className="flag-icon" />
-          </IconButton>
+          <Typography variant="body1" className="response">{response.responseText}</Typography>
         </div>
 
         <ReportDialog
@@ -87,6 +110,7 @@ ResponseCard.propTypes = {
     location: PropTypes.string.isRequired,
     likes: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     responseText: PropTypes.string.isRequired,
     dateCreated: PropTypes.object.isRequired,
     scenarioId: PropTypes.string.isRequired,
