@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { CssBaseline } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider, responsiveFontSizes } from '@material-ui/core/styles';
-import './index.scss';
+import 'typeface-poppins';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
@@ -10,6 +10,9 @@ const theme = responsiveFontSizes(createMuiTheme({
   palette: {
     primary: { main: '#0095f6' },
     secondary: { main: '#dc004e' },
+  },
+  typography: {
+    fontFamily: 'poppins',
   },
 }));
 
