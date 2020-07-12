@@ -4,7 +4,6 @@ import axios from 'axios';
 import { Skeleton, Alert } from '@material-ui/lab';
 import './Posts.scss';
 import ScenarioCard from '../../components/ScenarioCard';
-import CardDisplay from '../../components/CardDisplay';
 
 class Posts extends React.Component {
   constructor(props) {
@@ -30,21 +29,13 @@ class Posts extends React.Component {
     }
   }
 
-  scenarioDisplay = (scenario) => {
-    if (!scenario) {
-      return null;
-    }
-    
-    return window.innerWidth < 768 ? <ScenarioCard isSolo scenario={scenario} /> : <CardDisplay scenarios={[scenario]} />;
-  }
-
   render() {
     const { scenario, isErrorOnFetch } = this.state;
 
     return (
       <div className="Posts">
         {isErrorOnFetch && <Alert severity="error">Either this post does not exist, or there was an error when communicating with the server. Please try again.</Alert>}
-        {this.scenarioDisplay(scenario) || <Skeleton variant="rect" height="100vh" width="100vw" />}
+        {scenario ? <ScenarioCard isSolo scenario={scenario} /> : <Skeleton variant="rect" height="100vh" width="100vw" />}
       </div>
     );
   }

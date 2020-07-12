@@ -6,10 +6,17 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border-radius: 16px;
+  margin-bottom: 30px;
 
-  &.feed {
-    border-radius: 16px;
-    margin-bottom: 30px;
+  &.solo {
+    border-radius: 0;
+    margin-bottom: 0;
+
+    @include md {
+      padding: 16px;
+      margin: 0 auto;
+    }
   }
 
   .scenario-content {
