@@ -26,11 +26,11 @@ class ScenarioCard extends React.Component {
     super(props);
 
     this.state = {
-      isLiked: false,
+      isLiked: localStorage.getItem(`${props.scenario.id}_like`) === 'true',
       menuAnchorEl: null,
       isReportDialogOpen: false,
       isAddingResponse: false,
-      isScenarioVisible: true,
+      isScenarioVisible: localStorage.getItem(`${props.scenario.id}_report`) !== 'true',
     };
   }
 
@@ -77,6 +77,7 @@ class ScenarioCard extends React.Component {
     const { scenario } = this.props;
     
     scenario.reports = (scenario.reports || 0) + 1;
+    localStorage.setItem(`${scenario.id}_report`, true);
     
     axios.put('/api/scenario', {
       scenarioId: scenario.id,
@@ -93,6 +94,7 @@ class ScenarioCard extends React.Component {
     const { scenario } = this.props;
 
     scenario.likes += isLiked ? -1 : 1;
+    localStorage.setItem(`${scenario.id}_like`, !isLiked);
 
     axios.put('/api/scenario', {
       scenarioId: scenario.id,

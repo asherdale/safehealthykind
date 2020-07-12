@@ -18,7 +18,7 @@ class ResponseCard extends React.Component {
 
     this.state = {
       isReportDialogOpen: false,
-      isResponseVisible: true,
+      isResponseVisible: localStorage.getItem(`${props.response.id}_report`) !== 'true',
       menuAnchorEl: null,
     };
   }
@@ -46,6 +46,7 @@ class ResponseCard extends React.Component {
     const { response } = this.props;
     
     response.reports = (response.reports || 0) + 1;
+    localStorage.setItem(`${response.id}_report`, true);
     
     axios.put('/api/response', {
       scenarioId: response.scenarioId,
