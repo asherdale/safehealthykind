@@ -50,6 +50,10 @@ const getScenario = async (scenarioId) => {
       responses: [],
       ...scenarioSnapshot.data()
     };
+
+    if (!scenario.scenarioText) {
+      return null;
+    }
     
     const responseSnapshot = await db.collectionGroup('responses').where('scenarioId', '==', scenarioId).where('reports', '<', 3).get();
     responseSnapshot.docs.forEach(doc => {

@@ -12,6 +12,7 @@ class Home extends React.Component {
 
     this.state = {
       isAddingScenario: false,
+      isErrorOnFetch: false,
     };
   }
   
@@ -22,9 +23,9 @@ class Home extends React.Component {
   fetchScenarioData = async () => {
     try {
       const response = await axios.get('/api/scenario');
-      this.setState({ scenarios: response.data.scenarios });
+      this.setState({ scenarios: response.data.scenarios, isErrorOnFetch: false });
     } catch {
-      // TODO
+      this.setState({ isErrorOnFetch: true });
     }
   }
 
@@ -37,7 +38,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { scenarios, isAddingScenario } = this.state;
+    const { scenarios, isAddingScenario, isErrorOnFetch } = this.state;
 
     const isInternetExplorer = false || !!document.documentMode;
 
@@ -62,6 +63,8 @@ class Home extends React.Component {
             <Button onClick={this.handleDialogOpen}>SHARE YOUR STORY</Button>
           </div>
         </div>
+
+        {isErrorOnFetch && <Alert severity="error">There was an error when communicating with the server. Please try again.</Alert>}
 
         <CardDisplay scenarios={scenarios} />
 
