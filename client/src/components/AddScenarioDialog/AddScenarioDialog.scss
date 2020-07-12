@@ -1,21 +1,72 @@
 @import '../../assets/styles/base';
 
 .AddScenarioDialog {
-  .dialog-title {
-    color: $primary-color;
+
+  .MuiDialog-paper {
+    border-radius: 16px;
+    width: 90%;
+    margin: 0;
+    max-height: none;
   }
-  
-  .add-scenario-form {
+
+  .dialog {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
 
-    .add-form-fields {
-      margin: 10px;
-  
-      .add-form-field {
+    .dialog-top {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .add-scenario-form {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .add-form-fields {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+
+        #multiline {
+          height: 30vh !important;
+        }
+
+        #display-name-helper {
+          margin-left: 2px;
+        }
+
+        .add-form-field{
+          width: 90%;
+          margin-bottom: 20px;
+
+          .MuiOutlinedInput-notchedOutline {
+            border-color: $primary-color;
+          }
+
+          .MuiInputLabel-formControl, .select-bold {
+            color: $primary-color;
+            font-weight: 600;
+          }
+        }
+      }
+
+      .submit-button {
         width: 100%;
-        margin: 5px;
+        display: flex;
+        justify-content: center;
+        background-color: $primary-color;
+        padding: 10px;
+        
+        .MuiButton-label {
+          font-size: 1rem;
+          color: white;
+        }
       }
     }
   }

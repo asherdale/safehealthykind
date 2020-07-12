@@ -74,12 +74,14 @@ const updateScenario = async (scenarioId, update) => {
   }
 };
 
-const addScenario = async (name, title, scenarioText) => {
+const addScenario = async (name, title, location, scenarioText) => {
   const scenario = {
     reports: 0,
+    likes: 0,
     dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
     name,
     title,
+    location,
     scenarioText,
   };
 
@@ -104,7 +106,6 @@ const updateResponse = async (scenarioId, responseId, update) => {
 
 const addResponse = async (scenarioId, name, location, responseText) => {
   const response = {
-    likes: 0,
     reports: 0,
     dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
     scenarioId,

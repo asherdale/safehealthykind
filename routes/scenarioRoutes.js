@@ -15,8 +15,8 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const { name, title, scenarioText } = req.body;
-    const isAdded = await addScenario(name, title, scenarioText);
+    const { name, title, location, scenarioText } = req.body;
+    const isAdded = await addScenario(name, title, location, scenarioText);
     res.status(200).send({ isAdded });
   } catch (error) {
     console.log('ERROR: POST /api/scenario', error);

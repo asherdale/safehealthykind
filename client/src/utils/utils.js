@@ -28,7 +28,7 @@ export const timeSince = (dateObj) => {
     return `${numMinutes}m`;
   }
 
-  return `${secondsAgo}y`;
+  return `${secondsAgo}s`;
 };
 
 export const example = 'hi';

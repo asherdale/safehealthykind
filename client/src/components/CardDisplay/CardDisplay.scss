@@ -1,6 +1,8 @@
+@import '../../assets/styles/base';
+
 .CardDisplay {
   padding: 16px;
-  background-color: #6772c8;
+  background-color: $secondary-color;
   min-height: 90vh;
 
   .skeleton {

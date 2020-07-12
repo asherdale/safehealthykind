@@ -8,8 +8,8 @@ import * as serviceWorker from './serviceWorker';
 
 const theme = responsiveFontSizes(createMuiTheme({
   palette: {
-    primary: { main: '#0095f6' },
-    secondary: { main: '#dc004e' },
+    primary: { main: '#3845A8' },
+    secondary: { main: '#6772c8' },
   },
   typography: {
     fontFamily: 'poppins',
