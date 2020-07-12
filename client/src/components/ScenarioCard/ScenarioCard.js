@@ -14,6 +14,7 @@ import {
   Favorite,
   FavoriteBorder,
   ChatBubbleOutline,
+  ArrowBack,
 } from '@material-ui/icons';
 import './ScenarioCard.scss';
 import ResponseCard from '../ResponseCard';
@@ -102,8 +103,18 @@ class ScenarioCard extends React.Component {
     });
   }
 
+  handleBackButton = () => {
+    const { location, history } = this.props;
+
+    if (location.state && location.state.fromHome) {
+      history.goBack();
+    }
+
+    history.replace('/');
+  }
+
   render() {
-    const { scenario, location } = this.props;
+    const { scenario, location, isSolo } = this.props;
 
     const {
       isLiked,
@@ -126,10 +137,13 @@ class ScenarioCard extends React.Component {
     });
 
     return (
-      <div className="ScenarioCard" >
+      <div className={`ScenarioCard ${isSolo ? 'solo' : 'feed'}`} >
         <div className="scenario-content">
           <div className="scenario-top">
             <div className="metadata">
+              {isSolo && <IconButton className="back-button" onClick={this.handleBackButton}>
+                <ArrowBack fontSize="default" htmlColor="white" />
+              </IconButton>}
               <Typography className="header" variant="body2">{scenario.title} from {scenario.location}</Typography>
               <Typography variant="body2">{scenario.name}&nbsp;&bull;&nbsp;{dateText}</Typography>
             </div>
@@ -178,9 +192,9 @@ class ScenarioCard extends React.Component {
           {location.pathname.startsWith('/posts') ? responseCards : responseCards.slice(0, 2)}
         </div>
 
-        { !location.pathname.startsWith('/posts') &&
+        { location.pathname === '/' &&
             <div className="detail-button">
-              <Link to={`/posts/${scenario.id}`}>
+              <Link to={{ pathname: `/posts/${scenario.id}`, state: { fromHome: true } }}>
                 <Button>
                   {
                     responseCards.length > 2
@@ -211,6 +225,7 @@ class ScenarioCard extends React.Component {
 }
 
 ScenarioCard.propTypes = {
+  isSolo: PropTypes.bool,
   scenario: PropTypes.shape({
     id: PropTypes.string.isRequired,
     scenarioText: PropTypes.string.isRequired,
@@ -224,7 +239,16 @@ ScenarioCard.propTypes = {
   }).isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
+    state: PropTypes.object,
   }).isRequired,
+  history: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+ScenarioCard.defaultProps = {
+  isSolo: false,
 };
 
 export default withRouter(ScenarioCard);

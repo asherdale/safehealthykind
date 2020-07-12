@@ -5,9 +5,9 @@ import { Skeleton } from '@material-ui/lab';
 import './CardDisplay.scss';
 import ScenarioCard from '../ScenarioCard';
 
-function CardDisplay({ scenarios, reloadFunc }) {
+function CardDisplay({ scenarios }) {
   const cards = scenarios
-    ? scenarios.map(scenario => <ScenarioCard key={scenario.id} scenario={scenario} reloadFunc={reloadFunc} />)
+    ? scenarios.map(scenario => <ScenarioCard key={scenario.id} scenario={scenario} />)
     : [<Skeleton className="skeleton" key={0} variant="rect" width="100%" height={400} />];
 
   return (
@@ -25,7 +25,6 @@ function CardDisplay({ scenarios, reloadFunc }) {
 
 CardDisplay.propTypes = {
   scenarios: PropTypes.arrayOf(PropTypes.object),
-  reloadFunc: PropTypes.func.isRequired,
 };
 
 CardDisplay.defaultProps = {

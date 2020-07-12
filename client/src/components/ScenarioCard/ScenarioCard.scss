@@ -3,11 +3,14 @@
 .ScenarioCard {
   width: 100%;
   max-width: 792px;
-  border-radius: 16px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
   overflow: hidden;
+
+  &.feed {
+    border-radius: 16px;
+    margin-bottom: 30px;
+  }
 
   .scenario-content {
     background-color: $primary-color;
@@ -18,12 +21,15 @@
     .scenario-top {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
       margin: 20px 0;
 
       .metadata {
         .header {
           font-weight: 600;
+        }
+
+        .back-button {
+          margin-bottom: 10px;
         }
       }
 

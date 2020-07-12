@@ -63,10 +63,7 @@ class Home extends React.Component {
           </div>
         </div>
 
-        <CardDisplay
-          scenarios={scenarios}
-          reloadFunc={this.fetchScenarioData}
-        />
+        <CardDisplay scenarios={scenarios} />
 
         <AddPostDialog
           isOpen={isAddingScenario}

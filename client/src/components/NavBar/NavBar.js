@@ -27,6 +27,10 @@ class NavBar extends React.Component {
     const { isContactDialogOpen } = this.state;
     const { location } = this.props;
 
+    if (location.pathname.startsWith('/posts/')) {
+      return null;
+    }
+
     return (
       <div className="NavBar">
         <Link to="/">

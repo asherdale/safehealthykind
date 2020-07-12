@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { IconButton } from '@material-ui/core';
-import { ArrowBackIos } from '@material-ui/icons';
+import { Skeleton } from '@material-ui/lab';
 import './Posts.scss';
+import ScenarioCard from '../../components/ScenarioCard';
 import CardDisplay from '../../components/CardDisplay';
 
 class Posts extends React.Component {
@@ -23,28 +22,26 @@ class Posts extends React.Component {
 
     try {
       const response = await axios.get(`/api/scenario?id=${match.params.id}`);
-      this.setState({ scenarios: response.data.scenarios });
+      this.setState({ scenario: response.data.scenarios[0] });
     } catch {
       // TODO
     }
   }
 
+  scenarioDisplay = (scenario) => {
+    if (!scenario) {
+      return null;
+    }
+    
+    return window.innerWidth < 768 ? <ScenarioCard isSolo isFull scenario={scenario} /> : <CardDisplay scenarios={[scenario]} />;
+  }
+
   render() {
-    const { scenarios } = this.state;
+    const { scenario } = this.state;
 
     return (
       <div className="Posts">
-        <Link to="/" id="back-arrow">
-          <IconButton>
-            <ArrowBackIos fontSize="large" />
-          </IconButton>
-        </Link>
-
-        {/* TODO: pass in prop for whether this is singular */}
-        <CardDisplay
-          scenarios={scenarios}
-          reloadFunc={this.fetchScenarioData}
-        />
+        {this.scenarioDisplay(scenario) || <Skeleton variant="rect" height="100vh" width="100vw" />}
       </div>
     );
   }
