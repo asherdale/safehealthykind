@@ -104,13 +104,14 @@ const updateResponse = async (scenarioId, responseId, update) => {
   }
 };
 
-const addResponse = async (scenarioId, name, location, responseText) => {
+const addResponse = async (scenarioId, name, location, title, responseText) => {
   const response = {
     reports: 0,
     dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
     scenarioId,
     name,
     location,
+    title,
     responseText,
   };
 

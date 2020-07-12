@@ -70,7 +70,7 @@ class ResponseCard extends React.Component {
       <div className="ResponseCard">
         <div className="response-top">
           <div>
-            <Typography className="header" variant="body1">{response.title} from {response.location}</Typography>
+            <Typography className="header" variant="body2">{response.title} from {response.location}</Typography>
             <Typography variant="body2">{response.name}&nbsp;&bull;&nbsp;{dateText}</Typography>
           </div>
 
@@ -108,7 +108,6 @@ ResponseCard.propTypes = {
   response: PropTypes.shape({
     id: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
-    likes: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     responseText: PropTypes.string.isRequired,

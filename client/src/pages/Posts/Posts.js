@@ -23,7 +23,6 @@ class Posts extends React.Component {
 
     try {
       const response = await axios.get(`/api/scenario?id=${match.params.id}`);
-      console.log(response);
       this.setState({ scenarios: response.data.scenarios });
     } catch {
       // TODO

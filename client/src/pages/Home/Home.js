@@ -4,7 +4,7 @@ import { Typography, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import './Home.scss';
 import CardDisplay from '../../components/CardDisplay';
-import AddScenarioDialog from '../../components/AddScenarioDialog';
+import AddPostDialog from '../../components/AddPostDialog';
 
 class Home extends React.Component {
   constructor(props) {
@@ -68,10 +68,11 @@ class Home extends React.Component {
           reloadFunc={this.fetchScenarioData}
         />
 
-        <AddScenarioDialog
+        <AddPostDialog
           isOpen={isAddingScenario}
           handleClose={this.handleDialogClose}
-          reloadFunc={this.fetchScenarioData}
+          submitCallback={this.fetchScenarioData}
+          isScenario
         />
         
       </div>

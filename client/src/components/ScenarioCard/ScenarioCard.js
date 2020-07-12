@@ -18,6 +18,7 @@ import {
 import './ScenarioCard.scss';
 import ResponseCard from '../ResponseCard';
 import ReportDialog from '../ReportDialog';
+import AddPostDialog from '../AddPostDialog';
 import { timeSince } from '../../utils/utils';
 
 class ScenarioCard extends React.Component {
@@ -28,41 +29,10 @@ class ScenarioCard extends React.Component {
       isLiked: false,
       menuAnchorEl: null,
       isReportDialogOpen: false,
+      isAddingResponse: false,
       isScenarioVisible: true,
     };
   }
-
-  // handleAddFormSubmit = async (event) => {
-  //   event.preventDefault();
-
-  //   const { scenario, reloadFunc } = this.props;
-  //   const { addFormName, addFormLocation, addFormText } = this.state;
-
-  //   try {
-  //     const apiResponse = await axios.post('/api/response', {
-  //       scenarioId: scenario.id,
-  //       name: addFormName,
-  //       location: addFormLocation,
-  //       responseText: addFormText,
-  //     });
-  
-  //     if (apiResponse && apiResponse.data && apiResponse.data.isAdded) {
-  //       await reloadFunc();
-        
-  //       this.setState({
-  //         isAddingResponse: false,
-  //         isErrorOnAdd: false,
-  //         addFormName: '',
-  //         addFormLocation: '',
-  //         addFormText: '',
-  //       });
-  //     } else {
-  //       this.setState({ isErrorOnAdd: true });
-  //     }
-  //   } catch (error) {
-  //     this.setState({ isErrorOnAdd: true });
-  //   }
-  // }
 
   handleMenuOpen = (event) => {
     this.setState({ menuAnchorEl: event.currentTarget });
@@ -71,6 +41,26 @@ class ScenarioCard extends React.Component {
   handleMenuClose = () => {
     this.setState({ menuAnchorEl: null });
   };
+
+  handleAddDialogOpen = () => {
+    this.setState({ isAddingResponse: true });
+  }
+
+  handleAddDialogClose = () => {
+    this.setState({ isAddingResponse: false });
+  }
+
+  handleNewResponse = (response) => {
+    const { scenario } = this.props;
+
+    scenario.responses.unshift({
+      reports: 0,
+      dateCreated: { _seconds: Math.round(new Date() / 1000) - 3 },
+      ...response,
+    });
+
+    this.forceUpdate();
+  }
 
   handleReportClick = () => {
     this.handleMenuClose();
@@ -117,6 +107,7 @@ class ScenarioCard extends React.Component {
       isLiked,
       menuAnchorEl,
       isReportDialogOpen,
+      isAddingResponse,
       isScenarioVisible,
     } = this.state;
 
@@ -126,7 +117,7 @@ class ScenarioCard extends React.Component {
 
     const dateText = timeSince(scenario.dateCreated);
 
-    scenario.responses.sort((a, b) => b.dateCreated - a.dateCreated);
+    scenario.responses.sort((a, b) => b.dateCreated._seconds - a.dateCreated._seconds);
 
     const responseCards = scenario.responses.map(response => {
       return <ResponseCard key={response.dateCreated._seconds} response={response} />;
@@ -174,7 +165,7 @@ class ScenarioCard extends React.Component {
               <Typography variant="h6" className="action-text">{isLiked ? 'Liked' : 'Like'}</Typography>
             </div>
 
-            <div>
+            <div onClick={this.handleAddDialogOpen} aria-hidden="true">
               <ChatBubbleOutline fontSize="large" />
               <Typography variant="h6" className="action-text">Reply</Typography>
             </div>
@@ -182,7 +173,7 @@ class ScenarioCard extends React.Component {
         </div>
 
         <div className="response-content">
-          {responseCards}
+          {location.pathname.startsWith('/posts') ? responseCards : responseCards.slice(0, 2)}
         </div>
 
         { !location.pathname.startsWith('/posts') &&
@@ -190,8 +181,8 @@ class ScenarioCard extends React.Component {
               <Link to={`/posts/${scenario.id}`}>
                 <Button>
                   {
-                    scenario.responses.length > 2
-                      ? `View all ${scenario.responses.length} affirmations`
+                    responseCards.length > 2
+                      ? `View all ${responseCards.length} affirmations`
                       : 'View post'
                   }
                 </Button>
@@ -203,6 +194,14 @@ class ScenarioCard extends React.Component {
           isOpen={isReportDialogOpen}
           handleCancel={this.handleReportDialogClose}
           handleConfirm={this.handleReportConfirmed}
+        />
+
+        <AddPostDialog
+          isOpen={isAddingResponse}
+          handleClose={this.handleAddDialogClose}
+          submitCallback={this.handleNewResponse}
+          isScenario={false}
+          scenarioId={scenario.id}
         />
       </div>
     );
@@ -224,7 +223,6 @@ ScenarioCard.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,
-  reloadFunc: PropTypes.func.isRequired,
 };
 
 export default withRouter(ScenarioCard);

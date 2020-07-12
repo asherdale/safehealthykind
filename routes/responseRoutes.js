@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.post('/', async (req, res, next) => {
   try {
-    const { scenarioId, name, location, responseText } = req.body;
-    const isAdded = await addResponse(scenarioId, name, location, responseText);
+    const { scenarioId, name, location, title, responseText } = req.body;
+    const isAdded = await addResponse(scenarioId, name, location, title, responseText);
     res.status(200).send({ isAdded });
   } catch (error) {
     console.log('ERROR: POST /api/response', error);

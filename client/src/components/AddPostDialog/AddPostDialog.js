@@ -12,62 +12,71 @@ import {
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
-import './AddScenarioDialog.scss';
+import './AddPostDialog.scss';
 
-class AddScenarioDialog extends React.Component {
+class AddPostDialog extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      scenarioName: '',
-      scenarioTitle: '',
-      scenarioLocation: '',
-      scenarioText: '',
+      name: '',
+      title: '',
+      location: '',
+      postText: '',
       isErrorOnAdd: false,
     };
   }
 
   handleAddNameChange = (event) => {
-    this.setState({ scenarioName: event.target.value });
+    this.setState({ name: event.target.value });
   }
 
   handleAddTitleChange = (event) => {
-    this.setState({ scenarioTitle: event.target.value });
+    this.setState({ title: event.target.value });
   }
 
   handleAddLocationChange = (event) => {
-    this.setState({ scenarioLocation: event.target.value });
+    this.setState({ location: event.target.value });
   }
 
   handleAddTextChange = (event) => {
-    this.setState({ scenarioText: event.target.value });
+    this.setState({ postText: event.target.value });
   }
 
   handleAddFormSubmit = async (event) => {
     event.preventDefault();
 
-    const { handleClose, reloadFunc } = this.props;
-    const { scenarioName, scenarioTitle, scenarioText, scenarioLocation } = this.state;
+    const { handleClose, submitCallback, isScenario, scenarioId } = this.props;
+    const { name, title, postText, location } = this.state;
 
     try {
-      const apiResponse = await axios.post('/api/scenario', {
-        name: scenarioName,
-        title: scenarioTitle,
-        location: scenarioLocation,
-        scenarioText,
-      });
+      const apiEndpoint = isScenario ? '/api/scenario' : '/api/response';
+      const textKey = isScenario ? 'scenarioText' : 'responseText';
+
+      const newPost = {
+        name,
+        title,
+        location,
+        [textKey]: postText,
+      };
+
+      if (!isScenario) {
+        newPost.scenarioId = scenarioId;
+      }
+
+      const apiResponse = await axios.post(apiEndpoint, newPost);
   
       if (apiResponse && apiResponse.data && apiResponse.data.isAdded) {
         handleClose();
   
-        await reloadFunc();
+        await submitCallback(newPost);
         
         this.setState({
           isErrorOnAdd: false,
-          scenarioName: '',
-          scenarioTitle: '',
-          scenarioLocation: '',
-          scenarioText: '',
+          name: '',
+          title: '',
+          location: '',
+          postText: '',
         });
       } else {
         this.setState({ isErrorOnAdd: true });
@@ -78,14 +87,14 @@ class AddScenarioDialog extends React.Component {
   }
 
   render() {
-    const { isOpen, handleClose } = this.props;
-    const { scenarioName, scenarioTitle, scenarioLocation, scenarioText, isErrorOnAdd } = this.state;
+    const { isOpen, handleClose, isScenario } = this.props;
+    const { name, title, location, postText, isErrorOnAdd } = this.state;
 
     return (
       <Dialog
         open={isOpen}
         onClose={handleClose}
-        className="AddScenarioDialog"
+        className="AddPostDialog"
       >
         <div className="dialog">
           <div className="dialog-top">
@@ -99,11 +108,11 @@ class AddScenarioDialog extends React.Component {
               <TextField
                 className="add-form-field"
                 id="multiline"
-                label="Your story..."
+                label={isScenario ? 'Your story...' : 'Your affirmation...'}
                 multiline
                 variant="outlined"
                 required
-                value={scenarioText}
+                value={postText}
                 onChange={this.handleAddTextChange}
                 InputLabelProps={{ required: false }}
               />
@@ -113,7 +122,7 @@ class AddScenarioDialog extends React.Component {
                   label="Display Name"
                   variant="outlined"
                   required
-                  value={scenarioName}
+                  value={name}
                   onChange={this.handleAddNameChange}
                   InputLabelProps={{ required: false }}
                   inputProps={{ maxLength: 20 }}
@@ -124,10 +133,10 @@ class AddScenarioDialog extends React.Component {
               <Select
                 native
                 required
-                value={scenarioTitle}
+                value={title}
                 variant="outlined"
                 className="add-form-field"
-                inputProps={{ className: scenarioTitle === '' ? 'select-bold' : '' }}
+                inputProps={{ className: title === '' ? 'select-bold' : '' }}
                 onChange={this.handleAddTitleChange}
               >
                 <option value="" disabled>Your Role</option>
@@ -148,10 +157,10 @@ class AddScenarioDialog extends React.Component {
               <Select
                 native
                 required
-                value={scenarioLocation}
+                value={location}
                 variant="outlined"
                 className="add-form-field"
-                inputProps={{ className: scenarioLocation === '' ? 'select-bold' : '' }}
+                inputProps={{ className: location === '' ? 'select-bold' : '' }}
                 onChange={this.handleAddLocationChange}
               >
                 <option value="" disabled>State</option>
@@ -208,7 +217,9 @@ class AddScenarioDialog extends React.Component {
               </Select>
             </div>
 
-            <Button className="submit-button" type="submit" size="large">Share your story</Button>
+            <Button className="submit-button" type="submit" size="large">
+              {isScenario ? 'Share your story' : 'Send your affirmation'}
+            </Button>
 
             {isErrorOnAdd && <Alert severity="error">There was an error when trying to post. Please try again.</Alert>}
           </form>
@@ -218,10 +229,16 @@ class AddScenarioDialog extends React.Component {
   }
 }
 
-AddScenarioDialog.propTypes = {
+AddPostDialog.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  reloadFunc: PropTypes.func.isRequired,
+  submitCallback: PropTypes.func.isRequired,
+  isScenario: PropTypes.bool.isRequired,
+  scenarioId: PropTypes.string,
 };
 
-export default AddScenarioDialog;
+AddPostDialog.defaultProps = {
+  scenarioId: '',
+};
+
+export default AddPostDialog;
