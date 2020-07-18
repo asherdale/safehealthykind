@@ -56,6 +56,7 @@ class ScenarioCard extends React.Component {
 
     scenario.responses.unshift({
       reports: 0,
+      likes: 0,
       dateCreated: { _seconds: Math.round(new Date() / 1000) - 3 },
       ...response,
     });

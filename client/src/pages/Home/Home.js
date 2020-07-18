@@ -58,6 +58,20 @@ class Home extends React.Component {
     }
   }
 
+  handleNewScenario = (scenario) => {
+    const { scenarios } = this.state;
+
+    const newScenario = [{
+      reports: 0,
+      likes: 0,
+      responses: [],
+      dateCreated: { _seconds: Math.round(new Date() / 1000) - 3 },
+      ...scenario,
+    }];
+
+    this.setState({ scenarios: newScenario.concat(scenarios) });
+  }
+
   handleDialogOpen = () => {
     this.setState({ isAddingScenario: true });
   }
@@ -104,7 +118,7 @@ class Home extends React.Component {
         <AddPostDialog
           isOpen={isAddingScenario}
           handleClose={this.handleDialogClose}
-          submitCallback={this.fetchScenarioData}
+          submitCallback={this.handleNewScenario}
           isScenario
         />
         
