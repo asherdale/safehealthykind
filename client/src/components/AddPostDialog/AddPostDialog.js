@@ -142,7 +142,7 @@ class AddPostDialog extends React.Component {
                 <option value="" disabled>Your Role</option>
                 <option value="Doctor">Doctor</option>
                 <option value="Nurse">Nurse</option>
-                <option value="PA">PA</option>
+                <option value="PA">PA/NP</option>
                 <option value="RT">RT</option>
                 <option value="PT">PT</option>
                 <option value="SW">SW</option>

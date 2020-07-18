@@ -35,6 +35,14 @@
 
         #multiline {
           height: 30vh !important;
+
+          @include max-md-height {
+            height: 25vh !important;
+          }
+
+          @include max-sm-height {
+            height: 20vh !important;
+          }
         }
 
         #display-name-helper {
@@ -44,6 +52,10 @@
         .add-form-field{
           width: 90%;
           margin-bottom: 20px;
+
+          @include max-md-height {
+            margin-bottom: 15px;
+          }
 
           .MuiOutlinedInput-notchedOutline {
             border-color: $primary-color;
