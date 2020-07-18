@@ -6,9 +6,16 @@ firebase.initializeApp({
 
 const db = firebase.firestore();
 
-const getAllScenarios = async () => {
+const getScenarioFeed = async (lastDate) => {
   try {
-    const scenarioSnapshot = await db.collection('scenarios').orderBy('dateCreated', 'desc').limit(5).get();
+    const date = lastDate ? new Date(lastDate * 1000) : Date();
+    console.log(lastDate, date);
+
+    const scenarioSnapshot = await db.collection('scenarios')
+      .orderBy('dateCreated', 'desc')
+      .startAfter(date)
+      .limit(10)
+      .get();
     
     const scenarioToResponses = {};
     const scenarioData = scenarioSnapshot.docs.map(doc => {
@@ -28,6 +35,10 @@ const getAllScenarios = async () => {
     });
 
     const scenarioIds = Object.keys(scenarioToResponses);
+
+    if (scenarioIds.length == 0) {
+      return [];
+    }
     
     const responseSnapshot = await db.collectionGroup('responses').where('scenarioId', 'in', scenarioIds).where('reports', '<', 3).get();
     responseSnapshot.docs.forEach(doc => {
@@ -129,7 +140,7 @@ const addResponse = async (scenarioId, name, location, title, responseText) => {
 };
 
 module.exports = {
-  getAllScenarios,
+  getScenarioFeed,
   getScenario,
   updateResponse,
   addResponse,

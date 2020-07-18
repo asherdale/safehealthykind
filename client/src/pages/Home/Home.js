@@ -13,6 +13,9 @@ class Home extends React.Component {
     this.state = {
       isAddingScenario: false,
       isErrorOnFetch: false,
+      lastDate: null,
+      hasMoreScenarios: true,
+      isFetching: false,
     };
   }
   
@@ -22,10 +25,36 @@ class Home extends React.Component {
 
   fetchScenarioData = async () => {
     try {
-      const response = await axios.get('/api/scenario');
-      this.setState({ scenarios: response.data.scenarios, isErrorOnFetch: false });
+      const { lastDate, scenarios, isFetching, hasMoreScenarios } = this.state;
+
+      if (isFetching || !hasMoreScenarios) {
+        return;
+      }
+
+      this.setState({ isFetching: true });
+
+      const params = lastDate ? `?lastDate=${lastDate}` : '';
+      const response = await axios.get(`/api/scenario${params}`);
+
+      if (!response.data.scenarios) {
+        throw new Error();
+      }
+
+      const newScenarios = scenarios ? scenarios.concat(response.data.scenarios) : response.data.scenarios;
+
+      this.setState({
+        scenarios: newScenarios,
+        hasMoreScenarios: response.data.scenarios && response.data.scenarios.length > 0,
+        lastDate: newScenarios.slice(-1)[0].dateCreated._seconds,
+        isErrorOnFetch: false,
+        isFetching: false,
+      });
     } catch {
-      this.setState({ isErrorOnFetch: true });
+      this.setState({
+        isErrorOnFetch: true,
+        hasMoreScenarios: false,
+        isFetching: false,
+      });
     }
   }
 
@@ -38,7 +67,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { scenarios, isAddingScenario, isErrorOnFetch } = this.state;
+    const { scenarios, isAddingScenario, hasMoreScenarios, isErrorOnFetch } = this.state;
 
     const isInternetExplorer = false || !!document.documentMode;
 
@@ -66,7 +95,11 @@ class Home extends React.Component {
 
         {isErrorOnFetch && <Alert severity="error">There was an error when communicating with the server. Please try again.</Alert>}
 
-        <CardDisplay scenarios={scenarios} />
+        <CardDisplay
+          scenarios={scenarios}
+          hasMoreScenarios={hasMoreScenarios}
+          infiniteScrollFunc={this.fetchScenarioData}
+        />
 
         <AddPostDialog
           isOpen={isAddingScenario}

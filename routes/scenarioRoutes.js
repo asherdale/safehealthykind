@@ -1,11 +1,12 @@
 const express = require("express");
-const { getAllScenarios, getScenario, addScenario, updateScenario } = require('../api/firebase');
+const { getScenarioFeed, getScenario, addScenario, updateScenario } = require('../api/firebase');
 
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   try {
-    const scenarios = req.query.id ? await getScenario(req.query.id) : await getAllScenarios();
+    const scenarios = req.query.id ? await getScenario(req.query.id) : await getScenarioFeed(req.query.lastDate);
+    
     res.status(200).send({ scenarios });
   } catch (error) {
     console.log('ERROR: GET /api/scenario', error);

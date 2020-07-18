@@ -9,4 +9,11 @@
     border-radius: 10px;
     margin-bottom: 20px;
   }
+
+  .infinite-scroll {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
