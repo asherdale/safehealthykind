@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Skeleton, Alert } from '@material-ui/lab';
+import { Alert } from '@material-ui/lab';
 import './Posts.scss';
 import ScenarioCard from '../../components/ScenarioCard';
 
@@ -33,9 +33,9 @@ class Posts extends React.Component {
     const { scenario, isErrorOnFetch } = this.state;
 
     return (
-      <div className="Posts">
+      <div className={scenario ? 'Posts' : 'Posts loading'}>
         {isErrorOnFetch && <Alert severity="error">Either this post does not exist, or there was an error when communicating with the server. Please try again.</Alert>}
-        {scenario ? <ScenarioCard isSolo scenario={scenario} /> : <Skeleton variant="rect" height="100vh" width="100vw" />}
+        {scenario ? <ScenarioCard isSolo scenario={scenario} /> : <div className="loader">Loading ...</div>}
       </div>
     );
   }

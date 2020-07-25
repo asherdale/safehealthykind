@@ -2,8 +2,16 @@
 
 .Posts {
   background-color: $secondary-color;
-  top: 10px;
+  min-height: 100vh;
   align-content: center;
+
+  @include md {
+    padding: 16px;
+  }
+
+  &.loading {
+    padding: 16px;
+  }
 
   a:link, a:visited, a:hover, a:active {
     text-decoration: none;
@@ -13,5 +21,10 @@
     position: fixed;
     top: 13vh;
     left: 40px;
+  }
+
+  .loader {
+    font-size: 3rem;
+    margin: 50px auto;
   }
 }

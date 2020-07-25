@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
 import InfiniteScroll from 'react-infinite-scroller';
 import './CardDisplay.scss';
 import ScenarioCard from '../ScenarioCard';
 
 function CardDisplay({ scenarios, hasMoreScenarios, infiniteScrollFunc }) {
-  const cards = scenarios
-    ? scenarios.map(scenario => <ScenarioCard key={scenario.id} scenario={scenario} />)
-    : [<Skeleton className="skeleton" key={0} variant="rect" width="100%" height={400} />];
+  const cards = scenarios ? scenarios.map(scenario => <ScenarioCard key={scenario.id} scenario={scenario} />) : [];
 
   return (
     <Grid

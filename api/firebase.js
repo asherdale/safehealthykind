@@ -9,7 +9,6 @@ const db = firebase.firestore();
 const getScenarioFeed = async (lastDate) => {
   try {
     const date = lastDate ? new Date(lastDate * 1000) : Date();
-    console.log(lastDate, date);
 
     const scenarioSnapshot = await db.collection('scenarios')
       .orderBy('dateCreated', 'desc')

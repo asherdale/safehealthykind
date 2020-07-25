@@ -24,7 +24,13 @@ class AddPostDialog extends React.Component {
       location: '',
       postText: '',
       isErrorOnAdd: false,
+      isLoading: false,
     };
+  }
+
+  getSubmitButtonText = () => {
+    const { isScenario } = this.props;
+    return isScenario ? 'Share your story' : 'Send your affirmation';
   }
 
   handleAddNameChange = (event) => {
@@ -45,6 +51,7 @@ class AddPostDialog extends React.Component {
 
   handleAddFormSubmit = async (event) => {
     event.preventDefault();
+    this.setState({ isLoading: true });
 
     const { handleClose, submitCallback, isScenario, scenarioId } = this.props;
     const { name, title, postText, location } = this.state;
@@ -77,18 +84,19 @@ class AddPostDialog extends React.Component {
           title: '',
           location: '',
           postText: '',
+          isLoading: false,
         });
       } else {
-        this.setState({ isErrorOnAdd: true });
+        this.setState({ isErrorOnAdd: true, isLoading: false });
       }
     } catch (error) {
-      this.setState({ isErrorOnAdd: true });
+      this.setState({ isErrorOnAdd: true, isLoading: false });
     }
   }
 
   render() {
     const { isOpen, handleClose, isScenario } = this.props;
-    const { name, title, location, postText, isErrorOnAdd } = this.state;
+    const { name, title, location, postText, isErrorOnAdd, isLoading } = this.state;
 
     return (
       <Dialog
@@ -217,8 +225,14 @@ class AddPostDialog extends React.Component {
               </Select>
             </div>
 
-            <Button className="submit-button" type="submit" size="large">
-              {isScenario ? 'Share your story' : 'Send your affirmation'}
+            <Button className="submit-button" type="submit" size="large" disabled={isLoading}>
+              {
+                isLoading ? (
+                  <div className="loader">Loading ...</div>
+                ) : (
+                  this.getSubmitButtonText()
+                )
+              }
             </Button>
 
             {isErrorOnAdd && <Alert severity="error">There was an error when trying to post. Please try again.</Alert>}
