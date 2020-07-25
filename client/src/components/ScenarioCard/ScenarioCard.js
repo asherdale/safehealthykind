@@ -16,6 +16,7 @@ import {
   ChatBubbleOutline,
   ArrowBack,
 } from '@material-ui/icons';
+import TextTruncate from 'react-text-truncate';
 import './ScenarioCard.scss';
 import ResponseCard from '../ResponseCard';
 import ReportDialog from '../ReportDialog';
@@ -31,6 +32,7 @@ class ScenarioCard extends React.Component {
       menuAnchorEl: null,
       isReportDialogOpen: false,
       isAddingResponse: false,
+      isTextExpanded: props.location.state && props.location.state.expanded,
       isScenarioVisible: localStorage.getItem(`${props.scenario.id}_report`) !== 'true',
     };
   }
@@ -114,6 +116,26 @@ class ScenarioCard extends React.Component {
     history.replace('/');
   }
 
+  handleExpandToggle = () => {
+    const { isSolo } = this.props;
+
+    if (!isSolo) {
+      return;
+    }
+
+    this.setState(prevState => ({ isTextExpanded: !prevState.isTextExpanded }));
+  }
+
+  getTruncateLink = (scenarioId) => {
+    const { isSolo } = this.props;
+
+    return isSolo ? (
+      <span className="link-button">See more</span>
+    ): (
+      <Link className="link-button" to={{ pathname: `/posts/${scenarioId}`, state: { fromHome: true, expanded: true } }}>See more</Link>
+    );
+  }
+
   render() {
     const { scenario, location, isSolo } = this.props;
 
@@ -123,6 +145,7 @@ class ScenarioCard extends React.Component {
       isReportDialogOpen,
       isAddingResponse,
       isScenarioVisible,
+      isTextExpanded,
     } = this.state;
 
     if (!isScenarioVisible) {
@@ -166,7 +189,19 @@ class ScenarioCard extends React.Component {
           </div>
 
           <div className="scenario-mid">
-            <Typography variant="h5">{scenario.scenarioText}</Typography>
+            <Typography variant="h5" onClick={this.handleExpandToggle}>
+              <TextTruncate
+                line={!isTextExpanded && 10}
+                element="span"
+                truncateText="…"
+                text={scenario.scenarioText}
+                textTruncateChild={this.getTruncateLink(scenario.id)}
+              />
+              {isTextExpanded && <>
+                <br />
+                <span className="link-button">See less</span>
+              </>}
+            </Typography>
           </div>
 
           <div className="scenario-bottom">
