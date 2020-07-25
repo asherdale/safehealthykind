@@ -30,7 +30,7 @@ class AddPostDialog extends React.Component {
 
   getSubmitButtonText = () => {
     const { isScenario } = this.props;
-    return isScenario ? 'Share your story' : 'Send your affirmation';
+    return isScenario ? 'Share your story' : 'Send your reply';
   }
 
   handleAddNameChange = (event) => {
@@ -116,13 +116,14 @@ class AddPostDialog extends React.Component {
               <TextField
                 className="add-form-field"
                 id="multiline"
-                label={isScenario ? 'Your story...' : 'Your affirmation...'}
+                label={isScenario ? 'Your story...' : 'Your reply...'}
                 multiline
                 variant="outlined"
                 required
                 value={postText}
                 onChange={this.handleAddTextChange}
                 InputLabelProps={{ required: false }}
+                inputProps={{ maxLength: isScenario ? 1500 : 350 }}
               />
 
               <FormControl className="add-form-field">
@@ -151,10 +152,11 @@ class AddPostDialog extends React.Component {
                 <option value="Doctor">Doctor</option>
                 <option value="Nurse">Nurse</option>
                 <option value="PA">PA/NP</option>
-                <option value="RT">RT</option>
                 <option value="PT">PT</option>
                 <option value="SW">SW</option>
                 <option value="RT">RT</option>
+                <option value="RT">Administrator</option>
+                <option value="RT">Child Life Specialist</option>
                 <option value="Technician">Technician</option>
                 <option value="Clinical Assistant">Clinical Assistant</option>
                 <option value="Student/Trainee">Student/Trainee</option>
