@@ -69,7 +69,7 @@ class AddPostDialog extends React.Component {
       if (apiResponse && apiResponse.data && apiResponse.data.isAdded) {
         handleClose();
   
-        await submitCallback(newPost);
+        submitCallback(newPost);
         
         this.setState({
           isErrorOnAdd: false,
