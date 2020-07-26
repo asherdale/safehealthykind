@@ -5,6 +5,7 @@ import { Alert } from '@material-ui/lab';
 import './Home.scss';
 import CardDisplay from '../../components/CardDisplay';
 import AddPostDialog from '../../components/AddPostDialog';
+import CopyLinkDialog from '../../components/CopyLinkDialog';
 
 class Home extends React.Component {
   constructor(props) {
@@ -12,8 +13,8 @@ class Home extends React.Component {
 
     this.state = {
       isAddingScenario: false,
+      isCopyingLink: false,
       isErrorOnFetch: false,
-      lastDate: null,
       hasMoreScenarios: true,
       isFetching: false,
     };
@@ -69,19 +70,35 @@ class Home extends React.Component {
       ...scenario,
     }];
 
-    this.setState({ scenarios: newScenario.concat(scenarios) });
+    this.setState({ scenarios: newScenario.concat(scenarios), docIdToCopy: scenario.id });
+    this.handleCopyLinkDialogOpen();
   }
 
-  handleDialogOpen = () => {
+  handleNewScenarioDialogOpen = () => {
     this.setState({ isAddingScenario: true });
   }
 
-  handleDialogClose = () => {
+  handleNewScenarioDialogClose = () => {
     this.setState({ isAddingScenario: false });
   }
 
+  handleCopyLinkDialogOpen = () => {
+    this.setState({ isCopyingLink: true });
+  }
+
+  handleCopyLinkDialogClose = () => {
+    this.setState({ isCopyingLink: false });
+  }
+
   render() {
-    const { scenarios, isAddingScenario, hasMoreScenarios, isErrorOnFetch } = this.state;
+    const {
+      scenarios,
+      isAddingScenario,
+      hasMoreScenarios,
+      isErrorOnFetch,
+      isCopyingLink,
+      docIdToCopy,
+    } = this.state;
 
     const isInternetExplorer = false || !!document.documentMode;
 
@@ -103,7 +120,7 @@ class Home extends React.Component {
           </Typography>
 
           <div className="share-cta">
-            <Button onClick={this.handleDialogOpen}>SHARE YOUR STORY</Button>
+            <Button onClick={this.handleNewScenarioDialogOpen}>SHARE YOUR STORY</Button>
           </div>
         </div>
 
@@ -117,11 +134,16 @@ class Home extends React.Component {
 
         <AddPostDialog
           isOpen={isAddingScenario}
-          handleClose={this.handleDialogClose}
+          handleClose={this.handleNewScenarioDialogClose}
           submitCallback={this.handleNewScenario}
           isScenario
         />
-        
+
+        {docIdToCopy && <CopyLinkDialog
+          isOpen={isCopyingLink}
+          handleClose={this.handleCopyLinkDialogClose}
+          docId={docIdToCopy}
+        />}
       </div>
     );
   }

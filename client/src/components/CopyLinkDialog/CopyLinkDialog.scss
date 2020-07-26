@@ -1,0 +1,57 @@
+@import '../../assets/styles/base';
+
+.CopyLinkDialog {
+
+  .MuiDialog-paper {
+    border-radius: 16px;
+    width: 90%;
+    margin: 0;
+    max-height: none;
+  }
+
+  .dialog {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px;
+
+    .dialog-top {
+      display: flex;
+      justify-content: flex-end;
+
+      .MuiButtonBase-root {
+        padding: 4px;
+      }
+    }
+
+    .dialog-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .copy-title {
+        font-weight: 400;
+      }
+
+      .copy-description {
+        margin: 20px 0;
+        text-align: justify;
+      }
+
+      #copy-button {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+#copy-button-popover {
+  .MuiPaper-root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    margin-top: 35px;
+  }
+}

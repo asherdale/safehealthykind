@@ -76,6 +76,7 @@ class AddPostDialog extends React.Component {
       if (apiResponse && apiResponse.data && apiResponse.data.isAdded) {
         handleClose();
   
+        newPost.id = apiResponse.data.docId;
         submitCallback(newPost);
         
         this.setState({
@@ -151,12 +152,12 @@ class AddPostDialog extends React.Component {
                 <option value="" disabled>Your Role</option>
                 <option value="Doctor">Doctor</option>
                 <option value="Nurse">Nurse</option>
-                <option value="PA">PA/NP</option>
+                <option value="PA/NP">PA/NP</option>
                 <option value="PT">PT</option>
                 <option value="SW">SW</option>
                 <option value="RT">RT</option>
-                <option value="RT">Administrator</option>
-                <option value="RT">Child Life Specialist</option>
+                <option value="Administrator">Administrator</option>
+                <option value="Child Life Specialist">Child Life Specialist</option>
                 <option value="Technician">Technician</option>
                 <option value="Clinical Assistant">Clinical Assistant</option>
                 <option value="Student/Trainee">Student/Trainee</option>

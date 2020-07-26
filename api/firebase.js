@@ -100,8 +100,8 @@ const addScenario = async (name, title, location, scenarioText) => {
   };
 
   try {
-    await db.collection('scenarios').doc().set(scenario);
-    return true;
+    const docRef = await db.collection('scenarios').add(scenario);
+    return docRef && docRef.id;
   } catch (error) {
     console.log(error);
     return false;
@@ -131,8 +131,8 @@ const addResponse = async (scenarioId, name, location, title, responseText) => {
   };
 
   try {
-    await db.collection('scenarios').doc(scenarioId).collection('responses').doc().set(response);
-    return true;
+    const docRef = await db.collection('scenarios').doc(scenarioId).collection('responses').add(response);
+    return docRef && docRef.id;
   } catch (error) {
     console.log(error);
     return false;
