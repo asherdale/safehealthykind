@@ -6,10 +6,14 @@ handlers:
   - url: /api/.*
     secure: always
     script: auto
-  - url: /
+  - url: /static
+    secure: always
+    static_dir: client/build/static
+  - url: /(.*\.(json|ico|js))$
+    secure: always
+    static_files: client/build/\1
+    upload: client/build/.*\.(json|ico|js)$
+  - url: .*
     secure: always
     static_files: client/build/index.html
     upload: client/build/index.html
-  - url: /
-    secure: always
-    static_dir: client/build
