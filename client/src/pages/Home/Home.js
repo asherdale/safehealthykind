@@ -107,7 +107,7 @@ class Home extends React.Component {
         {isInternetExplorer && <Alert severity="error">Internet Explorer is not a supported browser. Please consider using a browser like Google Chrome, Firefox, or Microsoft Edge.</Alert>}
 
         <div className="intro">
-          <Typography variant="h4" id="intro-1">
+          <Typography variant="subtitle1" id="intro-1">
             HEALTHCARE WORKERS
           </Typography>
   
@@ -115,7 +115,7 @@ class Home extends React.Component {
             How&apos;s your day, <span className="purp">really?</span>
           </Typography>
 
-          <Typography variant="subtitle1" id="intro-3">
+          <Typography variant="body1" id="intro-3">
             We&apos;re here to listen. SafeHealthyKind is a safe space for you to share your experiences, frustrations, and fears, and get support from your peers.
           </Typography>
 

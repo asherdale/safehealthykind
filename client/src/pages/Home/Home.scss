@@ -14,33 +14,22 @@
             font-weight: 600;
 
             @include max-md-height {
-                font-size: 1.5rem;
                 margin-top: 10vh;
             }
 
             @include max-sm-height {
-                font-size: 1.25rem;
                 margin-top: 5vh;
             }
         }
 
         #intro-2 {
             font-weight: 600;
-            margin: 30px 20px;
-
-            @include max-sm-height {
-                margin-top: 25px;
-                font-size: 2.75rem;
-            }
+            margin: 25px 20px;
         }
 
         #intro-3 {
-            margin: 10px 20px;
+            margin: 5px 20px;
             max-width: 600px;
-
-            @include max-sm-height {
-                margin-top: 5px;
-            }
         }
 
         .purp {

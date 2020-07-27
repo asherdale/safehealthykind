@@ -189,7 +189,7 @@ class ScenarioCard extends React.Component {
           </div>
 
           <div className="scenario-mid">
-            <Typography variant="h5" onClick={this.handleExpandToggle}>
+            <Typography variant="body1" onClick={this.handleExpandToggle}>
               <TextTruncate
                 line={!isTextExpanded && 10}
                 element="span"
@@ -207,19 +207,19 @@ class ScenarioCard extends React.Component {
           <div className="scenario-bottom">
             <div className="likes">
               <FavoriteBorder />
-              <Typography variant="h5" className="like-number">{scenario.likes}</Typography>
+              <Typography variant="body1" className="like-number">{scenario.likes}</Typography>
             </div>
           </div>
 
           <div className="actions">
             <div onClick={this.handleLikeClick} aria-hidden="true" className={isLiked ? 'liked' : ''}>
-              {isLiked ? <Favorite fontSize="large" /> : <FavoriteBorder fontSize="large" />}
-              <Typography variant="h6" className="action-text">{isLiked ? 'Liked' : 'Like'}</Typography>
+              {isLiked ? <Favorite /> : <FavoriteBorder />}
+              <Typography variant="body1" className="action-text">{isLiked ? 'Liked' : 'Like'}</Typography>
             </div>
 
             <div onClick={this.handleAddDialogOpen} aria-hidden="true">
-              <ChatBubbleOutline fontSize="large" />
-              <Typography variant="h6" className="action-text">Reply</Typography>
+              <ChatBubbleOutline />
+              <Typography variant="body1" className="action-text">Reply</Typography>
             </div>
           </div>
         </div>

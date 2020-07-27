@@ -103,6 +103,11 @@
       box-shadow: 0px 2px 4px rgba(23, 27, 30, 0.1);
       display: flex;
       justify-content: space-evenly;
+
+      @include md {
+        left: 25%;
+        right: 25%;
+      }
   
       > div {
         display: flex;
