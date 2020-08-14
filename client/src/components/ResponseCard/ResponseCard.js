@@ -7,7 +7,7 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
-import { MoreHoriz } from '@material-ui/icons';
+import { MoreHoriz, Favorite, FavoriteBorder } from '@material-ui/icons';
 import './ResponseCard.scss';
 import { timeSince } from '../../utils/utils';
 import ReportDialog from '../ReportDialog';
@@ -18,6 +18,7 @@ class ResponseCard extends React.Component {
 
     this.state = {
       isReportDialogOpen: false,
+      isLiked: localStorage.getItem(`${props.response.id}_like`) === 'true',
       isResponseVisible: localStorage.getItem(`${props.response.id}_report`) !== 'true',
       menuAnchorEl: null,
     };
@@ -57,8 +58,24 @@ class ResponseCard extends React.Component {
     this.setState({ isResponseVisible: false });
   }
 
+  handleLikeClick = () => {
+    this.setState(prevState => ({ isLiked: !prevState.isLiked }));
+
+    const { isLiked } = this.state;
+    const { response } = this.props;
+
+    response.likes += isLiked ? -1 : 1;
+    localStorage.setItem(`${response.id}_like`, !isLiked);
+
+    axios.put('/api/response', {
+      scenarioId: response.scenarioId,
+      responseId: response.id,
+      update: { likes: response.likes },
+    });
+  }
+
   render() {
-    const { isReportDialogOpen, isResponseVisible, menuAnchorEl } = this.state;
+    const { isReportDialogOpen, isResponseVisible, isLiked, menuAnchorEl } = this.state;
     const { response } = this.props;
 
     if (!isResponseVisible) {
@@ -72,7 +89,7 @@ class ResponseCard extends React.Component {
         <div className="response-top">
           <div>
             <Typography className="header" variant="body2">{response.title} from {response.location}</Typography>
-            <Typography variant="body2">{response.name}&nbsp;&bull;&nbsp;{dateText}</Typography>
+            <Typography className="subheader" variant="body2">{response.name}&nbsp;&bull;&nbsp;{dateText}</Typography>
           </div>
 
           <div className="response-menu">
@@ -91,8 +108,19 @@ class ResponseCard extends React.Component {
           </div>
         </div>
 
-        <div className="response-bottom">
+        <div className="response-mid">
           <Typography variant="body1" className="response">{response.responseText}</Typography>
+        </div>
+
+        <div className="response-bottom">
+          <div onClick={this.handleLikeClick} aria-hidden="true" className={isLiked ? 'liked' : ''}>
+            {isLiked ? <Favorite fontSize="small" /> : <FavoriteBorder fontSize="small" />}
+            <Typography variant="body1" className="action-text">{isLiked ? 'Liked' : 'Like'}</Typography>
+          </div>
+
+          {response.likes > 0 && <Typography variant="body1" className="response-likes">
+            &nbsp;&bull;&nbsp;{response.likes} likes
+          </Typography>}
         </div>
 
         <ReportDialog
@@ -115,6 +143,7 @@ ResponseCard.propTypes = {
     dateCreated: PropTypes.object.isRequired,
     scenarioId: PropTypes.string.isRequired,
     reports: PropTypes.number.isRequired,
+    likes: PropTypes.number.isRequired,
   }).isRequired,
 };
 

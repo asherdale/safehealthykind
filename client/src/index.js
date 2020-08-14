@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { CssBaseline } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import 'typeface-poppins';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
@@ -10,9 +9,6 @@ const theme = createMuiTheme({
   palette: {
     primary: { main: '#3845A8' },
     secondary: { main: '#6772c8' },
-  },
-  typography: {
-    fontFamily: 'poppins',
   },
 });
 

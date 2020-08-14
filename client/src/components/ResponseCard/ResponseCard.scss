@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   margin: 25px 20px 0;
+  color: $charcoal4;
 
   .response-top {
     display: flex;
@@ -11,7 +12,16 @@
     margin-bottom: 8px;
 
     .header {
-      font-weight: 500;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .subheader {
+      font-size: 12px;
+    }
+
+    .response {
+      font-size: 14px;
     }
 
     .MuiButtonBase-root {
@@ -19,7 +29,36 @@
     }
   }
 
-  .response-bottom {
+  .response-mid {
     white-space: pre-line;
+  }
+
+  .response-bottom {
+    display: flex;
+    align-items: center;
+    color: $charcoal2;
+    padding: 14px 0 6px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+
+    > div {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      
+      .action-text {
+        text-transform: uppercase;
+        margin-left: 4px;
+        font-size: 12px;
+      }
+    }
+
+    .liked {
+      color: $teal4;
+    }
+
+    .response-likes {
+      font-size: 12px;
+    }
   }
 }
