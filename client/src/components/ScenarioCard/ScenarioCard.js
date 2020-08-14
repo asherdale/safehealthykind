@@ -204,12 +204,12 @@ class ScenarioCard extends React.Component {
             </Typography>
           </div>
 
-          <div className="scenario-bottom">
+          {scenario.likes > 0 && <div className="scenario-bottom">
             <div className="likes">
               <FavoriteBorder />
               <Typography variant="body1" className="like-number">{scenario.likes}</Typography>
             </div>
-          </div>
+          </div>}
 
           <div className="actions">
             <div onClick={this.handleLikeClick} aria-hidden="true" className={isLiked ? 'liked' : ''}>
@@ -224,9 +224,21 @@ class ScenarioCard extends React.Component {
           </div>
         </div>
 
-        <div className="response-content">
-          {location.pathname.startsWith('/posts') ? responseCards : responseCards.slice(0, 2)}
-        </div>
+        { 
+          responseCards.length > 0 ? (
+            <div className="response-content">
+              {location.pathname.startsWith('/posts') ? responseCards : responseCards.slice(0, 2)}
+            </div>
+          ) : (
+            <div className="empty-responses">
+              <Typography variant="body1">
+                Looks like there aren’t any replies yet.
+                <br />
+                Be the first to send a kind word.
+              </Typography>
+            </div>
+          )
+        }
 
         { location.pathname === '/' &&
             <div className="detail-button">

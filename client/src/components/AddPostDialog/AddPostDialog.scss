@@ -58,11 +58,11 @@
           }
 
           .MuiOutlinedInput-notchedOutline {
-            border-color: $primary-color;
+            border-color: $purple3;
           }
 
           .MuiInputLabel-formControl, .select-bold {
-            color: $primary-color;
+            color: $purple3;
             font-weight: 600;
           }
         }
@@ -72,7 +72,7 @@
         width: 100%;
         display: flex;
         justify-content: center;
-        background-color: $primary-color;
+        background-color: $purple3;
         padding: 10px;
         
         .MuiButton-label {
