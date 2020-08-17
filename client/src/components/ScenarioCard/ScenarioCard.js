@@ -27,6 +27,8 @@ class ScenarioCard extends React.Component {
   constructor(props) {
     super(props);
 
+    props.scenario.responses.sort((a, b) => b.likes - a.likes);
+
     this.state = {
       isLiked: localStorage.getItem(`${props.scenario.id}_like`) === 'true',
       menuAnchorEl: null,
@@ -154,8 +156,6 @@ class ScenarioCard extends React.Component {
 
     const dateText = timeSince(scenario.dateCreated);
 
-    scenario.responses.sort((a, b) => b.dateCreated._seconds - a.dateCreated._seconds);
-
     const responseCards = scenario.responses.map(response => {
       return <ResponseCard key={response.dateCreated._seconds} response={response} />;
     });
@@ -182,6 +182,15 @@ class ScenarioCard extends React.Component {
                 keepMounted
                 open={Boolean(menuAnchorEl)}
                 onClose={this.handleMenuClose}
+                getContentAnchorEl={null}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
               >
                 <MenuItem onClick={this.handleReportClick}>Report</MenuItem>
               </Menu>
@@ -217,6 +226,8 @@ class ScenarioCard extends React.Component {
               <Typography variant="body1" className="action-text">{isLiked ? 'Liked' : 'Like'}</Typography>
             </div>
 
+            <div className="action-line" />
+
             <div onClick={this.handleAddDialogOpen} aria-hidden="true">
               <ChatBubbleOutline />
               <Typography variant="body1" className="action-text">Reply</Typography>
@@ -246,7 +257,7 @@ class ScenarioCard extends React.Component {
                 <Button>
                   {
                     responseCards.length > 2
-                      ? `View all ${responseCards.length} affirmations`
+                      ? `View all ${responseCards.length} replies`
                       : 'View post'
                   }
                 </Button>

@@ -39,7 +39,11 @@ const getScenarioFeed = async (lastDate) => {
       return [];
     }
     
-    const responseSnapshot = await db.collectionGroup('responses').where('scenarioId', 'in', scenarioIds).where('reports', '<', 3).get();
+    const responseSnapshot = await db.collectionGroup('responses')
+      .where('scenarioId', 'in', scenarioIds)
+      .where('reports', '<', 3)
+      .get();
+
     responseSnapshot.docs.forEach(doc => {
       const response = { id: doc.id, ...doc.data() };
       (scenarioToResponses[response.scenarioId] || []).push(response);

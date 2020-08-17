@@ -69,6 +69,12 @@ $screen-xl-min: 1200px;
   }
 }
 
+@mixin max-md-width {
+  @media (max-width: #{$screen-md-min}) {
+      @content;
+  }
+}
+
 @mixin max-md-height {
   @media (max-height: #{$screen-md-min-height}) {
       @content;

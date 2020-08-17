@@ -102,6 +102,15 @@ class ResponseCard extends React.Component {
               keepMounted
               open={Boolean(menuAnchorEl)}
               onClose={this.handleMenuClose}
+              getContentAnchorEl={null}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
             >
               <MenuItem onClick={this.handleReportClick}>Report</MenuItem>
             </Menu>

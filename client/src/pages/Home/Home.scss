@@ -8,6 +8,7 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
+        color: $charcoal4;
 
         #intro-1 {
             margin-top: 20vh;
@@ -40,7 +41,7 @@
             position: fixed;
             right: 20px;
             bottom: 20px;
-            background-color: $purple3;
+            background-color: $teal2;
             padding: 16px;
             border-radius: 100px;
             z-index: 99;
@@ -51,7 +52,7 @@
             }
 
             .MuiButton-label {
-                color: white;
+                color: $charcoal4;
                 font-weight: 600;
 
                 @include max-sm-height {
