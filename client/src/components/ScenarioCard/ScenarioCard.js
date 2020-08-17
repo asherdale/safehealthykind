@@ -8,6 +8,7 @@ import {
   Menu,
   MenuItem,
   Button,
+  Snackbar,
 } from '@material-ui/core';
 import {
   MoreHoriz,
@@ -15,6 +16,8 @@ import {
   FavoriteBorder,
   ChatBubbleOutline,
   ArrowBack,
+  OutlinedFlag,
+  InsertLink,
 } from '@material-ui/icons';
 import TextTruncate from 'react-text-truncate';
 import './ScenarioCard.scss';
@@ -36,6 +39,7 @@ class ScenarioCard extends React.Component {
       isAddingResponse: false,
       isTextExpanded: props.location.state && props.location.state.expanded,
       isScenarioVisible: localStorage.getItem(`${props.scenario.id}_report`) !== 'true',
+      isSnackbarOpen: false,
     };
   }
 
@@ -93,6 +97,18 @@ class ScenarioCard extends React.Component {
     this.setState({ isScenarioVisible: false });
   }
 
+  handleCopyLinkClick = () => {
+    this.handleMenuClose();
+
+    const { scenario } = this.props;
+
+    const pathname = `/posts/${scenario.id}`;
+    const fullLink = window.location.href.slice(0, -1) + pathname;
+
+    navigator.clipboard.writeText(fullLink);
+    this.handleSnackbarOpen();
+  }
+
   handleLikeClick = () => {
     this.setState(prevState => ({ isLiked: !prevState.isLiked }));
 
@@ -138,6 +154,14 @@ class ScenarioCard extends React.Component {
     );
   }
 
+  handleSnackbarClose = () => {
+    this.setState({ isSnackbarOpen: false });
+  };
+
+  handleSnackbarOpen = () => {
+    this.setState({ isSnackbarOpen: true });
+  }
+
   render() {
     const { scenario, location, isSolo } = this.props;
 
@@ -148,6 +172,7 @@ class ScenarioCard extends React.Component {
       isAddingResponse,
       isScenarioVisible,
       isTextExpanded,
+      isSnackbarOpen,
     } = this.state;
 
     if (!isScenarioVisible) {
@@ -192,7 +217,13 @@ class ScenarioCard extends React.Component {
                   horizontal: 'center',
                 }}
               >
-                <MenuItem onClick={this.handleReportClick}>Report</MenuItem>
+                <MenuItem className="more-menu-item" onClick={this.handleCopyLinkClick}>
+                  <InsertLink/> Copy Link
+                </MenuItem>
+
+                <MenuItem className="more-menu-item" onClick={this.handleReportClick}>
+                  <OutlinedFlag/> Report
+                </MenuItem>
               </Menu>
             </div>
           </div>
@@ -277,6 +308,18 @@ class ScenarioCard extends React.Component {
           submitCallback={this.handleNewResponse}
           isScenario={false}
           scenarioId={scenario.id}
+        />
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={isSnackbarOpen}
+          onClose={this.handleSnackbarClose}
+          message="Link Copied"
+          autoHideDuration={1000}
+          className="link-copied-snackbar"
         />
       </div>
     );

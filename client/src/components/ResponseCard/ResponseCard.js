@@ -7,7 +7,12 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
-import { MoreHoriz, Favorite, FavoriteBorder } from '@material-ui/icons';
+import {
+  MoreHoriz,
+  Favorite,
+  FavoriteBorder,
+  OutlinedFlag,
+} from '@material-ui/icons';
 import './ResponseCard.scss';
 import { timeSince } from '../../utils/utils';
 import ReportDialog from '../ReportDialog';
@@ -112,7 +117,9 @@ class ResponseCard extends React.Component {
                 horizontal: 'center',
               }}
             >
-              <MenuItem onClick={this.handleReportClick}>Report</MenuItem>
+              <MenuItem className="more-menu-item" onClick={this.handleReportClick}>
+                <OutlinedFlag /> Report
+              </MenuItem>
             </Menu>
           </div>
         </div>

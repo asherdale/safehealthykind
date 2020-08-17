@@ -202,3 +202,26 @@
     }
   }
 }
+
+.more-menu-item.MuiButtonBase-root {
+  color: $charcoal2;
+
+  .MuiSvgIcon-root {
+    margin-right: 10px;
+  }
+}
+
+.link-copied-snackbar {
+  width: 142px;
+  margin: auto;
+
+  .MuiSnackbarContent-root {
+    background-color: $charcoal3;
+
+    .MuiSnackbarContent-message {
+      margin: auto;
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+}
