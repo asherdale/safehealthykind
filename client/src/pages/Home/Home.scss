@@ -1,74 +1,105 @@
 @import '../../assets/styles/base';
 
 .Home {
-    .intro {
+    .home-copy {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
         background: linear-gradient(180deg, $gradient-start 0%, $gradient-end 100%);
         height: 90vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        color: $charcoal4;
+        padding: 0 32px 15vh;
 
         @include md {
             align-items: flex-start;
-            padding-left: 120px;
+            padding: 0 80px;
         }
 
-        #intro-2 {
-            font-weight: 600;
-            margin: 25px 20px;
-            line-height: 49px;
-            margin-top: 20vh;
+        @include lg {
+            padding: 0 120px;
+        }
 
-            @include max-md-height {
-                margin-top: 10vh;
+        .desktop-ill {
+            height: 100%;
+            padding-bottom: 10vh;
+            display: none;
+
+            @include md {
+                display: flex;
             }
+        }
 
-            @include max-sm-height {
-                margin-top: 5vh;
+        .intro {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: $charcoal4;
+
+            @include md {
+                width: 40vw;
+                height: 100%;
+                padding-bottom: 10vh;
             }
-        }
-
-        #intro-3 {
-            margin: 20px 20px 0;
-            max-width: 600px;
-            line-height: 150%;
-        }
-
-        .purp {
-            color: $purple2;
-        }
-
-        .share-cta {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            background-color: $teal2;
-            padding: 16px;
-            border-radius: 100px;
-            z-index: 99;
-
-            border: 1px solid $teal3;
-            box-sizing: border-box;
-            box-shadow: 0px 4px 12px rgba(186, 199, 213, 0.5);
-
-            @include lg {
-                right: 50px;
-                bottom: 50px;
-            }
-
-            .MuiButton-label {
-                color: $charcoal4;
+    
+            #intro-2 {
                 font-weight: 600;
+                margin: 25px 0;
+                font-size: 39px;
+                line-height: 49px;
+                letter-spacing: -0.5px;
 
-                @include max-sm-height {
-                    font-size: 0.7rem;
+                @include md {
+                    font-size: 65px;
+                    line-height: 80px;
                 }
             }
+    
+            #intro-3 {
+                margin-top: 20px;
+                font-size: 16px;
+                line-height: 150%;
 
-            .MuiButton-text {
-                @include max-sm-height {
-                    padding: 4px 6px;
+                @include md {
+                    font-size: 20px;
+                }
+            }
+    
+            .purp {
+                color: $purple2;
+            }
+    
+            .share-cta {
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                background-color: $teal2;
+                padding: 16px;
+                border-radius: 100px;
+                z-index: 99;
+    
+                border: 1px solid $teal3;
+                box-sizing: border-box;
+                box-shadow: 0px 4px 12px rgba(186, 199, 213, 0.5);
+    
+                @include lg {
+                    right: 50px;
+                    bottom: 50px;
+                }
+    
+                .MuiButton-label {
+                    color: $charcoal4;
+                    font-weight: 600;
+    
+                    @include max-sm-height {
+                        font-size: 0.7rem;
+                    }
+                }
+    
+                .MuiButton-text {
+                    @include max-sm-height {
+                        padding: 4px 6px;
+                    }
                 }
             }
         }
