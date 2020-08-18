@@ -5,21 +5,29 @@ import {
   IconButton,
   Typography,
   Button,
-  Popover,
+  TextField,
+  Snackbar,
 } from '@material-ui/core';
-import { Close, InsertLink } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
+import { Close } from '@material-ui/icons';
 import './CopyLinkDialog.scss';
 
 const CopyLinkDialog = ({ isOpen, handleClose, docId }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(null);
 
   const pathname = `/posts/${docId}`;
   const fullLink = window.location.href.slice(0, -1) + pathname;
 
-  const handleCopyButtonClick = (event) => {
+  const handleSnackbarClose = () => {
+    setIsSnackbarOpen(false);
+  };
+
+  const handleSnackbarOpen = () => {
+    setIsSnackbarOpen(true);
+  };
+
+  const handleCopyButtonClick = () => {
     navigator.clipboard.writeText(fullLink);
-    setAnchorEl(event.currentTarget);
+    handleSnackbarOpen();
   };
 
   return (
@@ -30,48 +38,64 @@ const CopyLinkDialog = ({ isOpen, handleClose, docId }) => {
     >
       <div className="dialog">
         <div className="dialog-top">
+          <Typography className="modal-title" variant="h5">
+            Save Your Post
+          </Typography>
+
           <IconButton onClick={handleClose}>
             <Close fontSize="large" />
           </IconButton>
         </div>
 
         <div className="dialog-content">
-          <Typography variant="h4" className="copy-title">One more thing</Typography>
-          
-          <Typography variant="subtitle1" className="copy-description">
-            Here&apos;s a direct link to your post if you&apos;d like to access it in the future and see any replies to your post.
+          <Typography variant="subtitle2" className="copy-description">
+            Thanks for sharing!
+            <br/><br/>
+            Here&apos;s a direct link to your post if you want to access it later, see new replies, and share it with others.
           </Typography>
-          
+
+          <TextField
+            className="link-text"
+            variant="outlined"
+            value={fullLink}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+
           <Button
             id="copy-button"
             size="large"
-            variant="contained"
-            color="primary"
-            startIcon={<InsertLink />}
+            variant="outlined"
             onClick={handleCopyButtonClick}
           >
             Copy Link
           </Button>
+        </div>
 
-          <Popover
-            id="copy-button-popover"
-            open={!!anchorEl}
-            onClose={handleClose}
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
+        <div className="dialog-bottom">
+          <Button
+            className="back-button"
+            size="large"
+            variant="outlined"
+            onClick={handleClose}
           >
-            <Typography variant="subtitle1">Link copied!</Typography>
-            <Link to={{ pathname, state: { fromHome: true } }}>{fullLink}</Link>
-          </Popover>
+            Back To Home
+          </Button>
         </div>
       </div>
+
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={isSnackbarOpen}
+        onClose={handleSnackbarClose}
+        message="Link Copied"
+        autoHideDuration={1000}
+        className="link-copied-snackbar copy-modal-snackbar"
+      />
     </Dialog>
   );
 };

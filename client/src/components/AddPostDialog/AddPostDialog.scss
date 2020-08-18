@@ -18,6 +18,18 @@
     .dialog-top {
       display: flex;
       justify-content: flex-end;
+
+      .modal-title {
+        width: 100%;
+        align-self: center;
+        margin-left: 59px;
+        color: $purple3;
+        font-size: 20px;
+        line-height: 20px;
+        text-align: center;
+        letter-spacing: 0.05em;
+        font-weight: bold;
+      }
     }
 
     .add-scenario-form {
@@ -35,6 +47,7 @@
 
         #multiline {
           height: 30vh !important;
+          overflow: scroll !important;
 
           @include max-md-height {
             height: 25vh !important;
@@ -47,6 +60,17 @@
 
         #display-name-helper {
           margin-left: 2px;
+        }
+
+        #char-count {
+          position: relative;
+          bottom: 25px;
+          right: 8px;
+          text-align: right;
+        }
+
+        #multiline-parent {
+          margin-bottom: 0;
         }
 
         .add-form-field{
@@ -74,6 +98,15 @@
         justify-content: center;
         background-color: $purple3;
         padding: 10px;
+        font-weight: 600;
+
+        &.not-valid {
+          background-color: $grey4;
+          
+          .MuiButton-label {
+            color: $charcoal2;
+          }
+        }
         
         .MuiButton-label {
           font-size: 1rem;
@@ -85,6 +118,18 @@
         font-size: 1rem;
         margin: 10px auto;
       }
+    }
+  }
+
+  .red {
+    color: #CC2900;
+
+    #multiline-label {
+      color: #CC2900;
+    }
+
+    fieldset.MuiOutlinedInput-notchedOutline {
+      border-color: #CC2900 !important;
     }
   }
 }

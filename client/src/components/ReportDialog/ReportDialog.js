@@ -5,17 +5,29 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  DialogTitle,
+  Typography,
   Button,
+  IconButton,
 } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
 import './ReportDialog.scss';
 
 const ReportDialog = ({ isOpen, handleCancel, handleConfirm }) => (
   <Dialog
+    className="ReportDialog"
     open={isOpen}
     onClose={handleCancel}
   >
-    <DialogTitle>Report Confirmation</DialogTitle>
+    <div className="dialog-top">
+      <Typography className="modal-title" variant="h5">
+        Report Confirmation
+      </Typography>
+
+      <IconButton onClick={handleCancel}>
+        <Close fontSize="large" />
+      </IconButton>
+    </div>
+
     <DialogContent>
       <DialogContentText>
         Are you sure that you would like to report this post for inappropriate content?
@@ -26,7 +38,7 @@ const ReportDialog = ({ isOpen, handleCancel, handleConfirm }) => (
         No
       </Button>
       <Button color="primary" onClick={handleConfirm} autoFocus>
-        Yes, I would like to report this post
+        Yes, report post
       </Button>
     </DialogActions>
   </Dialog>

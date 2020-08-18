@@ -9,6 +9,7 @@ import {
   Select,
   FormControl,
   FormHelperText,
+  Typography,
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
@@ -61,10 +62,10 @@ class AddPostDialog extends React.Component {
       const textKey = isScenario ? 'scenarioText' : 'responseText';
 
       const newPost = {
-        name,
-        title,
-        location,
-        [textKey]: postText,
+        name: name.trim(),
+        title: title.trim(),
+        location: location.trim(),
+        [textKey]: postText.trim(),
       };
 
       if (!isScenario) {
@@ -98,6 +99,8 @@ class AddPostDialog extends React.Component {
   render() {
     const { isOpen, handleClose, isScenario } = this.props;
     const { name, title, location, postText, isErrorOnAdd, isLoading } = this.state;
+    const maxPostLength = isScenario ? 1500 : 350;
+    const isValid = name.trim() && title.trim() && location.trim() && postText.trim() && postText.length < maxPostLength;
 
     return (
       <Dialog
@@ -107,6 +110,10 @@ class AddPostDialog extends React.Component {
       >
         <div className="dialog">
           <div className="dialog-top">
+            <Typography className="modal-title" variant="h5">
+              {isScenario ? 'Share Your Story' : 'Post a Kind Word'}
+            </Typography>
+
             <IconButton onClick={handleClose}>
               <Close fontSize="large" />
             </IconButton>
@@ -114,18 +121,22 @@ class AddPostDialog extends React.Component {
 
           <form className="add-scenario-form" onSubmit={this.handleAddFormSubmit}>
             <div className="add-form-fields">
-              <TextField
-                className="add-form-field"
-                id="multiline"
-                label={isScenario ? 'Your story...' : 'Your reply...'}
-                multiline
-                variant="outlined"
-                required
-                value={postText}
-                onChange={this.handleAddTextChange}
-                InputLabelProps={{ required: false }}
-                inputProps={{ maxLength: isScenario ? 1500 : 350 }}
-              />
+              <FormControl className="add-form-field" id="multiline-parent">
+                <TextField
+                  id="multiline"
+                  className={postText.length > maxPostLength ? 'red' : ''}
+                  label={isScenario ? 'What\'s on your mind?' : 'Your reply...'}
+                  multiline
+                  variant="outlined"
+                  required
+                  value={postText}
+                  onChange={this.handleAddTextChange}
+                  InputLabelProps={{ required: false }}
+                />
+                <FormHelperText id="char-count" className={postText.length > maxPostLength ? 'red' : ''}>
+                  {maxPostLength - postText.length}
+                </FormHelperText>
+              </FormControl>
 
               <FormControl className="add-form-field">
                 <TextField
@@ -137,7 +148,7 @@ class AddPostDialog extends React.Component {
                   InputLabelProps={{ required: false }}
                   inputProps={{ maxLength: 20 }}
                 />
-                <FormHelperText id="display-name-helper">No need to use your real name</FormHelperText>
+                <FormHelperText id="display-name-helper">No need to give your real name</FormHelperText>
               </FormControl>
 
               <Select
@@ -224,11 +235,11 @@ class AddPostDialog extends React.Component {
                 <option value="WA">WA</option>
                 <option value="WV">WV</option>
                 <option value="WI">WI</option>
-                <option value="WI">WY</option>
+                <option value="WY">WY</option>
               </Select>
             </div>
 
-            <Button className="submit-button" type="submit" size="large" disabled={isLoading}>
+            <Button className={isValid ? 'submit-button' : 'not-valid submit-button'} type="submit" size="large" disabled={isLoading || !isValid}>
               {
                 isLoading ? (
                   <div className="loader">Loading ...</div>

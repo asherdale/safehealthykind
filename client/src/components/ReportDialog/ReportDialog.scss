@@ -1,5 +1,38 @@
 @import '../../assets/styles/base';
 
-// .ReportDialog {
-// 
-// }
+.ReportDialog {
+  .MuiDialog-paper {
+    border-radius: 16px;
+    width: 90%;
+    margin: 0;
+    max-height: none;
+  }
+
+  .MuiButton-label {
+    color: $purple5;
+  }
+
+  .MuiTypography-root {
+    color: black;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .dialog-top {
+    display: flex;
+    justify-content: flex-end;
+
+    .modal-title {
+      width: 100%;
+      align-self: center;
+      margin-left: 59px;
+      color: $purple3;
+      font-size: 20px;
+      line-height: 20px;
+      text-align: center;
+      letter-spacing: 0.05em;
+      font-weight: bold;
+    }
+  }
+}
