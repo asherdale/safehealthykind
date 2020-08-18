@@ -4,6 +4,107 @@
     min-height: 90vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    background: linear-gradient(180deg, $gradient-start 0%, $gradient-end 100%);
+    padding: 0 20px 20px;
+
+    @include md {
+        padding: 0 40px 40px;
+    }
+
+    .about-ill {
+        width: 260px;
+        margin-bottom: 20px;
+
+        @include md {
+            width: 30vw;
+        }
+    }
+
+    #about-title {
+        color: $charcoal4;
+        font-weight: 600;
+        font-size: 46px;
+        line-height: 56px;
+        letter-spacing: -0.5px;
+    }
+
+    .purp {
+        color: $purple3;
+    }
+
+    #about-text {
+        color: $charcoal4;
+        margin-top: 20px;
+        font-size: 16px;
+        line-height: 150%;
+
+        @include md {
+            font-size: 20px;
+        }
+    }
+
+    .link-header {
+        width: 100%;
+        margin-top: 36px;
+        color: $purple5;
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 150%;
+        letter-spacing: 0.05em;
+
+        @include md {
+            font-size: 24px;
+        }
+    }
+
+    .link-object {
+        background: #FFFFFF;
+        box-shadow: 0px 2px 8px rgba(70, 83, 89, 0.08);
+        border-radius: 16px;
+        width: 100%;
+        margin-top: 16px;
+        padding: 20px;
+        align-self: flex-start;
+
+        @include lg {
+            width: 50vw;
+        }
+
+        .link-top {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 5px;
+
+            .link-title {
+                color: $teal4;
+                font-weight: bold;
+                font-size: 16px;
+                line-height: 22px;
+                letter-spacing: 0.1px;
+                margin-right: 20px;
+    
+                @include md {
+                    font-size: 20px;
+                }
+            }
+
+            .link-icon {
+                margin-right: 5px;
+                color: $teal4;
+            }
+        }
+
+        .link-description {
+            font-size: 16px;
+            line-height: 24px;
+            letter-spacing: 0.444444px;
+            color: $charcoal4;
+
+            @include md {
+                font-size: 20px;
+            }
+        }
+    }
 }
