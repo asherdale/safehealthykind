@@ -107,12 +107,8 @@ class Home extends React.Component {
         {isInternetExplorer && <Alert severity="error">Internet Explorer is not a supported browser. Please consider using a browser like Google Chrome, Firefox, or Microsoft Edge.</Alert>}
 
         <div className="intro">
-          <Typography variant="subtitle1" id="intro-1">
-            HEALTHCARE WORKERS
-          </Typography>
-  
           <Typography variant="h1" id="intro-2">
-            How&apos;s your day, <span className="purp">really?</span>
+            Healthcare workers, how&apos;s your day, <span className="purp">really?</span>
           </Typography>
 
           <Typography variant="body1" id="intro-3">

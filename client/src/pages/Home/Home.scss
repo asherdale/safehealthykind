@@ -7,12 +7,18 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        text-align: center;
         color: $charcoal4;
 
-        #intro-1 {
-            margin-top: 20vh;
+        @include md {
+            align-items: flex-start;
+            padding-left: 120px;
+        }
+
+        #intro-2 {
             font-weight: 600;
+            margin: 25px 20px;
+            line-height: 49px;
+            margin-top: 20vh;
 
             @include max-md-height {
                 margin-top: 10vh;
@@ -23,14 +29,10 @@
             }
         }
 
-        #intro-2 {
-            font-weight: 600;
-            margin: 25px 20px;
-        }
-
         #intro-3 {
-            margin: 5px 20px;
+            margin: 20px 20px 0;
             max-width: 600px;
+            line-height: 150%;
         }
 
         .purp {
@@ -45,6 +47,10 @@
             padding: 16px;
             border-radius: 100px;
             z-index: 99;
+
+            border: 1px solid $teal3;
+            box-sizing: border-box;
+            box-shadow: 0px 4px 12px rgba(186, 199, 213, 0.5);
 
             @include lg {
                 right: 50px;
