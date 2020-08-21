@@ -47,6 +47,15 @@ class ScenarioCard extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const { isSolo } = this.props;
+
+    if (isSolo) {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+  }
+
   handleMenuOpen = (event) => {
     this.setState({ menuAnchorEl: event.currentTarget });
   };
@@ -194,7 +203,7 @@ class ScenarioCard extends React.Component {
         open={isSnackbarOpen}
         onClose={this.handleSnackbarClose}
         message={snackbarText}
-        autoHideDuration={2000}
+        autoHideDuration={1000}
         className="link-copied-snackbar"
       />
     );
@@ -260,7 +269,7 @@ class ScenarioCard extends React.Component {
             <Typography variant="body1" onClick={this.handleExpandToggle}>
               <TextTruncate
                 line={!isTextExpanded && 10}
-                element="span"
+                element="p"
                 truncateText="…"
                 text={scenario.scenarioText}
                 textTruncateChild={this.getTruncateLink(scenario.id)}
@@ -280,14 +289,25 @@ class ScenarioCard extends React.Component {
           </div>}
 
           <div className="actions">
-            <div onClick={this.handleLikeClick} aria-hidden="true" className={isLiked ? 'liked' : ''}>
+            <div
+              role="button"
+              tabIndex={0}
+              className={isLiked ? 'liked' : ''}
+              onClick={this.handleLikeClick}
+              onKeyDown={(e) => e.key === 'Enter' ? this.handleLikeClick() : null}
+            >
               {isLiked ? <Favorite /> : <FavoriteBorder />}
               <Typography variant="body1" className="action-text">{isLiked ? 'Liked' : 'Like'}</Typography>
             </div>
 
-            <div className="action-line" />
+            {isSolo && <div className="action-line" />}
 
-            <div onClick={this.handleAddDialogOpen} aria-hidden="true">
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={this.handleAddDialogOpen}
+              onKeyDown={(e) => e.key === 'Enter' ? this.handleAddDialogOpen() : null}
+            >
               <ChatBubbleOutline />
               <Typography variant="body1" className="action-text">Reply</Typography>
             </div>
@@ -301,6 +321,10 @@ class ScenarioCard extends React.Component {
             </div>
           ) : (
             <div className="empty-responses">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M40 4H8C5.8 4 4.02 5.8 4.02 8L4 44L12 36H40C42.2 36 44 34.2 44 32V8C44 5.8 42.2 4 40 4ZM12 28V23.06L25.76 9.3C26.16 8.9 26.78 8.9 27.18 9.3L30.72 12.84C31.12 13.24 31.12 13.86 30.72 14.26L16.94 28H12ZM36 28H21L25 24H36V28Z" fill="#D7DEE1"/>
+              </svg>
+
               <Typography variant="body1">
                 Looks like there aren’t any replies yet.
                 <br />

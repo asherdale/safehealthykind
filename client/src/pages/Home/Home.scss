@@ -43,6 +43,7 @@
             }
     
             #intro-2 {
+                font-family: 'Poppins';
                 font-weight: 600;
                 margin: 25px 0;
                 font-size: 39px;
@@ -81,10 +82,15 @@
                 border: 1px solid $teal3;
                 box-sizing: border-box;
                 box-shadow: 0px 4px 12px rgba(186, 199, 213, 0.5);
+
+                @include md {
+                    bottom: 80px;
+                    left: 60px;
+                    right: initial;
+                }
     
                 @include lg {
-                    right: 50px;
-                    bottom: 50px;
+                    left: 100px;
                 }
     
                 .MuiButton-label {

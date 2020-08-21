@@ -39,11 +39,11 @@ const CopyLinkDialog = ({ isOpen, handleClose, docId }) => {
       <div className="dialog">
         <div className="dialog-top">
           <Typography className="modal-title" variant="h5">
-            Save Your Post
+            Save your post
           </Typography>
 
           <IconButton onClick={handleClose}>
-            <Close fontSize="large" />
+            <Close />
           </IconButton>
         </div>
 
@@ -58,31 +58,21 @@ const CopyLinkDialog = ({ isOpen, handleClose, docId }) => {
             className="link-text"
             variant="outlined"
             value={fullLink}
+            onClick={handleCopyButtonClick}
             InputProps={{
               readOnly: true,
             }}
           />
-
-          <Button
-            id="copy-button"
-            size="large"
-            variant="outlined"
-            onClick={handleCopyButtonClick}
-          >
-            Copy Link
-          </Button>
         </div>
 
-        <div className="dialog-bottom">
-          <Button
-            className="back-button"
-            size="large"
-            variant="outlined"
-            onClick={handleClose}
-          >
-            Back To Home
-          </Button>
-        </div>
+        <Button
+          id="copy-button"
+          size="large"
+          variant="outlined"
+          onClick={handleCopyButtonClick}
+        >
+          Copy Link
+        </Button>
       </div>
 
       <Snackbar
@@ -93,8 +83,8 @@ const CopyLinkDialog = ({ isOpen, handleClose, docId }) => {
         open={isSnackbarOpen}
         onClose={handleSnackbarClose}
         message="Link Copied"
-        autoHideDuration={1000}
-        className="link-copied-snackbar copy-modal-snackbar"
+        autoHideDuration={500}
+        className="link-copied-snackbar"
       />
     </Dialog>
   );

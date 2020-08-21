@@ -10,6 +10,7 @@
 
   .MuiButton-label {
     color: $purple5;
+    font-weight: 600;
   }
 
   .MuiTypography-root {
@@ -33,6 +34,10 @@
       text-align: center;
       letter-spacing: 0.05em;
       font-weight: bold;
+    }
+
+    .MuiIconButton-root {
+      color: $purple3;
     }
   }
 }

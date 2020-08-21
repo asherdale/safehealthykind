@@ -20,11 +20,11 @@ const ReportDialog = ({ isOpen, handleCancel, handleConfirm }) => (
   >
     <div className="dialog-top">
       <Typography className="modal-title" variant="h5">
-        Report Confirmation
+        Report confirmation
       </Typography>
 
       <IconButton onClick={handleCancel}>
-        <Close fontSize="large" />
+        <Close />
       </IconButton>
     </div>
 

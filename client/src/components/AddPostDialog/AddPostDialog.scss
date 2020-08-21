@@ -30,6 +30,10 @@
         letter-spacing: 0.05em;
         font-weight: bold;
       }
+
+      .MuiIconButton-root {
+        color: $purple3;
+      }
     }
 
     .add-scenario-form {
@@ -93,6 +97,14 @@
           .MuiOutlinedInput-notchedOutline:hover {
             border-color: black;
           }
+
+          .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated {
+            transform: translate(14px, 20px) scale(1);
+
+            &.MuiInputLabel-shrink {
+              transform: translate(14px, -6px) scale(0.75);
+            }
+          }
         }
       }
 
@@ -103,6 +115,7 @@
         background-color: $purple3;
         padding: 10px;
         font-weight: 600;
+        border-radius: 0 0 16px 16px;
 
         &.not-valid {
           background-color: $grey4;

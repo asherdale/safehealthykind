@@ -103,7 +103,7 @@ class ResponseCard extends React.Component {
         open={isSnackbarOpen}
         onClose={this.handleSnackbarClose}
         message="Successfully Reported"
-        autoHideDuration={2000}
+        autoHideDuration={1000}
         className="link-copied-snackbar"
       />
     );

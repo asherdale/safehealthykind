@@ -10,10 +10,64 @@ import {
   FormControl,
   FormHelperText,
   Typography,
+  InputLabel,
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import './AddPostDialog.scss';
+
+const stateToAbbrev = {
+  'Alabama': 'AL',
+  'Alaska': 'AK',
+  'Arizona': 'AZ',
+  'Arkansas': 'AR',
+  'California': 'CA',
+  'Colorado': 'CO',
+  'Connecticut': 'CT',
+  'Delaware': 'DE',
+  'Florida': 'FL',
+  'Georgia': 'GA',
+  'Hawaii': 'HI',
+  'Idaho': 'ID',
+  'Illinois': 'IL',
+  'Indiana': 'IN',
+  'Iowa': 'IA',
+  'Kansas': 'KS',
+  'Kentucky': 'KY',
+  'Louisiana': 'LA',
+  'Maine': 'ME',
+  'Maryland': 'MD',
+  'Massachusetts': 'MA',
+  'Michigan': 'MI',
+  'Minnesota': 'MN',
+  'Mississippi': 'MS',
+  'Missouri': 'MO',
+  'Montana': 'MT',
+  'Nebraska': 'NE',
+  'Nevada': 'NV',
+  'New Hampshire': 'NH',
+  'New Jersey': 'NJ',
+  'New Mexico': 'NM',
+  'New York': 'NY',
+  'North Carolina': 'NC',
+  'North Dakota': 'ND',
+  'Ohio': 'OH',
+  'Oklahoma': 'OK',
+  'Oregon': 'OR',
+  'Pennsylvania': 'PA',
+  'Rhode Island': 'RI',
+  'South Carolina': 'SC',
+  'South Dakota': 'SD',
+  'Tennessee': 'TN',
+  'Texas': 'TX',
+  'Utah': 'UT',
+  'Vermont': 'VT',
+  'Virginia': 'VA',
+  'Washington': 'WA',
+  'West Virginia': 'WV',
+  'Wisconsin': 'WI',
+  'Wyoming': 'WY',
+};
 
 class AddPostDialog extends React.Component {
   constructor(props) {
@@ -64,7 +118,7 @@ class AddPostDialog extends React.Component {
       const newPost = {
         name: name.trim(),
         title: title.trim(),
-        location: location.trim(),
+        location: stateToAbbrev[location] || '',
         [textKey]: postText.trim(),
       };
 
@@ -111,11 +165,11 @@ class AddPostDialog extends React.Component {
         <div className="dialog">
           <div className="dialog-top">
             <Typography className="modal-title" variant="h5">
-              {isScenario ? 'Share Your Story' : 'Post a Kind Word'}
+              {isScenario ? 'Share your story' : 'Post a kind word'}
             </Typography>
 
             <IconButton onClick={handleClose}>
-              <Close fontSize="large" />
+              <Close />
             </IconButton>
           </div>
 
@@ -125,7 +179,7 @@ class AddPostDialog extends React.Component {
                 <TextField
                   id="multiline"
                   className={postText.length > maxPostLength ? 'red' : ''}
-                  label={isScenario ? 'What\'s on your mind?' : 'Your reply...'}
+                  label={isScenario ? 'What\'s on your mind?' : 'Add your reply'}
                   multiline
                   variant="outlined"
                   required
@@ -140,7 +194,7 @@ class AddPostDialog extends React.Component {
 
               <FormControl className="add-form-field">
                 <TextField
-                  label="Display Name"
+                  label="Display name"
                   variant="outlined"
                   required
                   value={name}
@@ -151,91 +205,53 @@ class AddPostDialog extends React.Component {
                 <FormHelperText id="display-name-helper">No need to give your real name</FormHelperText>
               </FormControl>
 
-              <Select
-                native
-                required
-                value={title}
-                variant="outlined"
-                className="add-form-field"
-                onChange={this.handleAddTitleChange}
-              >
-                <option value="" disabled>Your Role</option>
-                <option value="Doctor">Doctor</option>
-                <option value="Nurse">Nurse</option>
-                <option value="PA/NP">PA/NP</option>
-                <option value="PT">PT</option>
-                <option value="SW">SW</option>
-                <option value="RT">RT</option>
-                <option value="Administrator">Administrator</option>
-                <option value="Child Life Specialist">Child Life Specialist</option>
-                <option value="Technician">Technician</option>
-                <option value="Clinical Assistant">Clinical Assistant</option>
-                <option value="Student/Trainee">Student/Trainee</option>
-                <option value="Volunteer">Volunteer</option>
-                <option value="Other">Other</option>
-              </Select>
+              <FormControl className="add-form-field">
+                <InputLabel htmlFor="outlined-role-native-simple">Your role</InputLabel>
+                <Select
+                  native
+                  value={title}
+                  onChange={this.handleAddTitleChange}
+                  variant="outlined"
+                  label="Your role"
+                  inputProps={{
+                    name: 'role',
+                    id: 'outlined-role-native-simple',
+                  }}
+                >
+                  <option disabled aria-label="None" value="" />
+                  <option value="Doctor">Doctor</option>
+                  <option value="Nurse">Nurse</option>
+                  <option value="PA/NP">PA/NP</option>
+                  <option value="Social Worker">Social Worker</option>
+                  <option value="Respiratory Therapist">Respiratory Therapist</option>
+                  <option value="Administrator">Administrator</option>
+                  <option value="Child Life Specialist">Child Life Specialist</option>
+                  <option value="Physical Therapist">Physical Therapist</option>
+                  <option value="Technician">Technician</option>
+                  <option value="Clinical Assistant">Clinical Assistant</option>
+                  <option value="Student/Trainee">Student/Trainee</option>
+                  <option value="Volunteer">Volunteer</option>
+                  <option value="Other">Other</option>
+                </Select>
+              </FormControl>
 
-              <Select
-                native
-                required
-                value={location}
-                variant="outlined"
-                className="add-form-field"
-                inputProps={{ className: location === '' ? 'select-bold' : '' }}
-                onChange={this.handleAddLocationChange}
-              >
-                <option value="" disabled>State</option>
-                <option value="AL">AL</option>
-                <option value="AK">AK</option>
-                <option value="AZ">AZ</option>
-                <option value="AR">AR</option>
-                <option value="CA">CA</option>
-                <option value="CO">CO</option>
-                <option value="CT">CT</option>
-                <option value="DE">DE</option>
-                <option value="FL">FL</option>
-                <option value="GA">GA</option>
-                <option value="HI">HI</option>
-                <option value="ID">ID</option>
-                <option value="IL">IL</option>
-                <option value="IN">IN</option>
-                <option value="IA">IA</option>
-                <option value="KS">KS</option>
-                <option value="KY">KY</option>
-                <option value="LA">LA</option>
-                <option value="ME">ME</option>
-                <option value="MD">MD</option>
-                <option value="MA">MA</option>
-                <option value="MI">MI</option>
-                <option value="MN">MN</option>
-                <option value="MS">MS</option>
-                <option value="MO">MO</option>
-                <option value="MT">MT</option>
-                <option value="NE">NE</option>
-                <option value="NV">NV</option>
-                <option value="NH">NH</option>
-                <option value="NJ">NJ</option>
-                <option value="NM">NM</option>
-                <option value="NY">NY</option>
-                <option value="NC">NC</option>
-                <option value="ND">ND</option>
-                <option value="OH">OH</option>
-                <option value="OK">OK</option>
-                <option value="OR">OR</option>
-                <option value="PA">PA</option>
-                <option value="RI">RI</option>
-                <option value="SC">SC</option>
-                <option value="SD">SD</option>
-                <option value="TN">TN</option>
-                <option value="TX">TX</option>
-                <option value="UT">UT</option>
-                <option value="VT">VT</option>
-                <option value="VA">VA</option>
-                <option value="WA">WA</option>
-                <option value="WV">WV</option>
-                <option value="WI">WI</option>
-                <option value="WY">WY</option>
-              </Select>
+              <FormControl className="add-form-field">
+                <InputLabel htmlFor="outlined-location-native-simple">State</InputLabel>
+                <Select
+                  native
+                  value={location}
+                  onChange={this.handleAddLocationChange}
+                  variant="outlined"
+                  label="State"
+                  inputProps={{
+                    name: 'location',
+                    id: 'outlined-location-native-simple',
+                  }}
+                >
+                  <option disabled aria-label="None" value="" />
+                  {Object.keys(stateToAbbrev).map(state => <option value={state} key={state}>{state}</option>)}
+                </Select>
+              </FormControl>
             </div>
 
             <Button className={isValid ? 'submit-button' : 'not-valid submit-button'} type="submit" size="large" disabled={isLoading || !isValid}>

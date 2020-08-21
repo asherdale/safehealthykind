@@ -22,6 +22,7 @@
     }
 
     #about-title {
+        font-family: 'Poppins';
         color: $charcoal4;
         font-weight: 600;
         font-size: 46px;
@@ -66,6 +67,10 @@
         margin-top: 16px;
         padding: 20px;
         align-self: flex-start;
+
+        &:hover {
+            box-shadow: 0px 40px 60px rgba(70, 83, 89, 0.15);
+        }
 
         @include lg {
             width: 50vw;

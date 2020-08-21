@@ -330,11 +330,11 @@ const About = () => (
       <br /><br />
       COVID-19 challenges our psyche. In the face of fear, isolation, and sadness, we must do what is right: <strong>Be Safe. Be Healthy. Be Kind.</strong>
       <br /><br />
-      These stories are true — authored by healthcare workers in this very real pandemic. Return to this site to tell your story and support others.
+      These stories are true—authored by healthcare workers in this very real pandemic. Return to this site to tell your story and support others.
     </Typography>
 
     <Typography variant="body1" className="link-header">
-      Look After Your Mental Health:
+      Look after your mental health
     </Typography>
 
     {
@@ -342,7 +342,7 @@ const About = () => (
     }
 
     <Typography variant="body1" className="link-header">
-      Request Protective Supplies:
+      Request protective supplies
     </Typography>
 
     {
