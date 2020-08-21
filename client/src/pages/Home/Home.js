@@ -116,9 +116,7 @@ class Home extends React.Component {
               We&apos;re here to listen. SafeHealthyKind is a safe space for you to share your experiences, frustrations, and fears, and get support from your peers.
             </Typography>
 
-            <div className="share-cta">
-              <Button onClick={this.handleNewScenarioDialogOpen}>SHARE YOUR STORY</Button>
-            </div>
+            <Button className="share-cta" onClick={this.handleNewScenarioDialogOpen}>SHARE YOUR STORY</Button>
           </div>
 
           <svg className="desktop-ill" width="597" height="751" viewBox="0 0 597 751" fill="none" xmlns="http://www.w3.org/2000/svg">

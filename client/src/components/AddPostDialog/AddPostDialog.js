@@ -100,7 +100,7 @@ class AddPostDialog extends React.Component {
     const { isOpen, handleClose, isScenario } = this.props;
     const { name, title, location, postText, isErrorOnAdd, isLoading } = this.state;
     const maxPostLength = isScenario ? 1500 : 350;
-    const isValid = name.trim() && title.trim() && location.trim() && postText.trim() && postText.length < maxPostLength;
+    const isValid = name.trim() && title.trim() && location.trim() && postText.trim() && postText.length <= maxPostLength;
 
     return (
       <Dialog
@@ -157,7 +157,6 @@ class AddPostDialog extends React.Component {
                 value={title}
                 variant="outlined"
                 className="add-form-field"
-                inputProps={{ className: title === '' ? 'select-bold' : '' }}
                 onChange={this.handleAddTitleChange}
               >
                 <option value="" disabled>Your Role</option>

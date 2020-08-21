@@ -26,6 +26,9 @@ import ReportDialog from '../ReportDialog';
 import AddPostDialog from '../AddPostDialog';
 import { timeSince } from '../../utils/utils';
 
+const SNACKBAR_LINK_COPIED = 'Link Copied';
+const SNACKBAR_REPORTED = 'Successfully Reported';
+
 class ScenarioCard extends React.Component {
   constructor(props) {
     super(props);
@@ -40,6 +43,7 @@ class ScenarioCard extends React.Component {
       isTextExpanded: props.location.state && props.location.state.expanded,
       isScenarioVisible: localStorage.getItem(`${props.scenario.id}_report`) !== 'true',
       isSnackbarOpen: false,
+      snackbarText: SNACKBAR_LINK_COPIED,
     };
   }
 
@@ -95,6 +99,7 @@ class ScenarioCard extends React.Component {
     });
 
     this.setState({ isScenarioVisible: false });
+    this.handleReportSnackbarOpen();
   }
 
   handleCopyLinkClick = () => {
@@ -106,7 +111,7 @@ class ScenarioCard extends React.Component {
     const fullLink = window.location.href.slice(0, -1) + pathname;
 
     navigator.clipboard.writeText(fullLink);
-    this.handleSnackbarOpen();
+    this.handleCopySnackbarOpen();
   }
 
   handleLikeClick = () => {
@@ -158,8 +163,12 @@ class ScenarioCard extends React.Component {
     this.setState({ isSnackbarOpen: false });
   };
 
-  handleSnackbarOpen = () => {
-    this.setState({ isSnackbarOpen: true });
+  handleCopySnackbarOpen = () => {
+    this.setState({ isSnackbarOpen: true, snackbarText: SNACKBAR_LINK_COPIED });
+  }
+
+  handleReportSnackbarOpen = () => {
+    this.setState({ isSnackbarOpen: true, snackbarText: SNACKBAR_REPORTED });
   }
 
   render() {
@@ -173,17 +182,36 @@ class ScenarioCard extends React.Component {
       isScenarioVisible,
       isTextExpanded,
       isSnackbarOpen,
+      snackbarText,
     } = this.state;
 
+    const snackbar = (
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={isSnackbarOpen}
+        onClose={this.handleSnackbarClose}
+        message={snackbarText}
+        autoHideDuration={2000}
+        className="link-copied-snackbar"
+      />
+    );
+
     if (!isScenarioVisible) {
-      return null;
+      return snackbar;
     }
 
     const dateText = timeSince(scenario.dateCreated);
 
-    const responseCards = scenario.responses.map(response => {
-      return <ResponseCard key={response.dateCreated._seconds} response={response} />;
-    });
+    const responseCards = scenario.responses
+      .filter(response => localStorage.getItem(`${response.id}_report`) !== 'true')
+      .map(response => <ResponseCard key={response.dateCreated._seconds} response={response} />);
+
+    const numVisibleResponses = responseCards.reduce((acc, curr) => {
+      return localStorage.getItem(`${curr.props.response.id}_report`) === 'true' ? acc - 1 : acc;
+    }, responseCards.length);
 
     return (
       <div className={`ScenarioCard ${isSolo ? 'solo' : 'feed'}`} >
@@ -267,7 +295,7 @@ class ScenarioCard extends React.Component {
         </div>
 
         { 
-          responseCards.length > 0 ? (
+          numVisibleResponses > 0 ? (
             <div className="response-content">
               {location.pathname.startsWith('/posts') ? responseCards : responseCards.slice(0, 2)}
             </div>
@@ -287,8 +315,8 @@ class ScenarioCard extends React.Component {
               <Link to={{ pathname: `/posts/${scenario.id}`, state: { fromHome: true } }}>
                 <Button>
                   {
-                    responseCards.length > 2
-                      ? `View all ${responseCards.length} replies`
+                    numVisibleResponses > 2
+                      ? `View all ${numVisibleResponses} replies`
                       : 'View post'
                   }
                 </Button>
@@ -310,17 +338,7 @@ class ScenarioCard extends React.Component {
           scenarioId={scenario.id}
         />
 
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          open={isSnackbarOpen}
-          onClose={this.handleSnackbarClose}
-          message="Link Copied"
-          autoHideDuration={1000}
-          className="link-copied-snackbar"
-        />
+        {snackbar}
       </div>
     );
   }

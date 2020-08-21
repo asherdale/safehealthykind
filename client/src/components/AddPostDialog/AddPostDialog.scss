@@ -81,13 +81,17 @@
             margin-bottom: 15px;
           }
 
-          .MuiOutlinedInput-notchedOutline {
+          .MuiOutlinedInput-notchedOutline:focus {
             border-color: $purple3;
           }
 
-          .MuiInputLabel-formControl, .select-bold {
+          .MuiFormLabel-root.Mui-focused {
             color: $purple3;
             font-weight: 600;
+          }
+
+          .MuiOutlinedInput-notchedOutline:hover {
+            border-color: black;
           }
         }
       }

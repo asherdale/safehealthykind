@@ -6,6 +6,7 @@ import {
   Typography,
   Menu,
   MenuItem,
+  Snackbar,
 } from '@material-ui/core';
 import {
   MoreHoriz,
@@ -26,6 +27,7 @@ class ResponseCard extends React.Component {
       isLiked: localStorage.getItem(`${props.response.id}_like`) === 'true',
       isResponseVisible: localStorage.getItem(`${props.response.id}_report`) !== 'true',
       menuAnchorEl: null,
+      isSnackbarOpen: false,
     };
   }
 
@@ -61,6 +63,7 @@ class ResponseCard extends React.Component {
     });
 
     this.setState({ isResponseVisible: false });
+    this.handleSnackbarOpen();
   }
 
   handleLikeClick = () => {
@@ -79,12 +82,34 @@ class ResponseCard extends React.Component {
     });
   }
 
+  handleSnackbarClose = () => {
+    this.setState({ isSnackbarOpen: false });
+  };
+
+  handleSnackbarOpen = () => {
+    this.setState({ isSnackbarOpen: true });
+  }
+
   render() {
-    const { isReportDialogOpen, isResponseVisible, isLiked, menuAnchorEl } = this.state;
+    const { isReportDialogOpen, isResponseVisible, isLiked, menuAnchorEl, isSnackbarOpen } = this.state;
     const { response } = this.props;
 
+    const snackbar = (
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={isSnackbarOpen}
+        onClose={this.handleSnackbarClose}
+        message="Successfully Reported"
+        autoHideDuration={2000}
+        className="link-copied-snackbar"
+      />
+    );
+
     if (!isResponseVisible) {
-      return null;
+      return snackbar;
     }
 
     const dateText = timeSince(response.dateCreated);
@@ -144,6 +169,8 @@ class ResponseCard extends React.Component {
           handleCancel={this.handleReportDialogClose}
           handleConfirm={this.handleReportConfirmed}
         />
+
+        {snackbar}
       </div>
     );
   }
